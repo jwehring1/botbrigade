@@ -22,8 +22,6 @@ class codeReader{
     constructor(P1Code,P2Code) {
         this.P1CodeString = 'module.exports = function(boardState) { '+ P1Code + ' }';
         this.P2CodeString = 'module.exports = function(boardState) { '+ P2Code + ' }';
-        this.P1CodeCompiled = {};
-        this.P2CodeCompiled = {};
     }
 
     saveCode(codeArg){
@@ -37,8 +35,7 @@ class codeReader{
     runP1CodeTurn(boardState){
         let p1ReturnVal = -1;
         try{
-            //let tempString = 'module.exports = function(boardState) { '+ this.P1Code + ' }';
-            let p1functionInSandbox = vm.run(this.P1Code);
+            let p1functionInSandbox = vm.run(this.P1CodeString);
             p1ReturnVal = p1functionInSandbox(boardState);
         } catch (err) {
             //Return Debugging Errors here
@@ -50,9 +47,10 @@ class codeReader{
     runP2CodeTurn(boardState){
         let p2ReturnVal = -1;
         try{
-        let p2ReturnVal = vm.run(this.P1Code);
-        //var p2ReturnVal = functionInSandboxP2(boardState);
+            let p2functionInSandbox = vm.run(this.P2CodeString);
+            p2ReturnVal = p2functionInSandbox(boardState);
         } catch (err) {
+            //Return Debugging Errors here
             console.error('Failed to execute script.', err);
         }
         return p2ReturnVal;
