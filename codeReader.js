@@ -28,7 +28,7 @@ class codeReader{
         try {
             this.P1Code = new VMScript(this.P1CodeString);
         } catch (err) {
-            console.error('Failed to compile script.', err);
+            console.error('Failed to save script.', err);
         }
     }
 
