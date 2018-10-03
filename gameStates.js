@@ -9,6 +9,14 @@ class gameStates{
           }
     }
 
+    areAllSlotsFilled(){
+        for (let col = 0; col < 7; col++){
+            if (this.gameBoard[0][col] == 0){
+                return false;
+            }
+        }
+        return true;
+    }
     checkForWinner(placedRow,placedColumn) {
         //Vertical
         for (let row = 0; row < 3; row++)
@@ -35,6 +43,9 @@ class gameStates{
         return 0;
     }
     PlaceCheckerAndCheckWinner(col,player){
+        if (this.gameBoard[0][col]!=0){
+            return -1;
+        }
         //Check placement validity
         for(var i = 0; i<6; i++){
           if(this.gameBoard[i][col]!=0){
