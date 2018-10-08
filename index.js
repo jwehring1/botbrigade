@@ -1,22 +1,23 @@
+var gameRow =-1;
 var gameBoard = new Array(6);
 for (var i = 0; i < gameBoard.length; i++){
   gameBoard[i] = new Array(7);
   gameBoard[i].fill(0);
 }
 
-function PlaceChecker(col,player,temp){
-  if(gameBoard[0][col]!=0){
-	  return -1;
+function PlaceChecker(gameBoard2,col,player){
+  if(gameBoard2[0][col]!=0){
+	  gameRow = -1;
+	  return gameBoard2;
   }
   for(var i = 0; i<6; i++){
-    if(gameBoard[i][col]!=0){
+    if(gameBoard2[i][col]!=0){
       break;
     }
   }
-  if(!temp) {
-	gameBoard[i-1][col] = player;
-  }
-  return i-1;
+  gameBoard2[i-1][col] = player;
+  gameRow = i-1;
+  return gameBoard2;
 }
 
 function checkAdj(a,b,c,d) {
@@ -24,7 +25,7 @@ function checkAdj(a,b,c,d) {
     return ((a != 0) && (a == b) && (a == c) && (a == d));
 }
 
-function checkWinner(placedRow,placedColumn) {
+function checkWinner(gameBoard,placedRow,placedColumn) {
     //Vertical
     for (row = 0; row < 3; row++)
 		if (checkAdj(gameBoard[row][placedColumn], gameBoard[row+1][placedColumn], gameBoard[row+2][placedColumn], gameBoard[row+3][placedColumn]))
@@ -52,32 +53,33 @@ function checkWinner(placedRow,placedColumn) {
 
 function solveV2(givenHeight, player)
 {
-	for(i=0; i< givenHeight;i++)
+	for(let i=0; i< givenHeight;i++)
 	{
 		console.log("givenHeight: "+givenHeight);
 		solveV2(givenHeight-1,1);
 	}
 }
 
-function solve(givenHeight, player) {
-	Height = givenHeight;
+function solve(gameBoard2, givenHeight, player) {
+	let Height = givenHeight;
 	let pos = -1;
 	if(Height > 0) {
-		console.log("Height: "+Height);
 		min = 99999999;//Not my turn
 		if(player == 1) {
-			for(i = 0; i < 7; i++) {
+			for(let i = 0; i < 7; i++) {
 				let tempScore = 0;
-				let row = PlaceChecker(i,1, true);
-				console.log("row: "+row);
-				if(row==-1) {
+				gameBoard2 = PlaceChecker(gameBoard2,i,1);
+				console.log(gameBoard2);
+				if(gameRow==-1) {
 					continue;
 				}
-				if(checkWinner==1) {
+				if(checkWinner(gameBoard2,gameRow,i)==1) {
 					tempScore = tempScore - (Height * 4);
 				}
-				let max = solve(Height-1,2);
+				let max = solve(gameBoard2,Height-1,2);
+				if(tempScore>0){
 				console.log("tempScore + max: "+tempScore + max);
+				}
 				if(min>tempScore+max) {
 					min = tempScore + max;
 					pos = i;
@@ -87,22 +89,27 @@ function solve(givenHeight, player) {
 		}
 		max = -99999999;//AI Turn
 		if(player == 2) {
-			for(i = 0; i < 7; i++) {
+			for(let i = 0; i < 7; i++) {
 				let tempScore = 0;
-				let row = PlaceChecker(i,2, true);
-				if(row==-1) {
+				gameBoard2 = PlaceChecker(gameBoard2,i,2);
+				console.log(gameBoard2);
+				if(gameRow==-1) {
 					continue;
 				}
-				if(checkWinner==2) {
+				if(checkWinner(gameBoard2,gameRow,i)==2) {
 					tempScore = tempScore + (Height * 3);
+					console.log("YAYYYYY");
 				}
-				let min = solve(Height-1,1);
+				let min = solve(gameBoard2,Height-1,1);
+				if(tempScore<0){
+				console.log("tempScore + min: "+tempScore + min);
+				}
 				if(tempScore+min>max) {
 					max=tempScore+min;
 					pos=i;
 				}
 			}
-			if(Height == 10) {
+			if(Height == 4) {
 				return pos;
 			}
 			else {
@@ -137,24 +144,5 @@ PlaceChecker(4,1);
 PlaceChecker(3,2);
 PlaceChecker(4,1);*/
 console.log(gameBoard);
-//console.log("Pos: "+solve(10,1));
-solveV2(10,1);
-
-console.log("Winner: "+checkWinner(3,0));
-
+gameBoard = PlaceChecker(gameBoard,solve(gameBoard,4,1),1);
 console.log(gameBoard);
-
-
-
-const cool = require('cool-ascii-faces')
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
-
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .get('/cool', (req, res) => res.send(cool()))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
