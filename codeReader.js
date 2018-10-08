@@ -33,10 +33,8 @@ const vm = new NodeVM({
         let gameBoard = new gameStates();
       
         //Initialize A.I
-        let codeRunnerP1 = new codeReader(code1);
-        let codeRunnerP2 = new codeReader(code2);
         while (gameBoard.winner == 0){
-          let p1Selection = codeRunnerP1.runCodeTurn();
+          let p1Selection = code1.runCodeTurn();
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
@@ -47,7 +45,7 @@ const vm = new NodeVM({
               //console.log("P1 Messed Up");
               gameBoard.winner = 2;
           }
-          let p2Selection = codeRunnerP2.runCodeTurn();
+          let p2Selection = code2.runCodeTurn();
           if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
@@ -68,8 +66,8 @@ const vm = new NodeVM({
       }
           //console.log("WINNER: " + gameBoard.winner);
     }
-      console.log("P1 Wins: " + p1Wins);
-      console.log("P2 Wins: " + p2Wins);
+      console.log(code1.name + " Wins: " + p1Wins);
+      console.log(code2.name + " Wins: " + p2Wins);
       console.log("Ties " + ties);
 
       if (p1Wins > p2Wins){
@@ -84,10 +82,18 @@ const vm = new NodeVM({
 }
 
 
-function roundRobin(challengerCode){
+function roundRobin(challengerCode,rounds){
     //Get Top 10 Slots
     let leaderCodes = [];
-    leaderCodes.push(randomAI);
+    leaderCodes.push(new codeReader(randomAI,"Random1"));
+    leaderCodes.push(new codeReader(alwaysPlaceAt1,"Place1"));
+    leaderCodes.push(new codeReader(randomAI,"Random2"));
+
+    leaderCodes.forEach(defendingCode => {
+        AIBattle(challengerCode,defendingCode,rounds);
+    });
+
+
 }
 class codeReader{
     constructor(AICode,name){
@@ -121,5 +127,6 @@ module.exports = {
     codeReader,
     randomAI,
     alwaysPlaceAt1,
-    AIBattle
+    AIBattle,
+    roundRobin
   };
