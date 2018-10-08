@@ -93,3 +93,8 @@ express()
 
   let codeRunner = new codeReader("return 1;","return 2;");
   codeRunner.checkCodeThenRun();
+
+
+var tutorial = require('./pages/tutorial');
+index.use('/', pages);
+index.use('/tutorial', tutorial);

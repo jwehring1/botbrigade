@@ -1,0 +1,1 @@
+var html = new EJS({url: 'tutorial.ejs'}).render(data);
