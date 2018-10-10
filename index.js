@@ -5,19 +5,19 @@ for (var i = 0; i < gameBoard.length; i++){
   gameBoard[i].fill(0);
 }
 
-function PlaceChecker(gameBoard2,col,player){
-  if(gameBoard2[0][col]!=0){
+function PlaceChecker(tempBoard,col,player){
+  if(tempBoard[0][col]!=0){
 	  gameRow = -1;
-	  return gameBoard2;
+	  return tempBoard;
   }
   for(var i = 0; i<6; i++){
-    if(gameBoard2[i][col]!=0){
+    if(tempBoard[i][col]!=0){
       break;
     }
   }
-  gameBoard2[i-1][col] = player;
+  tempBoard[i-1][col] = player;
   gameRow = i-1;
-  return gameBoard2;
+  return tempBoard;
 }
 
 function checkAdj(a,b,c,d) {
@@ -51,32 +51,27 @@ function checkWinner(gameBoard,placedRow,placedColumn) {
     return 0;
 }
 
-function solveV2(givenHeight, player)
-{
-	for(let i=0; i< givenHeight;i++)
-	{
-		console.log("givenHeight: "+givenHeight);
-		solveV2(givenHeight-1,1);
-	}
-}
-
 function solve(gameBoard2, givenHeight, player) {
 	let Height = givenHeight;
 	let pos = -1;
 	if(Height > 0) {
-		min = 99999999;//Not my turn
+		let min = 99999999;//Not my turn
 		if(player == 1) {
 			for(let i = 0; i < 7; i++) {
+				console.log("Height P1: "+Height);
 				let tempScore = 0;
-				gameBoard2 = PlaceChecker(gameBoard2,i,1);
-				console.log(gameBoard2);
+				var tempBoard = [];
+				for (var j = 0; j < gameBoard2.length; j++)
+    				tempBoard[j] = gameBoard2[j].slice();
+				tempBoard = PlaceChecker(tempBoard,i,1);
+				//console.log(gameBoard2);
 				if(gameRow==-1) {
 					continue;
 				}
-				if(checkWinner(gameBoard2,gameRow,i)==1) {
+				if(checkWinner(tempBoard,gameRow,i)==1) {
 					tempScore = tempScore - (Height * 4);
 				}
-				let max = solve(gameBoard2,Height-1,2);
+				let max = solve(tempBoard,Height-1,2);
 				if(tempScore>0){
 				console.log("tempScore + max: "+tempScore + max);
 				}
@@ -85,22 +80,31 @@ function solve(gameBoard2, givenHeight, player) {
 					pos = i;
 				}
 			}
-			return min;
+			if(Height == 4) {
+				return pos;
+			}
+			else {
+				return min;
+			}
 		}
-		max = -99999999;//AI Turn
+		let max = -99999999;//AI Turn
 		if(player == 2) {
 			for(let i = 0; i < 7; i++) {
+				console.log("Height P2: "+Height);
 				let tempScore = 0;
-				gameBoard2 = PlaceChecker(gameBoard2,i,2);
-				console.log(gameBoard2);
+				var tempBoard = [];
+				for (var j = 0; j < gameBoard2.length; j++)
+    				tempBoard[j] = gameBoard2[j].slice();
+				tempBoard = PlaceChecker(tempBoard,i,2);
+				//console.log(gameBoard2);
 				if(gameRow==-1) {
 					continue;
 				}
-				if(checkWinner(gameBoard2,gameRow,i)==2) {
+				if(checkWinner(tempBoard,gameRow,i)==2) {
 					tempScore = tempScore + (Height * 3);
-					console.log("YAYYYYY");
+					//console.log("YAYYYYY");
 				}
-				let min = solve(gameBoard2,Height-1,1);
+				let min = solve(tempBoard,Height-1,1);
 				if(tempScore<0){
 				console.log("tempScore + min: "+tempScore + min);
 				}
@@ -142,7 +146,26 @@ PlaceChecker(3,1);
 PlaceChecker(3,1);
 PlaceChecker(4,1);
 PlaceChecker(3,2);
-PlaceChecker(4,1);*/
-console.log(gameBoard);
-gameBoard = PlaceChecker(gameBoard,solve(gameBoard,4,1),1);
+gameBoard = PlaceChecker(gameBoard,0,2);
+gameBoard = PlaceChecker(gameBoard,1,1);
+gameBoard = PlaceChecker(gameBoard,1,2);
+gameBoard = PlaceChecker(gameBoard,2,1);
+gameBoard = PlaceChecker(gameBoard,2,2);
+gameBoard = PlaceChecker(gameBoard,2,2);
+gameBoard = PlaceChecker(gameBoard,3,2);
+gameBoard = PlaceChecker(gameBoard,3,1);
+gameBoard = PlaceChecker(gameBoard,3,1);*/
+
+let arrText='';
+for(i=0; i<gameBoard.length;i++)
+{
+	for(j=0; j<gameBoard[i].length;j++)
+	{
+		arrText+=gameBoard[i][j]+' ';
+    }
+    console.log(arrText);
+    arrText='';
+}
+console.log(solve(gameBoard,4,1))
+//gameBoard = PlaceChecker(gameBoard,solve(gameBoard,4,1),1);
 console.log(gameBoard);
