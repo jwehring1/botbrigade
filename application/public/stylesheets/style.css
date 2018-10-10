@@ -1,8 +1,104 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+	margin: 0;
+	padding: 0;
+	background: rgb(255,255,255);
+	}
+body { 
+	font: 100% verdana, sans-serif;
+	line-height: 1.88889;
+	color: black; 
+	margin: 0; 
+	padding: 0;
+	background: rgb(80,80,110);
+	}
+header{
+	height: 200px;
+	clear: both;
+	position: relative;
+	text-indent: 100%;
+	white-space: nowrap;
+}
+h1,h2,h3,h4{
+	text-align: center;
+}
+h1{
+	font-family: Roboto, verdana, sans-serif;
+	font-size: 1.8em;
+	letter-spacing: 3px;
+	font-weight: bold;
+	padding-top: 0;
+}
+p { 
+	font-size: 1.1em;
+	margin: 1em;
+	text-align: left;
+	}
+h3 { 
+	font: normal 1.4em Oswald, sans-serif;
+	letter-spacing: 1px; 
+	margin-bottom: 0; 
+	color: rgb(0,10,30);
+	}
+
+.subtitle{
+	margin: 0;
+	text-align: center;
+	font-style: italic;
+}
+.jumbotron{
+
+	background: rgb(230,230,255);
+}
+.nav{
+
+	font: 140% Roboto, sans-serif;
+	margin-bottom: 0;
+}
+.btn-default{
+	color: #0D1421;
+}
+.btn-primary{
+	background-color: #0D1421;
+}
+footer{
+	background: #0D1421;
+	color: white;
 }
 
-a {
-  color: #00B7FF;
+footer p{
+	text-align: center;
+	padding: 5px;
+}
+
+
+
+/*TUTORIAL PAGE*/
+.page-wrapper{
+	background: rgb(230,230,255);
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+.page-wrapper h2{
+	margin: 0 auto;
+	padding: 15px;
+}
+.cf{
+	background: white;
+	width: 80%;
+	padding: 1.1em 0;
+	padding-top: 0;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.cf h2{
+	background-color: #0D1421;
+	color: white;
+	font: normal 2em Oswald, sans-serif;
+	letter-spacing: 1px; 
+	padding: .3em;
+}
+.cf p{
+	font: normal 1.3em Roboto, sans-serif;
+	padding: 1.5em;
 }

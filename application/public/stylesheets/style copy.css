@@ -1,0 +1,79 @@
+.jumbotron {
+  background: #EBECFC;
+  color: white;
+  padding-bottom: 80px; }
+.jumbotron .btn-primary {
+background: #0D1421;
+border-color: #0D1421; }
+.jumbotron .btn-primary:hover {
+  background: #354054; }
+.jumbotron p {
+color: #d9ccee;
+max-width: 75%;
+margin: 1em auto 2em; }
+.navbar + .jumbotron {
+margin-top: -20px; 
+background-color: #719AA6;}
+.navbar{
+background-color: #0D1421;
+}
+.navbar-nav li:hover{
+background-color: #354054;
+}
+.active{
+color: red;
+}
+.jumbotron .lang-logo {
+display: block;
+background: #B01302;
+border-radius: 50%;
+overflow: hidden;
+width: 100px;
+height: 100px;
+margin: auto;
+border: 2px solid white; }
+.subtitle{
+  font-style: italic;
+  color: blue;
+}
+
+
+body { 
+	font: 75% verdana, sans-serif;
+	line-height: 1.88889;
+	color: black; 
+	margin: 0; 
+	padding: 0;
+	padding-bottom: 50px;
+	margin-bottom: 50px;
+	}
+header{
+	padding-top: 1px;
+	top: 10px;
+	height: 200px;
+	clear: both;
+	position: relative;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+h1,h2,h3,h4{
+	text-align: center;
+}
+h1{
+	font-family: AdventPro, verdana, sans-serif;
+	font-size: 1.8em;
+	letter-spacing: 3px;
+	font-weight: normal;
+}
+p { 
+	font-size: 1.1em;
+	margin: 1em;
+	text-align: left;
+	}
+h3 { 
+	font: normal 1.4em Oswald, sans-serif;
+	letter-spacing: 1px; 
+	margin-bottom: 0; 
+	color: rgb(0,10,30);
+	}

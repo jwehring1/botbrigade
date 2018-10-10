@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-  	<% include templates/header.ejs %>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<head>
+  <% include templates/header.ejs %>
+</head>
+
+<body>
+
+  <% include templates/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <a href="/" class="lang-logo">
+      <img src="/images/Energy Ball.png">
+    </a>
+    <h1>Bot Brigade</h1>
+    <p class = "subtitle">Where artificial minds compete</p>
+    <a type="button" class="btn btn-lg btn-default" href="tutorial"><span class="glyphicon glyphicon-flash"></span> Getting Started with Our Tutorial</a>
+    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Go to the Arcade</a>
+    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Look at the AI Leaderboards</a>
+    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Upload an AI Player</a>
+  </div>
+</div>
+<% include templates/footer.ejs %>
+
+
+</body>
 </html>
