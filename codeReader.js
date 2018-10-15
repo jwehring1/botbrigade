@@ -23,9 +23,14 @@ const vm = new NodeVM({
 
 
     function AIBattle(code1,code2,games){
-        let ties = 0;
-        let p1Wins = 0;
-        let p2Wins = 0;
+
+    //Returns this object
+    let singleFightObject ={
+        defendingCodeName: code2.name,
+        code1Wins: 0,
+        code2Wins: 0,
+        ties: 0,
+    }
       
         for(let i = 0; i < games; i++) {
       
@@ -39,7 +44,7 @@ const vm = new NodeVM({
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
                   console.log("Tie Game!");
-                  ties++;
+                  singleFightObject.ties++;
                   return;
               }
               //console.log("P1 Messed Up");
@@ -50,7 +55,7 @@ const vm = new NodeVM({
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
                   console.log("Tie Game!");
-                  ties++;
+                  singleFightObject.ties++;
                   return;
               }
               //console.log("P2 Messed Up");
@@ -58,31 +63,42 @@ const vm = new NodeVM({
           }
       
         }
-        if (gameBoard.winner === 1){
-          p1Wins++;
-        }
-      if (gameBoard.winner === 2){
-          p2Wins++;
-      }
+    if (gameBoard.winner === 1){
+        singleFightObject.code1Wins++;
+    }
+    if (gameBoard.winner === 2){
+          singleFightObject.code2Wins++;
+    }
           //console.log("WINNER: " + gameBoard.winner);
     }
-      console.log(code1.name + " Wins: " + p1Wins);
-      console.log(code2.name + " Wins: " + p2Wins);
-      console.log("Ties " + ties);
+      console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
+      console.log(code2.name + " Wins: " + singleFightObject.code2Wins);
+      console.log("Ties " + singleFightObject.ties);
 
-      if (p1Wins > p2Wins){
-          return 1;
+      if (singleFightObject.code1Wins > singleFightObject.code2Wins){
+        singleFightObject.winner = 1;
       }
-      else if (p2Wins > p1Wins){
-          return 2;
+      else if (singleFightObject.code2Wins > singleFightObject.code1Wins){
+        singleFightObject.winner = 2;
       }
       else{
-          return 0;
+        singleFightObject.winner = 0;
       }
+
+      return singleFightObject;
 }
 
 
 function roundRobin(challengerCode,rounds){
+
+    //Returns this object
+    let tournamentObject ={
+        wins: 0,
+        losses: 0,
+        ties: 0,
+        battles: [],
+    }
+
     //Get Top 10 Slots
     let leaderCodes = [];
     leaderCodes.push(new codeReader(randomAI,"Random1"));
@@ -90,10 +106,22 @@ function roundRobin(challengerCode,rounds){
     leaderCodes.push(new codeReader(randomAI,"Random2"));
 
     leaderCodes.forEach(defendingCode => {
-        AIBattle(challengerCode,defendingCode,rounds);
+        let battleObject = AIBattle(challengerCode,defendingCode,rounds);
+        tournamentObject.battles.push(battleObject);
+        switch (battleObject.winner) {
+            case 0:
+                tournamentObject.ties++;
+                break;
+            case 1:
+                tournamentObject.wins++;
+                break;
+            case 2:
+                tournamentObject.losses++;
+                break;
+        }
     });
 
-
+    return tournamentObject;
 }
 class codeReader{
     constructor(AICode,name){

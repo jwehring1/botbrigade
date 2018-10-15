@@ -15,6 +15,6 @@ express()
 
 
 
+  //This sample snippit will play a round-robin game and return all information in the 'temp' object
   let challenger = new codeReader(randomAI,"PlayerCode");
-  roundRobin(challenger,1000);
-  
+  let temp = roundRobin(challenger,1000);
