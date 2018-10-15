@@ -20,6 +20,16 @@ function PlaceChecker(tempBoard,col,player){
   return tempBoard;
 }
 
+function checkFull(tempBoard)
+{
+	for(var i=0; i<tempBoard.length; i++)
+	{
+		if(tempBoard[i][5]==0)
+			return false;
+	}
+	return true;
+}
+
 function checkAdj(a,b,c,d) {
     // Check first cell non-zero and all cells match
     return ((a != 0) && (a == b) && (a == c) && (a == d));
@@ -58,29 +68,37 @@ function solve(gameBoard2, givenHeight, player) {
 		let min = 99999999;//Not my turn
 		if(player == 1) {
 			for(let i = 0; i < 7; i++) {
-				console.log("Height P1: "+Height);
-				let tempScore = 0;
+				//console.log("Height P1: "+Height);
+				let tempScore = -i;
+				if(i>3)
+					tempScore += (i-3)*2;
 				var tempBoard = [];
 				for (var j = 0; j < gameBoard2.length; j++)
     				tempBoard[j] = gameBoard2[j].slice();
 				tempBoard = PlaceChecker(tempBoard,i,1);
 				//console.log(gameBoard2);
+				checkFull(tempBoard);
 				if(gameRow==-1) {
 					continue;
 				}
 				if(checkWinner(tempBoard,gameRow,i)==1) {
-					tempScore = tempScore - (Height * 4);
+					tempScore = tempScore - (Height * 7);
 				}
-				let max = solve(tempBoard,Height-1,2);
+				let tempmax = solve(tempBoard,Height-1,2);
 				if(tempScore>0){
-				console.log("tempScore + max: "+tempScore + max);
+				console.log("tempScore + max: "+tempScore + tempmax);
 				}
-				if(min>tempScore+max) {
-					min = tempScore + max;
+				if(tempmax==99999999)
+				{
+					tempmax = 0;
+					pos = i;
+				}
+				if(min>tempScore+tempmax) {
+					min = tempScore + tempmax;
 					pos = i;
 				}
 			}
-			if(Height == 4) {
+			if(Height == 6 && player == 1) {
 				return pos;
 			}
 			else {
@@ -90,8 +108,10 @@ function solve(gameBoard2, givenHeight, player) {
 		let max = -99999999;//AI Turn
 		if(player == 2) {
 			for(let i = 0; i < 7; i++) {
-				console.log("Height P2: "+Height);
-				let tempScore = 0;
+				//console.log("Height P2: "+Height);
+				let tempScore = i;
+				if(i>3)
+				tempScore -= (i-3)*2;
 				var tempBoard = [];
 				for (var j = 0; j < gameBoard2.length; j++)
     				tempBoard[j] = gameBoard2[j].slice();
@@ -101,19 +121,24 @@ function solve(gameBoard2, givenHeight, player) {
 					continue;
 				}
 				if(checkWinner(tempBoard,gameRow,i)==2) {
-					tempScore = tempScore + (Height * 3);
+					tempScore = tempScore + (Height * 7);
 					//console.log("YAYYYYY");
 				}
-				let min = solve(tempBoard,Height-1,1);
+				let tempmin = solve(tempBoard,Height-1,1);
 				if(tempScore<0){
-				console.log("tempScore + min: "+tempScore + min);
+				console.log("tempScore + min: "+tempScore + tempmin);
 				}
-				if(tempScore+min>max) {
-					max=tempScore+min;
+				if(tempmin==-99999999)
+				{
+					tempmin = 0;
+					pos = i;
+				}
+				if(tempScore+tempmin>max) {
+					max=tempScore+tempmin;
 					pos=i;
 				}
 			}
-			if(Height == 4) {
+			if(Height == 6 && player == 2) {
 				return pos;
 			}
 			else {
@@ -155,17 +180,29 @@ gameBoard = PlaceChecker(gameBoard,2,2);
 gameBoard = PlaceChecker(gameBoard,3,2);
 gameBoard = PlaceChecker(gameBoard,3,1);
 gameBoard = PlaceChecker(gameBoard,3,1);*/
-
-let arrText='';
-for(i=0; i<gameBoard.length;i++)
+for(k = 0; k<42; k++)
 {
-	for(j=0; j<gameBoard[i].length;j++)
+	let p = 0;
+	if(k%2==0)
+		p = 2;
+	else
+		p = 1;
+	let pos = solve(gameBoard,6,p)
+	gameBoard = PlaceChecker(gameBoard,pos,p);
+	console.log(pos);
+	let arrText='';
+	for(i=0; i<gameBoard.length;i++)
 	{
-		arrText+=gameBoard[i][j]+' ';
-    }
-    console.log(arrText);
-    arrText='';
+		for(j=0; j<gameBoard[i].length;j++)
+		{
+			arrText+=gameBoard[i][j]+' ';
+		}
+		console.log(arrText);
+		arrText='';
+	}
+	console.log(" ");
+	console.log(" ");
+	console.log(" ");
+	console.log(" ");
+	console.log(" ");
 }
-console.log(solve(gameBoard,4,1))
-//gameBoard = PlaceChecker(gameBoard,solve(gameBoard,4,1),1);
-console.log(gameBoard);
