@@ -141,4 +141,4 @@ function solve(gameBoard2, givenHeight, player) {
 	return 0;
 }
 
-return solve(boardState,3,1);
+return solve(boardState,4,1);

@@ -30,5 +30,4 @@ for (var i = 0; i < gameBoard.length; i++){
 }
 
   let challenger2 = new codeReader(str,"PlayerCode");
-  challenger2.runCodeTurn(gameBoard);
   let temp = roundRobin(challenger2,10);

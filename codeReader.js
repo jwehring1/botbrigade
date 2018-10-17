@@ -37,18 +37,20 @@ const vm = new NodeVM({
       
           //Initialize game State
         let gameBoard = new gameStates();
-      
+      let turn = 0;
         //Initialize A.I
         while (gameBoard.winner == 0){
+        console.log("Turn: " + turn);
+        turn++;
+        gameBoard.printGameBoard();
           let p1Selection = code1.runCodeTurn(gameBoard.gameBoard);
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
-              //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
                   console.log("Tie Game!");
                   singleFightObject.ties++;
                   return;
               }
-              //console.log("P1 Messed Up");
+              console.log("P1 Messed Up");
               gameBoard.winner = 2;
           }
           let p2Selection = code2.runCodeTurn(gameBoard.gameBoard);
@@ -59,7 +61,7 @@ const vm = new NodeVM({
                   singleFightObject.ties++;
                   return;
               }
-              //console.log("P2 Messed Up");
+              console.log("P2 Messed Up");
               gameBoard.winner = 1;
           }
       

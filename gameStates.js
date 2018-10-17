@@ -9,6 +9,20 @@ class gameStates{
           }
     }
 
+    printGameBoard(){
+        let rowText='';
+        let gameBoard = this.gameBoard;
+        for(let i=0; i<gameBoard.length;i++)
+        {
+            for(let j=0; j<gameBoard[i].length;j++)
+            {
+                rowText+=gameBoard[i][j]+' ';
+            }
+            console.log(rowText);
+            rowText = '';
+        }
+    }
+
     areAllSlotsFilled(){
         for (let col = 0; col < 7; col++){
             if (this.gameBoard[0][col] == 0){
