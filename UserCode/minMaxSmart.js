@@ -140,5 +140,5 @@ function solve(gameBoard2, givenHeight, player,savedHeight) {
 	}
 	return 0;
 }
-let savedHeight = 4;
-return solve(boardState,6,1,savedHeight);
+let savedHeight = 5;
+return solve(boardState,savedHeight,playerNumber,savedHeight);

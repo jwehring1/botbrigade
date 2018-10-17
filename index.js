@@ -15,7 +15,7 @@ express()
 
 
 
-  let str = readTextFile('UserCode/minMax.js');
+  let str = readTextFile('UserCode/minMaxStupid.js');
   
   //This sample snippit will play a round-robin game and return all information in the 'temp' object
   //let challenger = new codeReader(printAI,"PlayerCode");
@@ -29,5 +29,5 @@ for (var i = 0; i < gameBoard.length; i++){
   gameBoard[i].fill(0);
 }
 
-  let challenger2 = new codeReader(str,"PlayerCode");
-  let temp = roundRobin(challenger2,10);
+  let challenger2 = new codeReader(str,"StupidMinMax");
+  let temp = roundRobin(challenger2,1,1);
