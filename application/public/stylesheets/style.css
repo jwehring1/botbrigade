@@ -69,6 +69,14 @@ footer p{
 	text-align: center;
 	padding: 5px;
 }
+a{
+	text-decoration: none;
+	color: black;
+}
+a:hover{
+	text-decoration: none;
+	color: black;
+}
 
 
 
@@ -101,4 +109,42 @@ footer p{
 .cf p{
 	font: normal 1.3em Roboto, sans-serif;
 	padding: 1.5em;
+}
+.cf:hover h2{
+	background-color: rgb(80,80,100);
+}
+
+/*INPUT_AI PAGE*/
+.box-wrapper{
+	margin: 0 auto;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding: 20px 0;
+	background-color: #0D1421;
+	min-width: 600px;
+}
+textarea{
+	margin: auto;
+	margin-left: 10%;
+	min-width: 500px;
+	width: 80%;
+	height: 50em;
+	font-size: 1.3em;
+	font-family: "Courier New", sans-serif;
+	padding-left: 1em;
+}
+button{
+}
+.upload-btn{
+	font: bold 2em Roboto, sans-serif;
+	color: black;
+	background-color: white;
+	margin: 0 auto;
+	text-align: center;
+	width: 200px;
+	padding: .5em;
+	border-radius: 3px;
+}
+.upload-btn:hover{
+	background-color: rgb(200,200,200);
 }

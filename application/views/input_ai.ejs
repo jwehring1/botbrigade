@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DingleDoodle</title>
+    <% include templates/nav.ejs %>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  	<% include templates/header.ejs %>
+  	<div class = "page-wrapper">
+	    <h2>Input AI Code</h2>
+
+		<div class = "box-wrapper">
+			<form action="" method="POST">
+			<textarea id= "code-input" type= "text">Input AI code here... </textarea>
+			<div class = "upload-btn" id= "code" type="submit" value = "OK">
+				Submit Code
+			</div>
+		</div>
+
+	</div>
+<% include templates/footer.ejs %>
+  </body>
+</html>
