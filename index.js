@@ -67,81 +67,72 @@ function minimax(gameBoard2, givenHeight, player, savedHeight) {
 	if(Height > 0) {
 		let min = 99999999;//Not my turn
 		if(player == 1) {
-			for(let i = 0; i < 7; i++) {
-				//console.log("Height P1: "+Height);
+			for(let i = 0; i < 7; i++) {//Run through every possible placement
 				let tempScore = -i;
-				if(i>3)
+				if(i>3)//Function of setting closer to the middle as a better score
 					tempScore += (i-3)*2;
 				var tempBoard = [];
 				for (var j = 0; j < gameBoard2.length; j++)
     				tempBoard[j] = gameBoard2[j].slice();
-				tempBoard = PlaceChecker(tempBoard,i,1);
-				//console.log(gameBoard2);
-				checkFull(tempBoard);
-				if(gameRow==-1) {
+				tempBoard = PlaceChecker(tempBoard,i,1);//Saves a temp board to place temporary checkers just to get the score
+				//checkFull(tempBoard);
+				if(gameRow==-1) {//The row is already full, move on
 					continue;
 				}
-				if(checkWinner(tempBoard,gameRow,i)==1) {
+				if(checkWinner(tempBoard,gameRow,i)==1) {//Set score
 					tempScore = tempScore - (Height * 7);
 				}
-				let tempmax = minimax(tempBoard,Height-1,2);
-				if(tempScore>0){
-				console.log("tempScore + max: "+tempScore + tempmax);
-				}
+				let tempmax = minimax(tempBoard,Height-1,2);//Recursion
 				if(tempmax==99999999)
 				{
 					tempmax = 0;
 					pos = i;
 				}
-				if(min>tempScore+tempmax) {
+				if(min>tempScore+tempmax) {//Set the lowest score to the min and save the position
 					min = tempScore + tempmax;
 					pos = i;
 				}
 			}
-			if(Height == savedHeight && player == 1) {
+			if(Height == savedHeight && player == 1) {//Back at the root, return the column
 				return pos;
 			}
-			else {
+			else {//Not at the root, return the min
 				return min;
 			}
 		}
 		let max = -99999999;//AI Turn
 		if(player == 2) {
-			for(let i = 0; i < 7; i++) {
+			for(let i = 0; i < 7; i++) { //Run through every possible placement
 				//console.log("Height P2: "+Height);
 				let tempScore = i;
-				if(i>3)
+				if(i>3)//Function of setting closer to the middle as a better score
 				tempScore -= (i-3)*2;
 				var tempBoard = [];
 				for (var j = 0; j < gameBoard2.length; j++)
     				tempBoard[j] = gameBoard2[j].slice();
-				tempBoard = PlaceChecker(tempBoard,i,2);
+				tempBoard = PlaceChecker(tempBoard,i,2);//Saves a temp board to place temporary checkers just to get the score
 				//console.log(gameBoard2);
-				if(gameRow==-1) {
+				if(gameRow==-1) {//The row is already full, move on
 					continue;
 				}
-				if(checkWinner(tempBoard,gameRow,i)==2) {
+				if(checkWinner(tempBoard,gameRow,i)==2) {//Set score
 					tempScore = tempScore + (Height * 7);
-					//console.log("YAYYYYY");
 				}
-				let tempmin = minimax(tempBoard,Height-1,1);
-				if(tempScore<0){
-				console.log("tempScore + min: "+tempScore + tempmin);
-				}
+				let tempmin = minimax(tempBoard,Height-1,1);//Recursion
 				if(tempmin==-99999999)
 				{
 					tempmin = 0;
 					pos = i;
 				}
-				if(tempScore+tempmin>max) {
+				if(tempScore+tempmin>max) {//Set the highest score to the max and save the position
 					max=tempScore+tempmin;
 					pos=i;
 				}
 			}
-			if(Height == savedHeight && player == 2) {
+			if(Height == savedHeight && player == 2) {//Back at the root, return the column
 				return pos;
 			}
-			else {
+			else {//Not at the root, return the max
 				return max;
 			}
 		}
@@ -153,42 +144,38 @@ function greedy(gameBoard2, givenHeight, player, savedHeight) {
 	let Height = givenHeight;
 	let pos = -1;
 	if(Height > 0) {
-		let max = -99999999;//AI Turn
-		for(let i = 0; i < 7; i++) {
+		let max = -99999999;//Greedy only care about self
+		for(let i = 0; i < 7; i++) {//Run through every possible placement
 			//console.log("Height P2: "+Height);
 			let tempScore = i;
-			if(i>3)
+			if(i>3)//Function of setting closer to the middle as a better score
 			tempScore -= (i-3)*2;
 			var tempBoard = [];
 			for (var j = 0; j < gameBoard2.length; j++)
 				tempBoard[j] = gameBoard2[j].slice();
-			tempBoard = PlaceChecker(tempBoard,i,player);
+			tempBoard = PlaceChecker(tempBoard,i,player);//Saves a temp board to place temporary checkers just to get the score
 			//console.log(gameBoard2);
-			if(gameRow==-1) {
+			if(gameRow==-1) {//The row is already full, move on
 				continue;
 			}
-			if(checkWinner(tempBoard,gameRow,i)==player) {
+			if(checkWinner(tempBoard,gameRow,i)==player) {//Set score
 				tempScore = tempScore + (Height * 7);
-				//console.log("YAYYYYY");
 			}
 			let tempmax = greedy(tempBoard,Height-1,player);
-			if(tempScore<0){
-			console.log("tempScore + min: "+tempScore + tempmax);
-			}
 			if(tempmax==-99999999)
 			{
 				tempmax = 0;
 				pos = i;
 			}
-			if(tempScore+tempmax>max) {
+			if(tempScore+tempmax>max) {//Set the highest score to the max and save the position
 				max=tempScore+tempmax;
 				pos=i;
 			}
 		}
-		if(Height == savedHeight) {
+		if(Height == savedHeight) {//Back at the root, return the column
 			return pos;
 		}
-		else {
+		else {//Not at the root, return the max
 			return max;
 		}
 	}
