@@ -3,6 +3,7 @@
 const {NodeVM, VMScript} = require('vm2');
 const readline = require('readline');
 const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
+const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
 
@@ -39,7 +40,7 @@ const vm = new NodeVM({
       
         //Initialize A.I
         while (gameBoard.winner == 0){
-          let p1Selection = code1.runCodeTurn();
+          let p1Selection = code1.runCodeTurn(gameBoard.gameBoard);
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
@@ -50,7 +51,7 @@ const vm = new NodeVM({
               //console.log("P1 Messed Up");
               gameBoard.winner = 2;
           }
-          let p2Selection = code2.runCodeTurn();
+          let p2Selection = code2.runCodeTurn(gameBoard.gameBoard);
           if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
               //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
@@ -146,15 +147,44 @@ class codeReader{
             //Return Debugging Errors here
             console.error('Failed to execute script.', err);
         }
+        if (returnVal < 0 || returnVal > 6){
+            console.warn('Player Attempted Placing at ' + returnVal);
+        }
+        console.log("placing at: " + returnVal);
         return returnVal;
+    }
+
+    displayBoard(arg){
+        let functionInSandbox = vm.run("module.exports = function(arg) { console.log(arg); }");
+        functionInSandbox(arg);
     }
     
 };
+
+
+////////////////////////////////////////////////////
+/**
+ * readTextFile read data from file
+ * @param  string   filepath   Path to file on hard drive
+ * @return string              String with file data
+ */
+function readTextFile(filepath) {
+    const fs = require('fs');
+
+    let txtFile = filepath;
+    let str = fs.readFileSync(txtFile,'utf8');
+    
+    return str;
+}
+
+////////////////////////////////////////////////////
 
 module.exports = {
     codeReader,
     randomAI,
     alwaysPlaceAt1,
     AIBattle,
-    roundRobin
+    roundRobin,
+    readTextFile,
+    printAI
   };
