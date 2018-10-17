@@ -61,7 +61,7 @@ function checkWinner(gameBoard,placedRow,placedColumn) {
     return 0;
 }
 
-function solve(gameBoard2, givenHeight, player) {
+function minimax(gameBoard2, givenHeight, player) {
 	let Height = givenHeight;
 	let pos = -1;
 	if(Height > 0) {
@@ -84,7 +84,7 @@ function solve(gameBoard2, givenHeight, player) {
 				if(checkWinner(tempBoard,gameRow,i)==1) {
 					tempScore = tempScore - (Height * 7);
 				}
-				let tempmax = solve(tempBoard,Height-1,2);
+				let tempmax = minimax(tempBoard,Height-1,2);
 				if(tempScore>0){
 				console.log("tempScore + max: "+tempScore + tempmax);
 				}
@@ -124,7 +124,7 @@ function solve(gameBoard2, givenHeight, player) {
 					tempScore = tempScore + (Height * 7);
 					//console.log("YAYYYYY");
 				}
-				let tempmin = solve(tempBoard,Height-1,1);
+				let tempmin = minimax(tempBoard,Height-1,1);
 				if(tempScore<0){
 				console.log("tempScore + min: "+tempScore + tempmin);
 				}
@@ -135,6 +135,54 @@ function solve(gameBoard2, givenHeight, player) {
 				}
 				if(tempScore+tempmin>max) {
 					max=tempScore+tempmin;
+					pos=i;
+				}
+			}
+			if(Height == 6 && player == 2) {
+				return pos;
+			}
+			else {
+				return max;
+			}
+		}
+	}
+	return 0;
+}
+
+function greedy(gameBoard2, givenHeight, player) {
+	let Height = givenHeight;
+	let pos = -1;
+	if(Height > 0) {
+		let max = -99999999;//AI Turn
+		if(player == 2) {
+			for(let i = 0; i < 7; i++) {
+				//console.log("Height P2: "+Height);
+				let tempScore = i;
+				if(i>3)
+				tempScore -= (i-3)*2;
+				var tempBoard = [];
+				for (var j = 0; j < gameBoard2.length; j++)
+    				tempBoard[j] = gameBoard2[j].slice();
+				tempBoard = PlaceChecker(tempBoard,i,player);
+				//console.log(gameBoard2);
+				if(gameRow==-1) {
+					continue;
+				}
+				if(checkWinner(tempBoard,gameRow,i)==player) {
+					tempScore = tempScore + (Height * 7);
+					//console.log("YAYYYYY");
+				}
+				let tempmax = greedy(tempBoard,Height-1,player);
+				if(tempScore<0){
+				console.log("tempScore + min: "+tempScore + tempmax);
+				}
+				if(tempmax==-99999999)
+				{
+					tempmax = 0;
+					pos = i;
+				}
+				if(tempScore+tempmax>max) {
+					max=tempScore+tempmax;
 					pos=i;
 				}
 			}
@@ -187,7 +235,8 @@ for(k = 0; k<42; k++)
 		p = 2;
 	else
 		p = 1;
-	let pos = solve(gameBoard,6,p)
+	//let pos = minimax(gameBoard,6,p)
+	let pos = greedy(gameBoard,6,p);
 	gameBoard = PlaceChecker(gameBoard,pos,p);
 	console.log(pos);
 	let arrText='';
@@ -206,3 +255,4 @@ for(k = 0; k<42; k++)
 	console.log(" ");
 	console.log(" ");
 }
+
