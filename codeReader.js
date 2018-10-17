@@ -37,7 +37,7 @@ const vm = new NodeVM({
       
           //Initialize game State
         let gameBoard = new gameStates();
-      let turn = 0;
+        let turn = 0;
         //Initialize A.I
         while (gameBoard.winner == 0){
         console.log("Turn: " + turn);
@@ -52,6 +52,9 @@ const vm = new NodeVM({
               }
               console.log("P1 Messed Up");
               gameBoard.winner = 2;
+          }
+          if (gameBoard.winner != 0){
+              break;
           }
           let p2Selection = code2.runCodeTurn(gameBoard.gameBoard);
           if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
@@ -72,7 +75,7 @@ const vm = new NodeVM({
     if (gameBoard.winner === 2){
           singleFightObject.code2Wins++;
     }
-          //console.log("WINNER: " + gameBoard.winner);
+          console.log("WINNER: " + gameBoard.winner);
     }
       console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
       console.log(code2.name + " Wins: " + singleFightObject.code2Wins);

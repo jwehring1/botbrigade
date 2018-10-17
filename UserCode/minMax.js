@@ -1,4 +1,4 @@
-function solve(gameBoard2, givenHeight, player) {
+function solve(gameBoard2, givenHeight, player,savedHeight) {
 	function PlaceChecker(tempBoard,col,player){
 		if(tempBoard[0][col]!=0){
 			gameRow = -1;
@@ -90,7 +90,7 @@ function solve(gameBoard2, givenHeight, player) {
 					pos = i;
 				}
 			}
-			if(Height == 6 && player == 1) {
+			if(Height == savedHeight && player == 1) {
 				return pos;
 			}
 			else {
@@ -130,7 +130,7 @@ function solve(gameBoard2, givenHeight, player) {
 					pos=i;
 				}
 			}
-			if(Height == 6 && player == 2) {
+			if(Height == savedHeight && player == 2) {
 				return pos;
 			}
 			else {
@@ -140,5 +140,5 @@ function solve(gameBoard2, givenHeight, player) {
 	}
 	return 0;
 }
-
-return solve(boardState,4,1);
+let savedHeight = 4;
+return solve(boardState,6,1,savedHeight);
