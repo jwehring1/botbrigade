@@ -2,7 +2,9 @@
 //const {NodeVM, VMScript} = require('vm2');
 const {NodeVM, VMScript} = require('vm2');
 const readline = require('readline');
+
 const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
+const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
 
@@ -22,7 +24,7 @@ const vm = new NodeVM({
 });
 
 
-    function AIBattle(code1,code2,games){
+    function AIBattle(code1,code2,games,printDebug){
 
     //Returns this object
     let singleFightObject ={
@@ -36,29 +38,45 @@ const vm = new NodeVM({
       
           //Initialize game State
         let gameBoard = new gameStates();
-      
+        let turn = 0;
         //Initialize A.I
         while (gameBoard.winner == 0){
-          let p1Selection = code1.runCodeTurn();
+            if (printDebug > 1){
+                console.log("Turn: " + turn);
+            }
+            if (printDebug > 2){
+                gameBoard.printGameBoard();
+            }
+            turn++;
+          let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
-              //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
-                  console.log("Tie Game!");
+                  if (printDebug > 2){
+                    console.log("Tie Game!");
+                  }
                   singleFightObject.ties++;
                   return;
               }
-              //console.log("P1 Messed Up");
+              if (printDebug > 3){
+                console.log("P1 Messed Up");
+              }
               gameBoard.winner = 2;
           }
-          let p2Selection = code2.runCodeTurn();
+          if (gameBoard.winner != 0){
+              break;
+          }
+          let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
           if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
-              //console.log("Board: " + gameBoard.gameBoard[0]);
               if  (gameBoard.areAllSlotsFilled()){
-                  console.log("Tie Game!");
+                if (printDebug > 2){
+                    console.log("Tie Game!");
+                }
                   singleFightObject.ties++;
                   return;
               }
-              //console.log("P2 Messed Up");
+              if (printDebug > 3){
+                console.log("P2 Messed Up");
+              }
               gameBoard.winner = 1;
           }
       
@@ -69,11 +87,16 @@ const vm = new NodeVM({
     if (gameBoard.winner === 2){
           singleFightObject.code2Wins++;
     }
-          //console.log("WINNER: " + gameBoard.winner);
+    if (printDebug > 2){
+        console.log("WINNER: " + gameBoard.winner);
     }
-      console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
-      console.log(code2.name + " Wins: " + singleFightObject.code2Wins);
-      console.log("Ties " + singleFightObject.ties);
+    }
+    if (printDebug > 0){
+        console.log("Stats for Fight: " + code1.name + " vs " + code2.name);
+        console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
+        console.log(code2.name + " Wins: " + singleFightObject.code2Wins);
+        console.log("Ties " + singleFightObject.ties);
+    }
 
       if (singleFightObject.code1Wins > singleFightObject.code2Wins){
         singleFightObject.winner = 1;
@@ -89,26 +112,41 @@ const vm = new NodeVM({
 }
 
 
-function roundRobin(challengerCode,rounds){
+function roundRobin(challengerCode,rounds,printDebug){
 
     //Returns this object
     let tournamentObject ={
         wins: 0,
         losses: 0,
         ties: 0,
-        battles: [],
+        battlesAsP1: [],
+        battlesAsP2: [],
     }
 
     //Get Top 10 Slots
     let leaderCodes = [];
-    leaderCodes.push(new codeReader(randomAI,"Random1"));
-    leaderCodes.push(new codeReader(alwaysPlaceAt1,"Place1"));
-    leaderCodes.push(new codeReader(randomAI,"Random2"));
+    let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
+    leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
+    leaderCodes.push(new codeReader(randomAI,"Random"));
+    leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
 
     leaderCodes.forEach(defendingCode => {
-        let battleObject = AIBattle(challengerCode,defendingCode,rounds);
-        tournamentObject.battles.push(battleObject);
+        let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug);
+        let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug);
+        tournamentObject.battlesAsP1.push(battleObject);
+        tournamentObject.battlesAsP2.push(battleObjectInverted);
         switch (battleObject.winner) {
+            case 0:
+                tournamentObject.ties++;
+                break;
+            case 1:
+                tournamentObject.wins++;
+                break;
+            case 2:
+                tournamentObject.losses++;
+                break;
+        }
+        switch (battleObjectInverted.winner) {
             case 0:
                 tournamentObject.ties++;
                 break;
@@ -125,7 +163,7 @@ function roundRobin(challengerCode,rounds){
 }
 class codeReader{
     constructor(AICode,name){
-        this.code = 'module.exports = function(boardState) { '+ AICode + ' }';
+        this.code = 'module.exports = function(boardState,playerNumber) { '+ AICode + ' }';
         this.name = name;
     }
 
@@ -137,24 +175,55 @@ class codeReader{
         }
     }
 
-    runCodeTurn(boardState){
+    runCodeTurn(boardState,player){
         let returnVal = -1;
         try{
             let p1functionInSandbox = vm.run(this.code);
-            returnVal = p1functionInSandbox(boardState);
+            returnVal = p1functionInSandbox(boardState,player);
         } catch (err) {
             //Return Debugging Errors here
             console.error('Failed to execute script.', err);
         }
+        if (returnVal < 0 || returnVal > 6){
+            console.warn('Player Attempted Placing at ' + returnVal);
+        }
+        if (console.log > 4){
+            console.log("placing at: " + returnVal);
+        }
         return returnVal;
+    }
+
+    displayBoard(arg){
+        let functionInSandbox = vm.run("module.exports = function(arg) { console.log(arg); }");
+        functionInSandbox(arg);
     }
     
 };
+
+
+////////////////////////////////////////////////////
+/**
+ * readTextFile read data from file
+ * @param  string   filepath   Path to file on hard drive
+ * @return string              String with file data
+ */
+function readTextFile(filepath) {
+    const fs = require('fs');
+
+    let txtFile = filepath;
+    let str = fs.readFileSync(txtFile,'utf8');
+    
+    return str;
+}
+
+////////////////////////////////////////////////////
 
 module.exports = {
     codeReader,
     randomAI,
     alwaysPlaceAt1,
     AIBattle,
-    roundRobin
+    roundRobin,
+    readTextFile,
+    printAI
   };
