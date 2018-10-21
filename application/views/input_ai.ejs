@@ -11,14 +11,11 @@
 	    <h2>Input AI Code</h2>
 
 		<div class = "box-wrapper">
-			<form action="/" method="post">
-			<textarea id= "code-input" type= "text"></textarea>
-			<div class = "upload-btn" id= "code" type="submit" value = "OK">
-				Submit Code
-			</div>
-
-			    <input type="text" name="code" required />
-			    <input type="submit" value="submit" />
+			<form action="/input" method="POST">
+				<textarea id= "code-input" type= "text" name = "code2"></textarea>
+				<div class = "btn-wrapper">
+				    <input class = "upload-btn" id= "code" type="submit" value="Submit Code" />
+				</div>
 			</form>
 		</div>
 

@@ -3,12 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 
 var indexRouter = require('./routes/index');
 var tutorial = require('./routes/tutorial');
 var input_ai = require('./routes/input_ai');
 
 var app = express();
+
+
+// for parsing application/json
+app.use(bodyParser.json()); 
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true })); 
+
+app.use(upload.array()); 
+app.use(express.static('public'));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +38,13 @@ app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 app.use('/tutorial', tutorial);
 app.use('/input_ai', input_ai);
+
+//Functionality for textbox
+app.post('/input', function(req, res){
+	var yes = req.body.code2;
+	console.log(yes);
+	res.redirect('/input_ai');
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

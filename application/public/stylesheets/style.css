@@ -133,7 +133,9 @@ textarea{
 	font-family: "Courier New", sans-serif;
 	padding-left: 1em;
 }
-button{
+.btn-wrapper{
+	text-align: center;
+	margin: auto;
 }
 .upload-btn{
 	font: bold 2em Roboto, sans-serif;
