@@ -9,8 +9,9 @@ const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
 
 const vm = new NodeVM({
-    console: 'inherit',
+    console: 'redirect',
     sandbox: {},
+    timeout: 1000,
     require: {
         external: true,
         builtin: ['fs', 'path'],
@@ -114,6 +115,9 @@ const vm = new NodeVM({
 
 function roundRobin(challengerCode,rounds,printDebug){
 
+    vm.on('console.log', (data) => {
+        console.log(`VM stdout: ${data}`);
+      });
     //Returns this object
     let tournamentObject ={
         wins: 0,
