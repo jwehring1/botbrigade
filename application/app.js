@@ -10,6 +10,7 @@ var upload = multer();
 var indexRouter = require('./routes/index');
 var tutorial = require('./routes/tutorial');
 var input_ai = require('./routes/input_ai');
+const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
 var app = express();
 
@@ -41,9 +42,12 @@ app.use('/input_ai', input_ai);
 
 //Functionality for textbox
 app.post('/input', function(req, res){
-	var yes = req.body.code2;
-	console.log(yes);
+
+  let challenger = new codeReader(req.body.code2,"PlayerCode");
+	let battleReport = roundRobin(challenger,1,1);
 	res.redirect('/input_ai');
+
+
 })
 
 // catch 404 and forward to error handler
