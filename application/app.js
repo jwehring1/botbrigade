@@ -45,8 +45,10 @@ app.post('/input', function(req, res){
 
 
 	var yes = req.body.code2;
+	console.log(yes);
 
-	let temp = roundRobin(yes,1,1);
+	//let challenger2 = new codeReader(str,"StupidMinMax");
+	//let temp = roundRobin(challenger2,1,1);
 	res.redirect('/input_ai');
 
 
