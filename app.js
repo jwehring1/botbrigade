@@ -7,9 +7,9 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
 
-var indexRouter = require('./routes/index');
-var tutorial = require('./routes/tutorial');
-var input_ai = require('./routes/input_ai');
+var indexRouter = require('.application/routes/index');
+var tutorial = require('.application/routes/tutorial');
+var input_ai = require('.application/routes/input_ai');
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
 var app = express();
