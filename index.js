@@ -11,6 +11,7 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
+  .get('/input_ai', (req, res) => res.render('input_ai'))
   //.get('/cool', (req, res) => res.send(cool()))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
