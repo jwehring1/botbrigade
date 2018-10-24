@@ -34,13 +34,3 @@ express()
   //let challenger = new codeReader(printAI,"PlayerCode");
   //challenger.runCodeTurn('testing123');
   //let temp = roundRobin(challenger,10);
-
-  let temp = roundRobin(challenger2,1,1);
-  var gameBoard = new Array(6);
-for (var i = 0; i < gameBoard.length; i++){
-  gameBoard[i] = new Array(7);
-  gameBoard[i].fill(0);
-}
-
-  let challenger2 = new codeReader(str,"StupidMinMax");
-let temp = roundRobin(challenger2,1,1);
