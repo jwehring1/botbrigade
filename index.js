@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
 express()
-  .use(express.static(path.join(__dirname, 'public')))
+  .use(express.static(path.join(__dirname, 'application/public')))
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
