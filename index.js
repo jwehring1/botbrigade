@@ -1,16 +1,25 @@
 const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
+var bodyParser = require('body-parser');
+var multer = require('multer');
 const PORT = process.env.PORT || 5000
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true}))
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
   .get('/input_ai', (req, res) => res.render('input_ai'))
+  .post('/input', function(req, res){
+    let challenger = new codeReader(req.body.code2,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,1);
+    res.redirect('/input_ai');
+  })
   //.get('/cool', (req, res) => res.send(cool()))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
@@ -22,7 +31,6 @@ express()
   //let challenger = new codeReader(printAI,"PlayerCode");
   //challenger.runCodeTurn('testing123');
   //let temp = roundRobin(challenger,10);
-
 
   var gameBoard = new Array(6);
 for (var i = 0; i < gameBoard.length; i++){
