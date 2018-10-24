@@ -7,9 +7,9 @@ const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,print
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
+  .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
+  .get('/', (req, res) => res.render('index'))
   .get('/cool', (req, res) => res.send(cool()))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
