@@ -8,6 +8,8 @@ const {writeAI,addUniqueUser}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
+
+
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
   .use(bodyParser.json())
@@ -17,12 +19,12 @@ express()
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
   .get('/input_ai', (req, res) => res.render('input_ai'))
+  .get('/results', (req, res) => res.render('results'))
   .post('/input', function(req, res){
     let challenger = new codeReader(req.body.code2,"PlayerCode");
     let battleReport = roundRobin(challenger,1,1);
-    res.redirect('/input_ai');
+    res.redirect('/results');
   })
-  //.get('/cool', (req, res) => res.send(cool()))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
