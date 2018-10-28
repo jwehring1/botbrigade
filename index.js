@@ -6,9 +6,10 @@ var multer = require('multer');
 const PORT = process.env.PORT || 5000
 const {writeAI,addUniqueUser}= require('./dbHandler');
 
-const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
+const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
-
+let str2 = "";
+let typed_code ="";
 
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
@@ -18,13 +19,31 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
-  .get('/input_ai', (req, res) => res.render('input_ai'))
-  .get('/results', (req, res) => res.render('results'))
+  .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
+  .get('/results', function(req, res, next){
+    let str3 = "" + str2;
+    res.render('results', {output: str3, typed: typed_code});
+  })
   .post('/input', function(req, res){
-    let challenger = new codeReader(req.body.code2,"PlayerCode");
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
     let battleReport = roundRobin(challenger,1,1);
+    str2 = battleReport;
     res.redirect('/results');
   })
+  /*
+  .get('/arcade/results', function(req, res, next){
+    let str3 = "" + str2;
+    res.render('results', {output: str3, typed: typed_code});
+  })
+  .post('/arcade/input', function(req, res){
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,1);
+    str2 = "we in here";
+    res.redirect('/arcade/results');
+  })
+  */
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
