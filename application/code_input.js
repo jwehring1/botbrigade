@@ -7,15 +7,37 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
 
-var input_ai = require('./application/routes/input_ai');
+var indexRouter = require('./routes/index');
+var tutorial = require('./routes/tutorial');
+var input_ai = require('./routes/input_ai');
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
 
 var app = express();
+
+
+// for parsing application/json
+app.use(bodyParser.json()); 
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.use(upload.array()); 
 app.use(express.static('public'));
 
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+//app.use('/users', usersRouter);
+app.use('/tutorial', tutorial);
 app.use('/input_ai', input_ai);
 
 //Functionality for textbox

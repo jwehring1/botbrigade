@@ -8,6 +8,8 @@ const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
 
+let output_str = "";
+
 const vm = new NodeVM({
     console: 'redirect',
     sandbox: {},
@@ -44,6 +46,7 @@ const vm = new NodeVM({
         while (gameBoard.winner == 0){
             if (printDebug > 1){
                 console.log("Turn: " + turn);
+                output_str = output_str + "Turn: " + turn + "\n";
             }
             if (printDebug > 2){
                 gameBoard.printGameBoard();
@@ -54,12 +57,14 @@ const vm = new NodeVM({
               if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
                     console.log("Tie Game!");
+                    output_str += output_str +  "Tie Game!" + "\n";
                   }
                   singleFightObject.ties++;
                   return;
               }
               if (printDebug > 3){
                 console.log("P1 Messed Up");
+                output_str =  output_str + "P1 Messed Up" + "\n";
               }
               gameBoard.winner = 2;
           }
@@ -71,12 +76,14 @@ const vm = new NodeVM({
               if  (gameBoard.areAllSlotsFilled()){
                 if (printDebug > 2){
                     console.log("Tie Game!");
+                    output_str = output_str +  "Tie Game!" + "\n";
                 }
                   singleFightObject.ties++;
                   return;
               }
               if (printDebug > 3){
                 console.log("P2 Messed Up");
+                output_str =  output_str + "P2 Messed Up" + "\n";
               }
               gameBoard.winner = 1;
           }
@@ -90,13 +97,18 @@ const vm = new NodeVM({
     }
     if (printDebug > 2){
         console.log("WINNER: " + gameBoard.winner);
+        output_str = output_str + "WINNER: " + gameBoard.winner + "\n";
     }
     }
     if (printDebug > 0){
         console.log("Stats for Fight: " + code1.name + " vs " + code2.name);
+        output_str = output_str +  "Stats for Fight: " + code1.name + " vs " + code2.name + "\n";
         console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
+        output_str = output_str + code1.name + " Wins: " + singleFightObject.code1Wins + "\n";
         console.log(code2.name + " Wins: " + singleFightObject.code2Wins);
+        output_str = output_str + code2.name + " Wins: " + singleFightObject.code2Wins + "\n";
         console.log("Ties " + singleFightObject.ties);
+        output_str = output_str + "Ties " + singleFightObject.ties + "\n";
     }
 
       if (singleFightObject.code1Wins > singleFightObject.code2Wins){
@@ -114,7 +126,7 @@ const vm = new NodeVM({
 
 
 function roundRobin(challengerCode,rounds,printDebug){
-
+    output_str = "";
     vm.on('console.log', (data) => {
         console.log(`VM stdout: ${data}`);
       });
@@ -129,8 +141,8 @@ function roundRobin(challengerCode,rounds,printDebug){
 
     //Get Top 10 Slots
     let leaderCodes = [];
-    let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
-    leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
+    //let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
+    //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
     leaderCodes.push(new codeReader(randomAI,"Random"));
     leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
 
@@ -163,7 +175,8 @@ function roundRobin(challengerCode,rounds,printDebug){
         }
     });
 
-    return tournamentObject;
+    console.log(output_str);
+    return output_str;
 }
 class codeReader{
     constructor(AICode,name){
@@ -218,6 +231,9 @@ function readTextFile(filepath) {
     let str = fs.readFileSync(txtFile,'utf8');
     
     return str;
+}
+function outputString(){
+    return output_str;
 }
 
 ////////////////////////////////////////////////////

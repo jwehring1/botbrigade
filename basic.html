@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<!-- NEEDS FROM TEAM (integration)-->
+<!-- Check to see if AI outputs right choice for example game state -->
+<!-- Win/Loss signal in validity checking -->
+<!-- Text/Buttons positioning, style, colors, etc. -->
+<style>
+<!-- reserved for UI colors -->
+	
+</style>
+<body>
+<script>
+var arr = ['Welcome to the basic level tutorial for Bot Brigade. \
+ This tutorial will show you how to make an artificial intelligence capable of playing Connect 4 using a greedy-search algorithm and put it against other\'s.', // welcome page
+'First, let\'s see how a greedy algorithm works.', 	// greedy page beginning
+'Greedy algorithms make the locally optimal decision at each step, not taking any other factors into account.\
+ In the context of game-playing AI algorithms, this methodology is usually not very robust or powerful, but serves as a great foundation on which to build.\
+ Take a chess-playing algorithm for example. A greedy algorithm may choose to take a pawn with a queen because it puts the player closer to a win at that very moment;\
+ however, what the greedy algorithm doesn’t consider is that the next moment, i.e. the other player’s turn, the queen is able to be taken by an opponent piece, which places the opponent much closer to a win than does taking a pawn.\
+ Greedy algorithms are still useful as a starting point; therefore, we will initialize the base of your AI with a greedy algorithm.', 
+ 'In the context of a decision-making tree, a node entails a game state that represents a possible move after its parent node. \
+ It is these nodes that will be evaluated to give/detract score from the maximizing and minimizing players. (clicking text opens optional advice) \
+ Creating a node in JavaScript to represent Connect 4 game states is simple.', 	// greedy node
+ 'The game board is represented as a 6x7 2-dimensional array, each filled with an integer that represents the state of a slot. \
+ 0 indicates that the slot is empty, 1 indicates that the user’s AI has placed a chip in the slot, and 2 indicates an opposing AI\’s placement.',	// game state representation
+ 'Now that we know how the game states are represented, we can utilize them to grade them based on their contribution to the player\’s objective. \
+ You will create a point-based metric based on these states to tell your artificial intelligence whether a particular move is beneficial or not (and to what extent!). \
+ This metric will guide how your AI makes moves and determines if it is winning or not.',	// point-based metric (scoring moves made by AI)
+ 'The scores given by your metric will be utilized by your greedy AI to decide which move to make next. Remember that greedy algorithms prioritize the locally optimal value!',	// using metric for decision-making
+ 'This diagram shows how a greedy algorithm would go about selecting nodes of a tree, assuming that the highest values are the locally optimal values selected by the algorithm.',
+ 'Congratulations on developing your AI! Before you can put this AI against other players’, it will first be validated within your starting game state. ',	// AI validation; check AI and use validOrInvalid array for text
+ 'In order to verify your AI is ready to compete with others’, it will play against a pre-made AI that utilizes random-choice methodology over minimax.\
+ Ramdom choice is much weaker and assuming that the greedy-search AI is correctly designed, should lose more often than not to the greedy-based AI.\
+ Play the pre-made AI using your designed AI by clicking the random choice option.'];	// array to hold tutorial pages' text
+									// arr[0] = welcome page
+									// arr[1] = greedy page beginning		
+									// arr[3] = greedy node
+									// arr[4] = game state representation				
+									// arr[5] = point-based metric (scoring moves made by AI)
+									// arr[6] = using metric for decision-making
+									// arr[8] = AI validation
+									// arr[9] = AI verification (play against premade AI)										
+									
+var tips = ['Note: there are possible scenarios when there are more than one locally optimal value. Make sure that your AI handles these cases properly!',	// decision-making tip 1
+'Random choice algorithms typically lose in any type of scenario. If you consistently cannot verify your AI, ensure that your AI is prioritizing the proper nodes to select.', 	// verification tip 1
+'Ensure that each current node is only searching its children node(s).', 	// verification tip 2
+'Make sure that your locally optimal value specified for the AI is not the same as your opponent\'s.'	// verification tip 3
+ ];
+ 
+var invalidOrValid = ['Your AI has been confirmed as valid; congratulations! Now, you will upload it to our website, where it will be verified and ultimately put against the AIs of other website users.\
+ Upload your file containing the AI code before proceeding.',	// valid; if invalid, take tips from tips array
+ 'Your AI did not have proper output based on the provided game state.'
+];	// for AI validation step
+
+var unverifiedOrVerified = ['Congratulations! Your AI design was successful in beating a greedy-search AI and is ready to compete with other players’ AI designs.\
+ As is, your AI is more than likely similar to others at your same level. Modify and test different elements of your design and see what leads to better or worse results!\
+ When you feel that you have feasibly done everything for minimax search or are simply ready to learn a more advanced concept, you can move on to the next tutorial to learn and implement alpha-beta pruning.',	// verified; note, this assumes alpha-beta pruning is the advanced tutorial
+ 'Your AI was unable to defeat the greedy-search based AI. Check that all steps of the tutorial are properly followed and implemented in your code.'
+];	// for AI verification step; assumes premade testing AI is greedy-search based
+
+var i = 0;	// iterator through text array
+var j = 0; // iterator through tip array
+var x = document.createElement("IMG");
+x.setAttribute("id", "img");
+
+function nextItem() {
+    document.getElementById("prev_button").disabled = false;	// enable previous button
+	
+    i = i + 1; 
+	
+	// page layout checks
+	if (i == 1) {	// beginning of minimax section (actual tutorial aside from welcome page)
+		document.getElementById("prev_button").disabled = true;
+		x.setAttribute("src", "http://mathworld.wolfram.com/images/gifs/connect4.gif");
+		x.setAttribute("width", "1002");
+		x.setAttribute("height", "256");
+		x.setAttribute("alt", "Diagram");
+		document.body.appendChild(x);
+	}
+	if (i == arr.length - 1) { // final page; disable and gray next button
+		document.getElementById("next_button").disabled = true;
+	}
+	
+	// tutorial section checks (if image needs to be appended, etc.)
+	if (i == 7) { 
+		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
+		x.setAttribute("width", "1002");
+		x.setAttribute("height", "256");
+		x.setAttribute("alt", "Diagram");
+		document.body.appendChild(x);
+	}
+	else if (document.getElementById("img") != null && (i != 1 || i !=3 )){
+		document.body.removeChild(x);
+	}
+	
+    return arr[i]; 
+}
+
+function prevItem() {
+	document.getElementById("next_button").disabled = false;	// enable next button
+	
+	i = i - 1; 
+    if (i === 0 || i == 1) { 	// welcome page or first page of tutorial; disable previous button, welcome page is only viewed once
+		document.getElementById("prev_button").disabled = true;
+    }
+	if(i == 1) {
+		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
+		x.setAttribute("width", "1002");
+		x.setAttribute("height", "256");
+		x.setAttribute("alt", "Diagram");
+		document.body.appendChild(x);
+	}
+	
+	if (i == 7) {  
+		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
+		x.setAttribute("width", "1002");
+		x.setAttribute("height", "256");
+		x.setAttribute("alt", "Diagram");
+		document.body.appendChild(x);
+	}
+	else if (document.getElementById("img") != null && (i != 3 || i != 1)){
+		document.body.removeChild(x);
+	}
+	
+    return arr[i]; 
+}
+
+window.addEventListener('load', function () {	// listen for button clicks amd load initial page
+    document.getElementById('output').textContent = arr[0]; // display welcome
+	
+    document.getElementById('prev_button').addEventListener(
+        'click', 
+        function (e) { 
+            document.getElementById('output').textContent = prevItem();
+        }
+    );
+    
+    document.getElementById('next_button').addEventListener(
+        'click', 
+        function (e) { 
+            document.getElementById('output').textContent = nextItem();
+        }
+    );
+});
+
+
+</script>
+<div id="output"></div>
+
+<div>
+    <button id="prev_button" disabled>Previous Step</span>
+    <button id="next_button">Next Step</span>
+</div>
+<div>
+
+</body>
+</html>

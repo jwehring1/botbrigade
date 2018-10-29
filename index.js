@@ -1,19 +1,49 @@
 const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
+var bodyParser = require('body-parser');
+var multer = require('multer');
 const PORT = process.env.PORT || 5000
 const {writeAI,addUniqueUser}= require('./dbHandler');
 
-const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI} = require('./codeReader.js');
+const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
+
+let str2 = "";
+let typed_code ="";
 
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true}))
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
-  .get('/input_ai', (req, res) => res.render('input_ai'))
-  //.get('/cool', (req, res) => res.send(cool()))
+  .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
+  .get('/results', function(req, res, next){
+    let str3 = "" + str2;
+    res.render('results', {output: str3, typed: typed_code});
+  })
+  .post('/input', function(req, res){
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,1);
+    str2 = battleReport;
+    res.redirect('/results');
+  })
+  /*
+  .get('/arcade/results', function(req, res, next){
+    let str3 = "" + str2;
+    res.render('results', {output: str3, typed: typed_code});
+  })
+  .post('/arcade/input', function(req, res){
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,1);
+    str2 = "we in here";
+    res.redirect('/arcade/results');
+  })
+  */
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
@@ -25,17 +55,3 @@ express()
   //let challenger = new codeReader(printAI,"PlayerCode");
   //challenger.runCodeTurn('testing123');
   //let temp = roundRobin(challenger,10);
-
-<<<<<<< HEAD
-  let temp = roundRobin(challenger2,1,1);
-=======
-
-  var gameBoard = new Array(6);
-for (var i = 0; i < gameBoard.length; i++){
-  gameBoard[i] = new Array(7);
-  gameBoard[i].fill(0);
-}
-
-  let challenger2 = new codeReader(str,"StupidMinMax");
-let temp = roundRobin(challenger2,1,1);
->>>>>>> b15347f83a1db14eea3814014e570bdf1a5bb909

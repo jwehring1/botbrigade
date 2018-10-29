@@ -9,7 +9,7 @@
   	<% include templates/header.ejs %>
   	<div class = "page-wrapper">
 	    <h2>Beginner Tutorial</h2>
-		    <% include templates/tutorial_text_basic.ejs %>
+	    <% include templates/tutorial_text_basic.ejs %>
 		<div class = "box-wrapper">
 			<form action="/input" method="POST">
 				<h4 class = "pretext"> module.exports = function(boardState,playerNumber) {</h4>
@@ -20,6 +20,12 @@
 				</div>
 			</form>
 			<form action="/results" method = "GET">
+				<article class = "console_window">
+					<h3> Results/Debugger Window</h3>
+					<pre>
+						<%= output%>
+					</pre>
+				</article>
 			</form>
 		</div>
 

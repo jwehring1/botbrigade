@@ -122,23 +122,83 @@ a:hover{
 	padding: 20px 0;
 	background-color: #0D1421;
 	min-width: 600px;
+	color: white;
+	font-family: "Courier New", sans-serif;
+}
+.script{
+
+}
+.script_text{
+
+	color: black;
+	background-color: white;
+	font-size: 1.5em;
+	margin: 0 auto;
+	height: 10em;
+	width: 80%;
+	min-width: 600px;
+	font-family: "Roboto", sans-serif;
+	padding-left: 1em;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+
+}
+.script_buttons{
+	margin: 0 auto;
+	text-align: center;
+	padding-top: .5em;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+}
+#prev_button, #next_button{
+	color: white;
+	background-color: #0D1421;
+	font-size: 1.5em;
+	width: 150px;
+	height: 2em;
+}
+#prev_button{
+
+	border-radius: 10px 0 0 10px;
+}
+#next_button{
+	border-radius: 0 10px 10px 0;
+}
+#prev_button:hover, #next_button:hover{
+	background-color: rgb(80,80,100);
+}
+#prev_button:disabled, #next_button:disabled{
+	background-color: rgb(80,80,100);
+}
+
+.pretext{
+	padding-left: 10%;
+	text-align: left;
+	color: white;
+	font-family: "Courier New", sans-serif;
 }
 textarea{
+	color: black;
+	font-size: 1.3em;
 	margin: auto;
 	margin-left: 10%;
 	min-width: 500px;
 	width: 80%;
 	height: 50em;
-	font-size: 1.3em;
 	font-family: "Courier New", sans-serif;
 	padding-left: 1em;
+
+		clear: both;
 }
 .btn-wrapper{
 	text-align: center;
 	margin: auto;
+
+		clear: both;
+
 }
 .upload-btn{
-	font: bold 2em Roboto, sans-serif;
+	font: bold 1.7em Roboto, sans-serif;
 	color: black;
 	background-color: white;
 	margin: 0 auto;
@@ -149,4 +209,31 @@ textarea{
 }
 .upload-btn:hover{
 	background-color: rgb(200,200,200);
+}
+/*RESULTS PAGE*/
+.console_window{
+	background-color: rgb(230,230,255);
+	color: black;
+	font-size: 1.3em;
+	margin: auto;
+	min-width: 500px;
+	width: 80%;
+	font-family: "Courier New", sans-serif;
+	margin-top: 2em;
+
+}
+.console_window h3{
+
+	background: rgb(80,80,110);
+	color: white;
+	width: 100%;
+	font-family: "Roboto", sans-serif;
+	padding: .3em 0;
+}
+.console_window pre{
+
+    overflow: scroll;
+    height: 20em;
+    padding-left: 1em;
+	background-color: rgb(230,230,255);
 }
