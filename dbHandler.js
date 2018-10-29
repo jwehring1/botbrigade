@@ -19,16 +19,22 @@ function writeAI(userName,botName,code){
 
 function addUser(userName,password){
     let fs = require('fs');
-    let userTable = {
-        table: []
-    }
-    userTable.table.push({userName: userName, password: password});
-    let json = JSON.stringify(userTable);
-    fs.writeFile(theGreatLibrary, json, 'utf8', function(err) {
-        if(err) {
-            return console.log(err);
-        }
-    });
+    fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+        let userTable = JSON.parse(data);
+        userTable.table.push({userName: userName, password: password});
+        let json = JSON.stringify(userTable);
+        fs.writeFile(theGreatLibrary, json, 'utf8', function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            else{
+                return obj;
+            }
+        });
+    }});
 }
 
 function readUsers(){
@@ -43,15 +49,26 @@ function readUsers(){
 }
 
 function isUniqueUsername(userName){
-    let userTable = readUsers();
-    if (!userTable){
-        generateDB();
+    let fs = require('fs');
+    fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
+        if (err){
+            generateDB();
+            console.log(err);
+        } else {
+        if (!data){
+            generateDB();
+            return true;
+        }
+        let userTable = JSON.parse(data);
+        if (!userTable.length){
+            
+            return true;
+        }
+        if (userTable.table.userName.find(userName)){
+            return false;
+        }
         return true;
-    }
-    if (userTable.table.userName.find(userName)){
-        return false;
-    }
-    return true;
+    }});
 }
 
 function addUniqueUser(userName,password){

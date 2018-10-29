@@ -8,8 +8,6 @@ const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
 
-let output_str = "";
-
 const vm = new NodeVM({
     console: 'redirect',
     sandbox: {},
@@ -35,18 +33,22 @@ const vm = new NodeVM({
         code1Wins: 0,
         code2Wins: 0,
         ties: 0,
-    }
-      
-        for(let i = 0; i < games; i++) {
-      
-          //Initialize game State
+        gameText: [],
+        gameStats: [],
+        errors: [],
+        orderedReport: [],
+    };
+    for(let i = 0; i < games; i++) {
+        //Initialize game State
         let gameBoard = new gameStates();
         let turn = 0;
         //Initialize A.I
         while (gameBoard.winner == 0){
             if (printDebug > 1){
-                console.log("Turn: " + turn);
-                output_str = output_str + "Turn: " + turn + "\n";
+                let log = "Turn: " + turn;
+                console.log(log);
+                singleFightObject.gameText.push(log);
+                singleFightObject.orderedReport.push(log);
             }
             if (printDebug > 2){
                 gameBoard.printGameBoard();
@@ -56,15 +58,21 @@ const vm = new NodeVM({
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
               if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
-                    console.log("Tie Game!");
-                    output_str += output_str +  "Tie Game!" + "\n";
+                    let log = ("Tie Game!");
+                    console.log(log);
+                    singleFightObject.gameText.push(log);
+                    singleFightObject.orderedReport.push(log);
                   }
                   singleFightObject.ties++;
                   return;
               }
               if (printDebug > 3){
-                console.log("P1 Messed Up");
-                output_str =  output_str + "P1 Messed Up" + "\n";
+                let log = "P1 Messed Up";
+                console.log(log);
+                singleFightObject.gameText.push(log);
+                singleFightObject.orderedReport.push(log);
+                singleFightObject.orderedReport.push(code1.currentError);
+                singleFightObject.errors.push(code1.currentError);
               }
               gameBoard.winner = 2;
           }
@@ -72,23 +80,29 @@ const vm = new NodeVM({
               break;
           }
           let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
+
           if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
               if  (gameBoard.areAllSlotsFilled()){
                 if (printDebug > 2){
                     console.log("Tie Game!");
-                    output_str = output_str +  "Tie Game!" + "\n";
+                    singleFightObject.gameText.push("Tie Game!");
+                    singleFightObject.orderedReport.push(log);
                 }
                   singleFightObject.ties++;
                   return;
               }
               if (printDebug > 3){
-                console.log("P2 Messed Up");
-                output_str =  output_str + "P2 Messed Up" + "\n";
+                let log = "P2 Messed UP";
+                console.log(log);
+                singleFightObject.gameText.push(log);
+                singleFightObject.orderedReport.push(log);
               }
               gameBoard.winner = 1;
-          }
+            }
       
         }
+
+
     if (gameBoard.winner === 1){
         singleFightObject.code1Wins++;
     }
@@ -96,19 +110,19 @@ const vm = new NodeVM({
           singleFightObject.code2Wins++;
     }
     if (printDebug > 2){
-        console.log("WINNER: " + gameBoard.winner);
-        output_str = output_str + "WINNER: " + gameBoard.winner + "\n";
-    }
+        let log = "WINNER WINNER CHICKEN DINNER: " + gameBoard.winner;
+        console.log(log);
+        singleFightObject.gameText.push(log);
+        singleFightObject.orderedReport.push(log);
     }
     if (printDebug > 0){
-        console.log("Stats for Fight: " + code1.name + " vs " + code2.name);
-        output_str = output_str +  "Stats for Fight: " + code1.name + " vs " + code2.name + "\n";
-        console.log(code1.name + " Wins: " + singleFightObject.code1Wins);
-        output_str = output_str + code1.name + " Wins: " + singleFightObject.code1Wins + "\n";
-        console.log(code2.name + " Wins: " + singleFightObject.code2Wins);
-        output_str = output_str + code2.name + " Wins: " + singleFightObject.code2Wins + "\n";
-        console.log("Ties " + singleFightObject.ties);
-        output_str = output_str + "Ties " + singleFightObject.ties + "\n";
+        let log = "Stats for Fight: " + code1.name + " vs " + code2.name + "\n"
+        + code1.name + " Wins: " + singleFightObject.code1Wins + "\n"
+        + code2.name + " Wins: " + singleFightObject.code2Wins + "\n"
+        + "Ties " + singleFightObject.ties;
+        console.log(log);
+        singleFightObject.gameStats.push(log);
+        singleFightObject.orderedReport.push(log);
     }
 
       if (singleFightObject.code1Wins > singleFightObject.code2Wins){
@@ -122,13 +136,23 @@ const vm = new NodeVM({
       }
 
       return singleFightObject;
+    }
 }
 
 
 function roundRobin(challengerCode,rounds,printDebug){
-    output_str = "";
+    let informationObject = {
+        gameInfo: [],
+        tournamentObj: {},
+        userConsole: [],
+        userErrors: [],
+        orderedReport: [],
+    }
+
     vm.on('console.log', (data) => {
         console.log(`VM stdout: ${data}`);
+        informationObject.userConsole.push(data);
+        informationObject.orderedReport.push( "User Console Log: " + data);
       });
     //Returns this object
     let tournamentObject ={
@@ -137,7 +161,7 @@ function roundRobin(challengerCode,rounds,printDebug){
         ties: 0,
         battlesAsP1: [],
         battlesAsP2: [],
-    }
+    };
 
     //Get Top 10 Slots
     let leaderCodes = [];
@@ -151,6 +175,13 @@ function roundRobin(challengerCode,rounds,printDebug){
         let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug);
         tournamentObject.battlesAsP1.push(battleObject);
         tournamentObject.battlesAsP2.push(battleObjectInverted);
+
+        informationObject.orderedReport.push(battleObject.orderedReport);
+        informationObject.orderedReport.push(battleObjectInverted.orderedReport);
+        if (battleObject.errors.length)
+            informationObject.userErrors.push(battleObject.errors);
+        if (battleObjectInverted.errors.length)
+            informationObject.userErrors.push(battleObjectInverted.errors);
         switch (battleObject.winner) {
             case 0:
                 tournamentObject.ties++;
@@ -175,13 +206,16 @@ function roundRobin(challengerCode,rounds,printDebug){
         }
     });
 
-    console.log(output_str);
-    return output_str;
+    return informationObject;
 }
+
+
 class codeReader{
     constructor(AICode,name){
         this.code = 'module.exports = function(boardState,playerNumber) { '+ AICode + ' }';
         this.name = name;
+        this.currentError = {};
+        this.debugErrors = [];
     }
 
     saveScript(codeArg){
@@ -199,6 +233,7 @@ class codeReader{
             returnVal = p1functionInSandbox(boardState,player);
         } catch (err) {
             //Return Debugging Errors here
+            this.debugErrors.push(err);
             console.error('Failed to execute script.', err);
         }
         if (returnVal < 0 || returnVal > 6){
@@ -231,9 +266,6 @@ function readTextFile(filepath) {
     let str = fs.readFileSync(txtFile,'utf8');
     
     return str;
-}
-function outputString(){
-    return output_str;
 }
 
 ////////////////////////////////////////////////////
