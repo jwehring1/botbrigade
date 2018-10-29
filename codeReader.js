@@ -129,6 +129,7 @@ function roundRobin(challengerCode,rounds,printDebug){
     output_str = "";
     vm.on('console.log', (data) => {
         console.log(`VM stdout: ${data}`);
+        output_str += "User Console Log: " + data + " \n";
       });
     //Returns this object
     let tournamentObject ={
@@ -182,6 +183,7 @@ class codeReader{
     constructor(AICode,name){
         this.code = 'module.exports = function(boardState,playerNumber) { '+ AICode + ' }';
         this.name = name;
+        this.debugErrors = [];
     }
 
     saveScript(codeArg){
@@ -199,6 +201,8 @@ class codeReader{
             returnVal = p1functionInSandbox(boardState,player);
         } catch (err) {
             //Return Debugging Errors here
+            this.debugErrors.push(err);
+            output_str += "Error: " + err + " \n";
             console.error('Failed to execute script.', err);
         }
         if (returnVal < 0 || returnVal > 6){
