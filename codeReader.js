@@ -141,8 +141,8 @@ function roundRobin(challengerCode,rounds,printDebug){
 
     //Get Top 10 Slots
     let leaderCodes = [];
-    let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
-    leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
+    //let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
+    //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
     leaderCodes.push(new codeReader(randomAI,"Random"));
     leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
 
