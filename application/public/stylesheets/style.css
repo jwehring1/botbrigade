@@ -230,7 +230,7 @@ textarea{
 	font-family: "Roboto", sans-serif;
 	padding: .3em 0;
 }
-.console_window p{
+.console_window pre{
 
     overflow: scroll;
     height: 20em;

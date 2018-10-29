@@ -126,7 +126,7 @@ const vm = new NodeVM({
 
 
 function roundRobin(challengerCode,rounds,printDebug){
-
+    output_str = "";
     vm.on('console.log', (data) => {
         console.log(`VM stdout: ${data}`);
       });
@@ -175,6 +175,7 @@ function roundRobin(challengerCode,rounds,printDebug){
         }
     });
 
+    console.log(output_str);
     return output_str;
 }
 class codeReader{
