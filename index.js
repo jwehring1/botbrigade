@@ -20,11 +20,23 @@ express()
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
+  .get('/input_ai_medium',(req, res) => res.render('input_ai_medium', {output:"", typed: typed_code}))
   .get('/results', function(req, res, next){
     let str3 = "" + str2;
     res.render('results', {output: str3, typed: typed_code});
   })
   .post('/input', function(req, res){
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,5);
+    str2 = battleReport.orderedReport;
+    res.redirect('/results');
+  })
+  .get('/results_medium', function(req, res, next){
+    let str3 = "" + str2;
+    res.render('results_medium', {output: str3, typed: typed_code});
+  })
+  .post('/input_medium', function(req, res){
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
     let battleReport = roundRobin(challenger,1,5);

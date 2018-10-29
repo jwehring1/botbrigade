@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Medium Tutorial</title>
+    <% include templates/nav.ejs %>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  	<% include templates/header.ejs %>
+  	<div class = "page-wrapper">
+	    <h2>Medium Tutorial</h2>
+		    <% include templates/medium.ejs %>
+		<div class = "box-wrapper">
+			<form action="/input_medium" method="POST">
+				<h4 class = "pretext"> module.exports = function(boardState,playerNumber) {</h4>
+				<textarea id= "code-input" type= "text" name = "code2"><%= typed%></textarea>
+				<h4 class = "pretext">}</h4>
+				<div class = "btn-wrapper">
+				    <input class = "upload-btn" id= "code" type="submit" value="Submit Code" />
+				</div>
+			</form>
+			<form action="/results_medium" method = "GET">
+				<article class = "console_window">
+					<h3> Results/Debugger Window</h3>
+					<pre><%= output%></pre>
+				</article>
+			</form>
+		</div>
+
+	</div>
+<% include templates/footer.ejs %>
+  </body>
+</html>
