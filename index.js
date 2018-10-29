@@ -27,8 +27,8 @@ express()
   .post('/input', function(req, res){
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,1);
-    str2 = battleReport;
+    let battleReport = roundRobin(challenger,1,5);
+    str2 = battleReport.orderedReport;
     res.redirect('/results');
   })
   /*
