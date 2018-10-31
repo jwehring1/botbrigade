@@ -25,7 +25,7 @@ const vm = new NodeVM({
 });
 
 
-    function AIBattle(code1,code2,games,printDebug){
+    function AIBattle(code1,code2,games,printDebug,oneIsOnFirst){
 
     //Returns this object
     let singleFightObject ={
@@ -54,7 +54,10 @@ const vm = new NodeVM({
                 gameBoard.printGameBoard();
             }
             turn++;
-          let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
+
+
+        function p1Turn(){
+                let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
           if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
               if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
@@ -79,26 +82,42 @@ const vm = new NodeVM({
           if (gameBoard.winner != 0){
               break;
           }
-          let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
+        }
 
-          if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
-              if  (gameBoard.areAllSlotsFilled()){
-                if (printDebug > 2){
-                    console.log("Tie Game!");
-                    singleFightObject.gameText.push("Tie Game!");
-                    singleFightObject.orderedReport.push(log);
+
+        function p2Turn(){
+            let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
+
+            if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
+                if  (gameBoard.areAllSlotsFilled()){
+                  if (printDebug > 2){
+                      console.log("Tie Game!");
+                      singleFightObject.gameText.push("Tie Game!");
+                      singleFightObject.orderedReport.push(log);
+                  }
+                    singleFightObject.ties++;
+                    return;
                 }
-                  singleFightObject.ties++;
-                  return;
+                if (printDebug > 3){
+                  let log = "P2 Messed UP";
+                  console.log(log);
+                  singleFightObject.gameText.push(log);
+                  singleFightObject.orderedReport.push(log);
+                }
+                gameBoard.winner = 1;
               }
-              if (printDebug > 3){
-                let log = "P2 Messed UP";
-                console.log(log);
-                singleFightObject.gameText.push(log);
-                singleFightObject.orderedReport.push(log);
-              }
-              gameBoard.winner = 1;
-            }
+        }
+
+        if (oneIsOnFirst){
+            p1Turn();
+            p2Turn();
+        }
+        else{
+            p2Turn();
+            p1Turn();
+        }
+
+
       
         }
 
@@ -110,7 +129,7 @@ const vm = new NodeVM({
           singleFightObject.code2Wins++;
     }
     if (printDebug > 2){
-        let log = "WINNER WINNER CHICKEN DINNER: " + gameBoard.winner;
+        let log = "WINNER WINNER CHICKEN DINNER: Player " + gameBoard.winner;
         console.log(log);
         singleFightObject.gameText.push(log);
         singleFightObject.orderedReport.push(log);
@@ -171,8 +190,8 @@ function roundRobin(challengerCode,rounds,printDebug){
     leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
 
     leaderCodes.forEach(defendingCode => {
-        let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug);
-        let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug);
+        let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug,true);
+        let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug,true);
         tournamentObject.battlesAsP1.push(battleObject);
         tournamentObject.battlesAsP2.push(battleObjectInverted);
 
@@ -233,6 +252,7 @@ class codeReader{
             returnVal = p1functionInSandbox(boardState,player);
         } catch (err) {
             //Return Debugging Errors here
+            this.currentError = err;
             this.debugErrors.push(err);
             console.error('Failed to execute script.', err);
         }
@@ -266,6 +286,11 @@ function readTextFile(filepath) {
     let str = fs.readFileSync(txtFile,'utf8');
     
     return str;
+}
+
+
+function formatOrderedLog(log){
+
 }
 
 ////////////////////////////////////////////////////
