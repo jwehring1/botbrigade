@@ -84,9 +84,32 @@ function generateDB(){
     });
 }
 
+function login(userName,decPass){
+    if(isUniqueUsername(userName))
+    {
+        return false;
+    }
+    let rand = "!,@,#,%kjdsakleja*3k4234lk,jdjlka*#^$*&!jhdfs3&#&*@JKFDH(@*@*(&#*$";
+    let fs = require('fs');
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            var decrypt = CryptoJS.AES.decrypt(userTable[i].password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
+            if(decrypt==decPass)
+                return true;
+        }
+    }
+    return false;
+}
+
   module.exports = {
     writeAI,
-    addUniqueUser
+    addUniqueUser,
+    login
 }
+
 
 
