@@ -1,4 +1,5 @@
 const theGreatLibrary = "archives.json"
+var CryptoJS = require("crypto-js");
 
 function writeAI(userName,botName,code){
     let mkdirp = require('mkdirp');
@@ -17,21 +18,25 @@ function writeAI(userName,botName,code){
     });
   };
 
-function addUser(userName,password){
+function addUser(userName,plainText){
+    let rand = "!,@,#,%kjdsakleja*3k4234lk,jdjlka*#^$*&!jhdfs3&#&*@JKFDH(@*@*(&#*$";
+    var password = CryptoJS.AES.encrypt(plainText, rand,{}).toString();
+    var decrypt = CryptoJS.AES.decrypt(password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
+    console.log(decrypt);
     let fs = require('fs');
     fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
         if (err){
             console.log(err);
         } else {
         let userTable = JSON.parse(data);
-        userTable.table.push({userName: userName, password: password});
+        userTable.push({userName: userName, password: password});
         let json = JSON.stringify(userTable);
         fs.writeFile(theGreatLibrary, json, 'utf8', function(err) {
             if(err) {
                 return console.log(err);
             }
             else{
-                return obj;
+                return userTable;
             }
         });
     }});
@@ -50,25 +55,23 @@ function readUsers(){
 
 function isUniqueUsername(userName){
     let fs = require('fs');
-    fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
-        if (err){
-            generateDB();
-            console.log(err);
-        } else {
-        if (!data){
-            generateDB();
-            return true;
+    let contents = [];
+    contents = fs.readFileSync(theGreatLibrary, 'utf8');
+    let flag = false;
+    let userTable = JSON.parse(contents, function (key, value){
+        if (key=="userName")
+        {
+            if(value==userName)
+            {
+                flag = true;
+                return false;
+            }
         }
-        let userTable = JSON.parse(data);
-        if (!userTable.length){
-            
-            return true;
-        }
-        if (userTable.table.userName.find(userName)){
-            return false;
-        }
+    });
+    if(!flag)
         return true;
-    }});
+    else
+        return false;
 }
 
 function addUniqueUser(userName,password){
@@ -96,5 +99,3 @@ function generateDB(){
     writeAI,
     addUniqueUser
 }
-
-
