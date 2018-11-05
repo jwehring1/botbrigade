@@ -19,6 +19,8 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
+  .get('/sign_up', (req, res) => res.render('sign_up'))
+  .get('/log_in', (req, res) => res.render('log_in'))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
   .get('/results', function(req, res, next){
     let str3 = "" + str2;
@@ -36,6 +38,17 @@ express()
       });
     });
     res.redirect('/results');
+  })
+
+  .post('/input_user', function(req, res){
+    let username = req.body;
+    addUniqueUser(username.user,username.pass);
+    res.redirect('/sign_up');
+  })
+  .post('/login', function(req, res){
+    let username = req.body;
+    console.log(username.user + " " + username.pass);
+    res.redirect('/log_in');
   })
   /*
   .get('/arcade/results', function(req, res, next){
