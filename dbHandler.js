@@ -24,22 +24,11 @@ function addUser(userName,plainText){
     var decrypt = CryptoJS.AES.decrypt(password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
     console.log(decrypt);
     let fs = require('fs');
-    fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
-        if (err){
-            console.log(err);
-        } else {
-        let userTable = JSON.parse(data);
-        userTable.push({userName: userName, password: password});
-        let json = JSON.stringify(userTable);
-        fs.writeFile(theGreatLibrary, json, 'utf8', function(err) {
-            if(err) {
-                return console.log(err);
-            }
-            else{
-                return userTable;
-            }
-        });
-    }});
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    userTable.push({userName: userName, password: password});
+    let json = JSON.stringify(userTable);
+    fs.writeFileSync(theGreatLibrary, json, 'utf8',userTable);
 }
 
 function readUsers(){
@@ -99,3 +88,5 @@ function generateDB(){
     writeAI,
     addUniqueUser
 }
+
+
