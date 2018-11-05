@@ -24,22 +24,11 @@ function addUser(userName,plainText){
     var decrypt = CryptoJS.AES.decrypt(password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
     console.log(decrypt);
     let fs = require('fs');
-    fs.readFile(theGreatLibrary, 'utf8', function readFileCallback(err, data){
-        if (err){
-            console.log(err);
-        } else {
-        let userTable = JSON.parse(data);
-        userTable.push({userName: userName, password: password});
-        let json = JSON.stringify(userTable);
-        fs.writeFile(theGreatLibrary, json, 'utf8', function(err) {
-            if(err) {
-                return console.log(err);
-            }
-            else{
-                return userTable;
-            }
-        });
-    }});
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    userTable.push({userName: userName, password: password});
+    let json = JSON.stringify(userTable);
+    fs.writeFileSync(theGreatLibrary, json, 'utf8',userTable);
 }
 
 function readUsers(){
@@ -95,7 +84,32 @@ function generateDB(){
     });
 }
 
+function login(userName,decPass){
+    if(isUniqueUsername(userName))
+    {
+        return false;
+    }
+    let rand = "!,@,#,%kjdsakleja*3k4234lk,jdjlka*#^$*&!jhdfs3&#&*@JKFDH(@*@*(&#*$";
+    let fs = require('fs');
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            var decrypt = CryptoJS.AES.decrypt(userTable[i].password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
+            if(decrypt==decPass)
+                return true;
+        }
+    }
+    return false;
+}
+
   module.exports = {
     writeAI,
-    addUniqueUser
+    addUniqueUser,
+    login
 }
+
+
+
