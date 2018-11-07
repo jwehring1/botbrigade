@@ -7,7 +7,13 @@ const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
 const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
-
+Object.prototype.isEmpty = function() {
+    for(var key in this) {
+        if(this.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
 const vm = new NodeVM({
     console: 'redirect',
     sandbox: {},
@@ -35,30 +41,32 @@ const vm = new NodeVM({
         ties: 0,
         gameText: [],
         gameStats: [],
+        gameStates: [],
         errors: [],
         orderedReport: [],
     };
     for(let i = 0; i < games; i++) {
         //Initialize game State
         let gameBoard = new gameStates();
-        let turn = 0;
+        let turn = 1;
+        let log = "Now Starting Fight: " + code1.name +" vs " + code2.name + '\n';
+        if (oneIsOnFirst){
+            log+= code1.name + " will go first. Start! \n \n";
+        }
+        else{
+            log+= code2.name + " will go first. Start! \n \n";
+        }
+        console.log(log);
+        singleFightObject.gameText.push(log);
+        singleFightObject.orderedReport.push(log);
+
+
         //Initialize A.I
-        while (gameBoard.winner == 0){
-            if (printDebug > 1){
-                let log = "Turn: " + turn;
-                console.log(log);
-                singleFightObject.gameText.push(log);
-                singleFightObject.orderedReport.push(log);
-            }
-            if (printDebug > 2){
-                gameBoard.printGameBoard();
-            }
-            turn++;
-
-
         function p1Turn(){
                 let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
-          if (gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1) == -1){
+                let error = gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1);
+                let winner = gameBoard.winner;
+          if (error == -1){
               if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
                     let log = ("Tie Game!");
@@ -70,25 +78,33 @@ const vm = new NodeVM({
                   return;
               }
               if (printDebug > 3){
+                if (code1.currentError.isEmpty()){
+                    let log = "P1 attempted to place at slot " + p1Selection + " ,but this is already full";
+                    console.log(log);
+                    singleFightObject.gameText.push(log);
+                    singleFightObject.orderedReport.push(log);
+                }
+                else{
                 let log = "P1 Messed Up";
                 console.log(log);
                 singleFightObject.gameText.push(log);
                 singleFightObject.orderedReport.push(log);
                 singleFightObject.orderedReport.push(code1.currentError);
                 singleFightObject.errors.push(code1.currentError);
+                }
               }
               gameBoard.winner = 2;
+              return gameBoard.winner;
           }
-          if (gameBoard.winner != 0){
-              break;
-          }
+          return gameBoard.winner;
         }
 
 
         function p2Turn(){
             let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
-
-            if(gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2) == -1){
+            let error = gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2);
+            let winner = gameBoard.winner;
+            if(error == -1){
                 if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
                       console.log("Tie Game!");
@@ -99,27 +115,74 @@ const vm = new NodeVM({
                     return;
                 }
                 if (printDebug > 3){
-                  let log = "P2 Messed UP";
-                  console.log(log);
-                  singleFightObject.gameText.push(log);
-                  singleFightObject.orderedReport.push(log);
+                    if (code2.currentError.isEmpty()){
+                        let log = "P2 attempted to place at slot " + p2Selection + " ,but this is already full";
+                        console.log(log);
+                        singleFightObject.gameText.push(log);
+                        singleFightObject.orderedReport.push(log);
+                    }
+                    else{
+                    let log = "P2 Messed Up";
+                    console.log(log);
+                    singleFightObject.gameText.push(log);
+                    singleFightObject.orderedReport.push(log);
+                    singleFightObject.orderedReport.push(code2.currentError);
+                    singleFightObject.errors.push(code2.currentError);
+                    }
                 }
                 gameBoard.winner = 1;
+                return gameBoard.winner;
               }
+            return gameBoard.winner;
         }
 
-        if (oneIsOnFirst){
-            p1Turn();
-            p2Turn();
+        while (1){
+            if (printDebug > 1){
+                let log = "Turn: " + turn;
+                console.log(log);
+                singleFightObject.gameText.push(log);
+                singleFightObject.orderedReport.push(log);
+            }
+            if (printDebug > 2){
+                gameBoard.printGameBoard();
+            }
+            turn++;
+            if (oneIsOnFirst){
+                if (printDebug > 2){
+                    singleFightObject.orderedReport.push(gameBoard.printGameBoard());
+                }
+                singleFightObject.gameStates.push(gameBoard.returnBoard());
+                let winner = p1Turn();
+                if (winner != 0){
+                    break;
+                }
+
+                if (printDebug > 2){
+                    singleFightObject.orderedReport.push(gameBoard.printGameBoard());
+                }
+                singleFightObject.gameStates.push(gameBoard.returnBoard());
+                winner = p2Turn();
+                if (winner != 0){
+                    break;
+                }
         }
         else{
+            if (printDebug > 2){
+                singleFightObject.orderedReport.push(gameBoard.printGameBoard());
+            }
+            singleFightObject.gameStates.push(gameBoard.returnBoard());
             p2Turn();
+            if (printDebug > 2){
+                singleFightObject.orderedReport.push(gameBoard.printGameBoard());
+            }
+            singleFightObject.gameStates.push(gameBoard.returnBoard());
             p1Turn();
         }
-
-
-      
+        if (gameBoard.winner != 0){
+            break;
         }
+        
+    }
 
 
     if (gameBoard.winner === 1){
@@ -129,16 +192,23 @@ const vm = new NodeVM({
           singleFightObject.code2Wins++;
     }
     if (printDebug > 2){
-        let log = "WINNER WINNER CHICKEN DINNER: Player " + gameBoard.winner;
+        let winnerString = {};
+        if (gameBoard.winner === 1){
+            winnerString = code1.name;
+        }
+        else{
+            winnerString = code2.name;
+        }
+        let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n";
         console.log(log);
         singleFightObject.gameText.push(log);
         singleFightObject.orderedReport.push(log);
     }
-    if (printDebug > 0){
+    if (printDebug > 5){
         let log = "Stats for Fight: " + code1.name + " vs " + code2.name + "\n"
         + code1.name + " Wins: " + singleFightObject.code1Wins + "\n"
         + code2.name + " Wins: " + singleFightObject.code2Wins + "\n"
-        + "Ties " + singleFightObject.ties;
+        + "Ties " + singleFightObject.ties + '\n' + '\n';
         console.log(log);
         singleFightObject.gameStats.push(log);
         singleFightObject.orderedReport.push(log);
@@ -159,7 +229,7 @@ const vm = new NodeVM({
 }
 
 
-function roundRobin(challengerCode,rounds,printDebug){
+function roundRobin(challengerCode,rounds,printDebug,compiling){
     let informationObject = {
         gameInfo: [],
         tournamentObj: {},
@@ -181,13 +251,18 @@ function roundRobin(challengerCode,rounds,printDebug){
         battlesAsP1: [],
         battlesAsP2: [],
     };
-
-    //Get Top 10 Slots
     let leaderCodes = [];
+
+    if (compiling){
+        leaderCodes.push(new codeReader(randomAI,"Random"));
+    }
+    else {
+    //Get Top 10 Slots
     //let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
     //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
     leaderCodes.push(new codeReader(randomAI,"Random"));
     leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
+    }
 
     leaderCodes.forEach(defendingCode => {
         let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug,true);
@@ -223,6 +298,7 @@ function roundRobin(challengerCode,rounds,printDebug){
                 tournamentObject.losses++;
                 break;
         }
+        
     });
 
     return informationObject;
@@ -237,6 +313,15 @@ class codeReader{
         this.debugErrors = [];
     }
 
+    compileScript(){
+        try{
+            const script = new VMScript(this.code).compile();
+            const script2 = new VMScript("module.exports = Math.random()");
+        }
+        catch (err){
+            console.log("ERROR: " + err);
+        }
+    }
     saveScript(codeArg){
         try {
             this.P1Code = new VMScript(this.code);

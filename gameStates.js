@@ -10,6 +10,7 @@ class gameStates{
     }
 
     printGameBoard(){
+        let stringBoi = '';
         let rowText='';
         let gameBoard = this.gameBoard;
         for(let i=0; i<gameBoard.length;i++)
@@ -18,9 +19,10 @@ class gameStates{
             {
                 rowText+=gameBoard[i][j]+' ';
             }
-            console.log(rowText);
+            stringBoi += rowText +"\n";
             rowText = '';
         }
+        return stringBoi;
     }
 
     areAllSlotsFilled(){
@@ -78,6 +80,14 @@ class gameStates{
     static checkAdj(a,b,c,d) {
         // Check first cell non-zero and all cells match
         return ((a != 0) && (a == b) && (a == c) && (a == d));
+    }
+
+    returnBoard(){
+        let gameBoard = this.gameBoard;
+        let tempBoard = [];
+		for (var j = 0; j < gameBoard.length; j++)
+            tempBoard[j] = gameBoard[j].slice();
+        return tempBoard;
     }
 }
 
