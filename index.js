@@ -58,7 +58,7 @@ express()
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5);
+    let battleReport = roundRobin(challenger,1,5,false);
 
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
