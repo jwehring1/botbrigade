@@ -11,27 +11,29 @@
 <div class="jumbotron text-center">
     <h2>Create an account</h2>
       <div class = "box-wrapper">
-        <form action="/input_user" method="POST">
-          <h4 class = "add_user">Username: <input id= "username" type= "text" name = "user"></input><h4>
-          <h4 class = "add_user">Password: <input id= "pass" type= "password" name = "pass"></input>
+        <div class = "align">
+          <form action="/input_user" method="POST">
+            <h4 class = "add_user">Username: <input id= "username" type= "text" name = "user"></input></h4>
+            <h4 class = "add_user">Password: <input id= "pass" type= "password" name = "pass"></input>
 
-            <input type ="checkbox" onclick="showPass()"> Show Password<h4>
-              <script>
-                function showPass(){
-                  var x = document.getElementById("pass");
-                  if (x.type === "password"){
-                    x.type = "text";
+              <input type ="checkbox" onclick="showPass()"> Show Password</h4>
+                <script>
+                  function showPass(){
+                    var x = document.getElementById("pass");
+                    if (x.type === "password"){
+                      x.type = "text";
 
+                    }
+                    else{
+                      x.type = "password";
+                    }
                   }
-                  else{
-                    x.type = "password";
-                  }
-                }
-              </script>
-          <div class = "btn-wrapper">
-              <input class = "create-account-btn" id= "submit-pass" type="submit" value="Create Account" />
-          </div>
-        </form>
+                </script>
+            <div class = "btn-wrapper">
+                <input class = "create-account-btn" id= "submit-pass" type="submit" value="Create Account" />
+            </div>
+          </form>
+        </div>
       </div>
   </div>
 </div>
