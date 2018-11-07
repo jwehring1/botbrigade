@@ -4,12 +4,13 @@ const path = require('path')
 var bodyParser = require('body-parser');
 var multer = require('multer');
 const PORT = process.env.PORT || 5000
-const {writeAI,addUniqueUser}= require('./dbHandler');
+const {writeAI,addUniqueUser,login}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
 let str2 = "";
 let typed_code ="";
+let log_fail_str = "";
 
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
@@ -20,8 +21,9 @@ express()
   .get('/', (req, res) => res.render('index'))
   .get('/tutorial', (req, res) => res.render('tutorial'))
   .get('/sign_up', (req, res) => res.render('sign_up'))
-  .get('/log_in', (req, res) => res.render('log_in'))
+  .get('/log_in', (req, res) => res.render('log_in', {result:""}))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
+  .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str}))
   .get('/results', function(req, res, next){
     let str3 = "" + str2;
     res.render('results', {output: str3, typed: typed_code});
@@ -47,8 +49,16 @@ express()
   })
   .post('/login', function(req, res){
     let username = req.body;
-    console.log(username.user + " " + username.pass);
-    res.redirect('/log_in');
+    let log_success = login(username.user,username.pass);
+    if (log_success){
+
+      res.redirect('/');
+
+    }
+    else{
+      log_fail_str = "Invalid Username or Password. Please try again.";
+      res.redirect('/log_in/fail');
+    }
   })
   /*
   .get('/arcade/results', function(req, res, next){
