@@ -243,3 +243,16 @@ textarea{
 input{
 	color: black;
 }
+.create-account-btn{
+
+	font: 1.4em Roboto, sans-serif;
+}
+.align{
+	width: 600px;
+	margin: 0 auto;
+	text-align: center;
+}
+.align h4{
+	text-align: left;
+	margin-left: 2em;
+}
