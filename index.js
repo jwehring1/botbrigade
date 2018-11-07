@@ -23,10 +23,13 @@ express()
   .get('/sign_up', (req, res) => res.render('sign_up'))
   .get('/log_in', (req, res) => res.render('log_in', {result:""}))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
+  .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code}))
   .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str}))
   .get('/results', function(req, res, next){
-    let str3 = "" + str2;
-    res.render('results', {output: str3, typed: typed_code});
+    res.render('results', {output: str2, typed: typed_code});
+  })
+  .get('/medium_results', function(req, res, next){
+    res.render('medium_results', {output: str2, typed: typed_code});
   })
   .post('/input', function(req, res){
     str2 = "";
@@ -40,6 +43,19 @@ express()
       });
     });
     res.redirect('/results');
+  })
+  .post('/medium_input', function(req, res){
+    str2 = "";
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,5);
+
+    battleReport.orderedReport.forEach(element => {
+      element.forEach(element => {
+        str2+=element + "\n";
+      });
+    });
+    res.redirect('/medium_results');
   })
 
   .post('/input_user', function(req, res){
