@@ -1,6 +1,7 @@
 const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
@@ -25,11 +26,10 @@ express()
   }))
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
-  .get('/', function(req, res) {
-      console.log(req.session.user);
-      res.render('index');
-
-    })
+  .get('/', function(req,res){
+    console.log(req.session.user);
+    res.render('index');
+  })
   .get('/tutorial', (req, res) => res.render('tutorial'))
   .get('/sign_up', (req, res) => res.render('sign_up'))
   .get('/log_in', (req, res) => res.render('log_in', {result:""}))
@@ -77,11 +77,8 @@ express()
     let username = req.body;
     let log_success = login(username.user,username.pass);
     if (log_success){
-      
       req.session.user = username.user;
       res.redirect('/');
-
-
     }
     else{
       log_fail_str = "Invalid Username or Password. Please try again.";
@@ -103,8 +100,7 @@ express()
   */
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
-
-  // let test2 = addUniqueUser("Doofenshmirtz","I<3Perry")
+ let test2 = addUniqueUser("A","B")
 //  let test = writeAI("zemo","mission_report","December 16, 1991");
   let str = readTextFile('UserCode/minMaxStupid.js');
   
