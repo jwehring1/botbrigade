@@ -13,6 +13,7 @@ const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,print
 let str2 = "";
 let typed_code ="";
 let log_fail_str = "";
+let is_logged_in = false;
 
 express()
   .use(express.static(path.join(__dirname, 'application/public')))
@@ -27,20 +28,25 @@ express()
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
   .get('/', function(req,res){
-    console.log(req.session.user);
-    res.render('index');
+    if(is_logged_in){
+      console.log(req.session.user);
+    }
+    else{
+      console.log("no.");
+    }
+    res.render('index', {account:req.session});
   })
-  .get('/tutorial', (req, res) => res.render('tutorial'))
-  .get('/sign_up', (req, res) => res.render('sign_up'))
-  .get('/log_in', (req, res) => res.render('log_in', {result:""}))
-  .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code}))
-  .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code}))
-  .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str}))
+  .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
+  .get('/sign_up', (req, res) => res.render('sign_up', {account:req.session}))
+  .get('/log_in', (req, res) => res.render('log_in', {result:"", account:req.session}))
+  .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code, account:req.session}))
+  .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
+  .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str,account: req.session}))
   .get('/results', function(req, res, next){
-    res.render('results', {output: str2, typed: typed_code});
+    res.render('results', {output: str2, typed: typed_code, account: req.session});
   })
   .get('/medium_results', function(req, res, next){
-    res.render('medium_results', {output: str2, typed: typed_code});
+    res.render('medium_results', {output: str2, typed: typed_code, account: req.session});
   })
   .post('/input', function(req, res){
     str2 = "";
@@ -78,6 +84,7 @@ express()
     let log_success = login(username.user,username.pass);
     if (log_success){
       req.session.user = username.user;
+      is_logged_in = true;
       res.redirect('/');
     }
     else{

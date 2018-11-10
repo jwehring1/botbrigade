@@ -43,6 +43,9 @@ function readUsers(){
 }
 
 function isUniqueUsername(userName){
+    if(userName == ""){
+        return false;
+    }
     let fs = require('fs');
     let contents = [];
     contents = fs.readFileSync(theGreatLibrary, 'utf8');

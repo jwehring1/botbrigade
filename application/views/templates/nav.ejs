@@ -18,12 +18,21 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <% if(account && account.user){ %>
+      <li class="navbar-right">
+        <a href="/sign_up"></span> <%= account.user %> </a>
+      </li>
+      <li class="navbar-right">
+        <a href="/log_in"></span> Log Out</a>
+      </li>
+      <%} else{ %>
       <li class="navbar-right">
         <a href="/sign_up"></span> Sign Up</a>
       </li>
       <li class="navbar-right">
         <a href="/log_in"></span> Log In</a>
       </li>
+      <% } %>
     </ul>
   </div>
 </nav>
