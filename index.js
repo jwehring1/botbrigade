@@ -1,7 +1,6 @@
 const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
-var session = require('express-session');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
@@ -37,10 +36,13 @@ express()
     res.render('index', {account:req.session});
   })
   .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
+  .get('/leaderboards', (req, res) => res.render('leaderboards', {account:req.session}))
+  .get('/arcade', (req, res) => res.render('arcade', {account:req.session}))
   .get('/sign_up', (req, res) => res.render('sign_up', {account:req.session}))
   .get('/log_in', (req, res) => res.render('log_in', {result:"", account:req.session}))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code, account:req.session}))
   .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
+  .get('/advanced_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
   .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str,account: req.session}))
   .get('/results', function(req, res, next){
     res.render('results', {output: str2, typed: typed_code, account: req.session});
@@ -91,6 +93,12 @@ express()
       log_fail_str = "Invalid Username or Password. Please try again.";
       res.redirect('/log_in/fail');
     }
+  })
+  .post('/logout', function(req,res){
+    is_logged_in = false;
+    req.session.destroy();
+    res.redirect('/');
+
   })
   /*
   .get('/arcade/results', function(req, res, next){

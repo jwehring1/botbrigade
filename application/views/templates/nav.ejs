@@ -2,35 +2,37 @@
   <div class="container">
     <ul class="nav navbar-nav">
       <li class="active">
-        <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
+        <a href="/">Home</a>
       </li>
       <li>
-        <a href="/tutorial"><span class="glyphicon glyphicon-user"></span> Tutorial</a>
+        <a href="/tutorial">Tutorial</a>
       </li>
       <li>
-        <a href="#"><span class="glyphicon glyphicon-user"></span> Arcade</a>
+        <a href="/arcade">Arcade</a>
       </li>
       <li>
-        <a href="#"><span class="glyphicon glyphicon-user"></span> Leaderboards</a>
+        <a href="/leaderboards">Leaderboards</a>
       </li>
       <li>
-        <a href="#"><span class="glyphicon glyphicon-user"></span> Upload</a>
+        <a href="#">Upload</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <% if(account && account.user){ %>
       <li class="navbar-right">
-        <a href="/sign_up"></span> <%= account.user %> </a>
+        <a href="/leaderboards"> <%= account.user %> </a>
       </li>
       <li class="navbar-right">
-        <a href="/log_in"></span> Log Out</a>
+        <form action="/logout" method="POST">
+              <input class = "logout-btn" id= "code" type="submit" value="Log Out" />
+        </form>
       </li>
       <%} else{ %>
       <li class="navbar-right">
-        <a href="/sign_up"></span> Sign Up</a>
+        <a href="/sign_up"> Sign Up</a>
       </li>
       <li class="navbar-right">
-        <a href="/log_in"></span> Log In</a>
+        <a href="/log_in"> Log In</a>
       </li>
       <% } %>
     </ul>

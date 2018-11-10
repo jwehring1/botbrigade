@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Arcade</title>
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <% include templates/nav.ejs %>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  	<% include templates/header.ejs %>
+  	<div class = "page-wrapper">
+	    <h2>Select a Game Mode</h2>
+
+		<a href= "/input_ai"><section class="cf-arcade-1">
+			<h2>Round Robin</h2>
+			<p>Play against AIs or something idk. Sed venenatis semper libero. Suspendisse ut lorem. Mauris id quam. Phasellus massa. Mauris dapibus orci sed tellus semper interdum. Sed sit amet justo eu neque feugiat condimentum. Cras non odio non enim scelerisque sollicitudin. Nulla vitae quam sit amet nisi scelerisque hendrerit. Phasellus mattis venenatis ante. Suspendisse augue.</p>
+		</section></a>
+		<a href = "/medium_tutorial"><section class="cf-arcade">
+			<h2>Ranked</h2>
+			<p>Morbi odio odio, varius in, fermentum vitae, mattis ac, massa. Sed venenatis semper libero. Suspendisse ut lorem. Mauris id quam. Phasellus massa. Mauris dapibus orci sed tellus semper interdum. Sed sit amet justo eu neque feugiat condimentum. Cras non odio non enim scelerisque sollicitudin. Nulla vitae quam sit amet nisi scelerisque hendrerit. Phasellus mattis venenatis ante. Suspendisse augue.</p>
+		</section>
+		</a>
+		<section class="cf-arcade">
+			<h2>Against Human</h2>
+			<p>Morbi odio odio, varius in, fermentum vitae, mattis ac, massa. Sed venenatis semper libero. Suspendisse ut lorem. Mauris id quam. Phasellus massa. Mauris dapibus orci sed tellus semper interdum. Sed sit amet justo eu neque feugiat condimentum. Cras non odio non enim scelerisque sollicitudin. Nulla vitae quam sit amet nisi scelerisque hendrerit. Phasellus mattis venenatis ante. Suspendisse augue.</p>
+		</section>
+	</div>
+<% include templates/footer.ejs %>
+  </body>
+</html>
