@@ -51,6 +51,21 @@ express()
     res.render('medium_results', {output: str2, typed: typed_code, account: req.session});
   })
   .post('/input', function(req, res){
+    //TODO: COMPILE CODE
+    str2 = "";
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,5);
+    battleReport.orderedReport.forEach(element => {
+      element.forEach(element => {
+        str2+=element + "\n";
+      });
+    });
+    res.redirect('/results');
+  })
+  .post('/submit_beginner', function(req, res){
+    //TODO: ROUNDROUBIN HERE
+    console.log("over here, ya clod!")
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");

@@ -223,6 +223,7 @@ textarea{
 	color: black;
 	background-color: white;
 	margin: 0 auto;
+	margin-right: -25%;
 	text-align: center;
 	width: 200px;
 	padding: .5em;
@@ -230,6 +231,27 @@ textarea{
 }
 .upload-btn:hover{
 	background-color: rgb(200,200,200);
+}
+
+.btn-wrapper-submit{
+	margin-right: 10%;
+
+		clear: both;
+
+}
+.upload-btn-submit{
+	float: right;
+	font: bold 1.7em Roboto, sans-serif;
+	color: white;
+	background-color: #0D1421;;
+	margin-right: 10%;
+	text-align: center;
+	width: 200px;
+	padding: .5em;
+	border-radius: 3px;
+}
+.upload-btn-submit:hover{
+	background-color: rgb(80,80,110);
 }
 /*RESULTS PAGE*/
 .console_window{

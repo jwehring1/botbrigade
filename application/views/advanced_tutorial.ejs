@@ -11,15 +11,15 @@
 	    <h2>Medium Tutorial</h2>
 		    <% include templates/medium.html %>
 		<div class = "box-wrapper">
-			<form action="/input" method="POST">
+			<form method="POST">
 				<h4 class = "pretext"> module.exports = function(boardState,playerNumber) {</h4>
 				<textarea id= "code-input" type= "text" name = "code2"><%= typed%></textarea>
 				<h4 class = "pretext">}</h4>
 				<div class = "btn-wrapper">
-				    <input class = "upload-btn" id= "code" type="submit" value="Submit Code" />
+				    <input formaction = "/advanced_input" class = "upload-btn" type="submit" value="Compile Code" />
+				    <input formaction = "/submit_advanced" class = "upload-btn-submit" type="submit" value="Submit Code" />
 				</div>
-			</form>
-			<form action="/results" method = "GET">
+
 			</form>
 		</div>
 
