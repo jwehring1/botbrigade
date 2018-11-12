@@ -2,7 +2,7 @@
 //const {NodeVM, VMScript} = require('vm2');
 const {NodeVM, VMScript} = require('vm2');
 const readline = require('readline');
-
+const performance = require('perf_hooks').performance;
 const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
 const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
@@ -44,6 +44,8 @@ const vm = new NodeVM({
         gameStates: [],
         errors: [],
         orderedReport: [],
+        p1TimeTaken: 0.0000,
+        p2TimeTaken: 0.0000,
     };
     for(let i = 0; i < games; i++) {
         //Initialize game State
@@ -63,7 +65,10 @@ const vm = new NodeVM({
 
         //Initialize A.I
         function p1Turn(){
+                let initTime = performance.now();
                 let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
+                let postTime = performance.now();
+                singleFightObject.p1TimeTaken+=postTime-initTime;
                 let error = gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1);
                 let winner = gameBoard.winner;
           if (error == -1){
@@ -79,7 +84,7 @@ const vm = new NodeVM({
               }
               if (printDebug > 3){
                 if (code1.currentError.isEmpty()){
-                    let log = "P1 attempted to place at slot " + p1Selection + " ,but this is already full";
+                    let log = "P1 attempted to place at slot " + p1Selection + ", but this is already full";
                     console.log(log);
                     singleFightObject.gameText.push(log);
                     singleFightObject.orderedReport.push(log);
@@ -101,7 +106,10 @@ const vm = new NodeVM({
 
 
         function p2Turn(){
+            let initTime = performance.now();
             let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
+            let postTime = performance.now();
+            singleFightObject.p2TimeTaken+=postTime-initTime;
             let error = gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2);
             let winner = gameBoard.winner;
             if(error == -1){
@@ -303,11 +311,13 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
 
     return informationObject;
 }
-
-
+let placeTempChecker = "function PlaceChecker(tempBoard,col,player){if(tempBoard[0][col]!=0){gameRow = -1;return tempBoard;}for(var i = 0; i<6; i++){if(tempBoard[i][col]!=0){break;}}tempBoard[i-1][col] = player;gameRow = i-1;return tempBoard;} ";
+let checkFull = "function checkFull(tempBoard){for(var i=0; i<tempBoard.length; i++){if(tempBoard[i][5]==0)return false;}return true;} "
+let checkAdj = 	"function checkAdj(a,b,c,d) {return ((a != 0) && (a == b) && (a == c) && (a == d));} "
+let checkWinner = "function checkWinner(gameBoard,placedRow,placedColumn) {for (row = 0; row < 3; row++)if (checkAdj(gameBoard[row][placedColumn], gameBoard[row+1][placedColumn], gameBoard[row+2][placedColumn], gameBoard[row+3][placedColumn]))return gameBoard[row][placedColumn];for (col = 0; col < 4; col++)if (checkAdj(gameBoard[placedRow][col], gameBoard[placedRow][col+1], gameBoard[placedRow][col+2], gameBoard[placedRow][col+3]))return gameBoard[placedRow][col];for (row = 0; row < 3; row++)for (col = 0; col < 4; col++)if (checkAdj(gameBoard[row][col], gameBoard[row+1][col+1], gameBoard[row+2][col+2], gameBoard[row+3][col+3]))return gameBoard[row][col];for (row = 3; row < 6; row++)for (col = 0; col < 4; col++)if (checkAdj(gameBoard[row][col], gameBoard[row-1][col+1], gameBoard[row-2][col+2], gameBoard[row-3][col+3]))return gameBoard[row][col];return 0;} "
 class codeReader{
     constructor(AICode,name){
-        this.code = 'module.exports = function(boardState,playerNumber) { '+ AICode + ' }';
+        this.code = 'module.exports = function(boardState,playerNumber) { '+placeTempChecker+checkFull+checkAdj+checkWinner+ AICode + ' }';
         this.name = name;
         this.currentError = {};
         this.debugErrors = [];
@@ -335,6 +345,7 @@ class codeReader{
         try{
             let p1functionInSandbox = vm.run(this.code);
             returnVal = p1functionInSandbox(boardState,player);
+            //console.log("TIME TAKEN: " + timeTaken + " Player: " + player);
         } catch (err) {
             //Return Debugging Errors here
             this.currentError = err;
