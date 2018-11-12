@@ -311,11 +311,13 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
 
     return informationObject;
 }
-
-
+let placeTempChecker = "function PlaceChecker(tempBoard,col,player){if(tempBoard[0][col]!=0){gameRow = -1;return tempBoard;}for(var i = 0; i<6; i++){if(tempBoard[i][col]!=0){break;}}tempBoard[i-1][col] = player;gameRow = i-1;return tempBoard;} ";
+let checkFull = "function checkFull(tempBoard){for(var i=0; i<tempBoard.length; i++){if(tempBoard[i][5]==0)return false;}return true;} "
+let checkAdj = 	"function checkAdj(a,b,c,d) {return ((a != 0) && (a == b) && (a == c) && (a == d));} "
+let checkWinner = "function checkWinner(gameBoard,placedRow,placedColumn) {for (row = 0; row < 3; row++)if (checkAdj(gameBoard[row][placedColumn], gameBoard[row+1][placedColumn], gameBoard[row+2][placedColumn], gameBoard[row+3][placedColumn]))return gameBoard[row][placedColumn];for (col = 0; col < 4; col++)if (checkAdj(gameBoard[placedRow][col], gameBoard[placedRow][col+1], gameBoard[placedRow][col+2], gameBoard[placedRow][col+3]))return gameBoard[placedRow][col];for (row = 0; row < 3; row++)for (col = 0; col < 4; col++)if (checkAdj(gameBoard[row][col], gameBoard[row+1][col+1], gameBoard[row+2][col+2], gameBoard[row+3][col+3]))return gameBoard[row][col];for (row = 3; row < 6; row++)for (col = 0; col < 4; col++)if (checkAdj(gameBoard[row][col], gameBoard[row-1][col+1], gameBoard[row-2][col+2], gameBoard[row-3][col+3]))return gameBoard[row][col];return 0;} "
 class codeReader{
     constructor(AICode,name){
-        this.code = 'module.exports = function(boardState,playerNumber) { '+ AICode + ' }';
+        this.code = 'module.exports = function(boardState,playerNumber) { '+placeTempChecker+checkFull+checkAdj+checkWinner+ AICode + ' }';
         this.name = name;
         this.currentError = {};
         this.debugErrors = [];

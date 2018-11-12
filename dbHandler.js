@@ -22,11 +22,10 @@ function addUser(userName,plainText){
     let rand = "!,@,#,%kjdsakleja*3k4234lk,jdjlka*#^$*&!jhdfs3&#&*@JKFDH(@*@*(&#*$";
     var password = CryptoJS.AES.encrypt(plainText, rand,{}).toString();
     var decrypt = CryptoJS.AES.decrypt(password.toString(),rand,{}).toString(CryptoJS.enc.Utf8);
-    console.log(decrypt);
     let fs = require('fs');
     let data = fs.readFileSync(theGreatLibrary, 'utf8');
     let userTable = JSON.parse(data);
-    userTable.push({userName: userName, password: password});
+    userTable.push({userName: userName, password: password, rank: -1, code:""});
     let json = JSON.stringify(userTable);
     fs.writeFileSync(theGreatLibrary, json, 'utf8',userTable);
 }
@@ -108,10 +107,57 @@ function login(userName,decPass){
     return false;
 }
 
+function getRank(userName)
+{
+    let fs = require('fs');
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            return userTable[i].rank;
+        }
+    }
+}
+
+function getCodes(userName)
+{
+    let fs = require('fs');
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            return userTable[i].code;
+        }
+    }
+}
+
+function addCode(userName,userCode)
+{
+    let fs = require('fs');
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            userTable[i].code=userCode;
+            let json = JSON.stringify(userTable);
+            fs.writeFileSync(theGreatLibrary, json, 'utf8',userTable);
+        }
+    }
+}
+
   module.exports = {
     writeAI,
     addUniqueUser,
-    login
+    login,
+    getRank,
+    getCodes,
+    addCode
 }
 
 
