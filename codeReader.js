@@ -2,7 +2,7 @@
 //const {NodeVM, VMScript} = require('vm2');
 const {NodeVM, VMScript} = require('vm2');
 const readline = require('readline');
-
+const performance = require('perf_hooks').performance;
 const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
 const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
@@ -44,6 +44,8 @@ const vm = new NodeVM({
         gameStates: [],
         errors: [],
         orderedReport: [],
+        p1TimeTaken: 0.0000,
+        p2TimeTaken: 0.0000,
     };
     for(let i = 0; i < games; i++) {
         //Initialize game State
@@ -63,7 +65,10 @@ const vm = new NodeVM({
 
         //Initialize A.I
         function p1Turn(){
+                let initTime = performance.now();
                 let p1Selection = code1.runCodeTurn(gameBoard.gameBoard,1);
+                let postTime = performance.now();
+                singleFightObject.p1TimeTaken+=postTime-initTime;
                 let error = gameBoard.PlaceCheckerAndCheckWinner(p1Selection,1);
                 let winner = gameBoard.winner;
           if (error == -1){
@@ -79,7 +84,7 @@ const vm = new NodeVM({
               }
               if (printDebug > 3){
                 if (code1.currentError.isEmpty()){
-                    let log = "P1 attempted to place at slot " + p1Selection + " ,but this is already full";
+                    let log = "P1 attempted to place at slot " + p1Selection + ", but this is already full";
                     console.log(log);
                     singleFightObject.gameText.push(log);
                     singleFightObject.orderedReport.push(log);
@@ -101,7 +106,10 @@ const vm = new NodeVM({
 
 
         function p2Turn(){
+            let initTime = performance.now();
             let p2Selection = code2.runCodeTurn(gameBoard.gameBoard,2);
+            let postTime = performance.now();
+            singleFightObject.p2TimeTaken+=postTime-initTime;
             let error = gameBoard.PlaceCheckerAndCheckWinner(p2Selection,2);
             let winner = gameBoard.winner;
             if(error == -1){
@@ -335,6 +343,7 @@ class codeReader{
         try{
             let p1functionInSandbox = vm.run(this.code);
             returnVal = p1functionInSandbox(boardState,player);
+            //console.log("TIME TAKEN: " + timeTaken + " Player: " + player);
         } catch (err) {
             //Return Debugging Errors here
             this.currentError = err;
