@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Beginner Tutorial</title>
+    <title>Ranked Submission</title>
     <% include templates/nav.ejs %>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
   	<% include templates/header.ejs %>
   	<div class = "page-wrapper">
-	    <h2>Beginner Tutorial</h2>
-		    <% include templates/tutorial_text_basic.ejs %>
+	    <h2>Round Robin Ranked</h2>
 		<div class = "box-wrapper">
 			<form method="POST">
 				<li class = "dropdown">Available Functions:
@@ -23,12 +22,18 @@
 				<textarea id= "code-input" type= "text" name = "code2"><%= typed%></textarea>
 				<h4 class = "pretext">}</h4>
 				<div class = "btn-wrapper">
-				    <input formaction = "/input" class = "upload-btn" type="submit" value="Compile Code" />
-				    <input formaction = "/submit_beginner" class = "upload-btn-submit" type="submit" value="Submit Code" />
+				    <input formaction = "/ranked_compile" class = "upload-btn" type="submit" value="Compile Code" />
+				    <input formaction = "/submit_ranked" class = "upload-btn-submit" type="submit" value="Submit Code" />
 				</div>
 
 			</form>
-			<form action="/results" method = "GET">
+			<form action="/round_robin/results" method = "GET">
+				<%if(output != ""){%>
+				<article class = "console_window">
+					<h3> Results/Debugger Window</h3>
+					<pre><%= output%></pre>
+				</article>
+				<%}%>
 			</form>
 		</div>
 

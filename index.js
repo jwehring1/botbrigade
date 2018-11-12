@@ -38,17 +38,22 @@ express()
   .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
   .get('/leaderboards', (req, res) => res.render('leaderboards', {account:req.session}))
   .get('/arcade', (req, res) => res.render('arcade', {account:req.session}))
-  .get('/sign_up', (req, res) => res.render('sign_up', {account:req.session}))
+  .get('/sign_up', (req, res) => res.render('sign_up', {result: "", account:req.session}))
   .get('/log_in', (req, res) => res.render('log_in', {result:"", account:req.session}))
   .get('/input_ai', (req, res) => res.render('input_ai', {output:"", typed: typed_code, account:req.session}))
+  .get('/round_robin', (req, res) => res.render('round_robin', {output:"", typed: typed_code, account:req.session}))
   .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
   .get('/advanced_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
   .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str,account: req.session}))
+  .get('/sign_up/fail', (req, res) => res.render('sign_up', {result:log_fail_str,account: req.session}))
   .get('/results', function(req, res, next){
     res.render('results', {output: str2, typed: typed_code, account: req.session});
   })
   .get('/medium_results', function(req, res, next){
     res.render('medium_results', {output: str2, typed: typed_code, account: req.session});
+  })
+  .get('/round_robin/results', function(req, res, next){
+    res.render('round_robin', {output: str2, typed: typed_code, account: req.session});
   })
   .post('/input', function(req, res){
     //TODO: COMPILE CODE
@@ -64,6 +69,33 @@ express()
     res.redirect('/results');
   })
   .post('/submit_beginner', function(req, res){
+    //TODO: ROUNDROUBIN HERE
+    console.log("over here, ya clod!")
+    str2 = "";
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,5);
+    battleReport.orderedReport.forEach(element => {
+      element.forEach(element => {
+        str2+=element + "\n";
+      });
+    });
+    res.redirect('/results');
+  })
+  .post('/ranked_compile', function(req, res){
+    //TODO: COMPILE CODE
+    str2 = "";
+    typed_code = req.body.code2;
+    let challenger = new codeReader(typed_code,"PlayerCode");
+    let battleReport = roundRobin(challenger,1,5);
+    battleReport.orderedReport.forEach(element => {
+      element.forEach(element => {
+        str2+=element + "\n";
+      });
+    });
+    res.redirect('/results');
+  })
+  .post('/submit_ranked', function(req, res){
     //TODO: ROUNDROUBIN HERE
     console.log("over here, ya clod!")
     str2 = "";
@@ -93,8 +125,17 @@ express()
 
   .post('/input_user', function(req, res){
     let username = req.body;
-    addUniqueUser(username.user,username.pass);
-    res.redirect('/sign_up');
+    if(addUniqueUser(username.user,username.pass)){
+      login(username.user,username.pass);
+      req.session.user = username.user;
+      is_logged_in = true;
+      res.redirect('/');
+    }
+    else{
+
+      log_fail_str = "Username is invalid or already exists. Try again.";
+      res.redirect('/sign_up/fail');
+    }
   })
   .post('/login', function(req, res){
     let username = req.body;

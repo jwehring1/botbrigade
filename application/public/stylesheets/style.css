@@ -197,6 +197,7 @@ a:hover{
 	text-align: left;
 	color: white;
 	font-family: "Courier New", sans-serif;
+	float:left;
 }
 textarea{
 	color: black;
@@ -253,6 +254,66 @@ textarea{
 .upload-btn-submit:hover{
 	background-color: rgb(80,80,110);
 }
+.dropdown{
+	font: 1.6em Roboto, sans-serif;
+	padding: 10px;
+	text-decoration: none;
+	color: rgb(10,10,40);
+	float: right;
+	background: rgb(200,200,255);
+	margin-right: 30%;
+	list-style-type: none;
+	margin-bottom: 15px;
+}
+.dropdown:hover{
+	background: rgb(130,130,160);
+	text-decoration: none;
+
+}
+/*dropdown menu styles*/
+ul.submenu {
+	background: rgb(150,170,200);
+	position: absolute;
+	top: 2.2em;
+	left: -9000em;
+	text-decoration: none;
+	list-style: none;
+	text-align: left;
+	padding-left: 0;
+}
+ul.submenu li {
+	float: none;
+	position: relative;
+	text-decoration: none;
+	list-style: none;
+	width: 500px;
+	height: 2em;
+	border-bottom: 1px solid white;
+	padding-left: 1em;
+	padding-top: .5em;
+}
+ul.submenu li section{
+	position: absolute;
+	background-color: rgb(200,200,255);
+	color: black;
+	left: -9000em;
+	width: 400px;
+	height: 5em;
+	padding: .5em;
+}
+.dropdown:hover > ul{
+	left: 0;
+}
+ul.submenu li:hover {
+	background-color: rgb(200,200,255);
+}
+ul.submenu li:hover section {
+	left: -27em;
+	top: -1em;
+}
+ul.submenu li:last-child {
+	border-bottom: none;
+}
 /*RESULTS PAGE*/
 .console_window{
 	background-color: rgb(230,230,255);
@@ -262,7 +323,8 @@ textarea{
 	min-width: 500px;
 	width: 80%;
 	font-family: "Courier New", sans-serif;
-	margin-top: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 
 }
 .console_window h3{

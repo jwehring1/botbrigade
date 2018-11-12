@@ -34,6 +34,13 @@
             </div>
           </form>
         </div>
+        <form action="/sign_up/fail" method = "GET">
+        <% if(result != ""){%>
+          <article class = "console_window">
+            <h3><%= result %></h3>
+          </article>
+        <%}%>
+      </form>
       </div>
   </div>
 </div>

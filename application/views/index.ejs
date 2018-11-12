@@ -8,17 +8,25 @@
 
   <% include templates/nav.ejs %>
 
+
 <div class="jumbotron text-center">
+    <% if(account && account.user){ %>
+
+          <article class = "console_window">
+            <h3>Welcome back, <%= account.user %>!</h3>
+          </article>
+      <%} else{ %>
+      <% } %>
   <div class="container">
     <a href="/" class="lang-logo">
       <img src="/images/Energy Ball.png">
     </a>
     <h1>Bot Brigade</h1>
     <p class = "subtitle">Where artificial minds compete</p>
-    <a type="button" class="btn btn-lg btn-default" href="tutorial"><span class="glyphicon glyphicon-flash"></span> Getting Started with Our Tutorial</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Go to the Arcade</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Look at the AI Leaderboards</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Upload an AI Player</a>
+    <a type="button" class="btn btn-lg btn-default" href="tutorial"> Getting Started with Our Tutorial</a>
+    <a type="button" class="btn btn-lg btn-primary" href="arcade"> Go to the Arcade</a>
+    <a type="button" class="btn btn-lg btn-primary" href="leaderboards"> Look at the AI Leaderboards</a>
+    <a type="button" class="btn btn-lg btn-primary" href="#"> Upload an AI Player</a>
   </div>
 </div>
 <% include templates/footer.ejs %>

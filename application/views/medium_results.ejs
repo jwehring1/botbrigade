@@ -12,6 +12,13 @@
 		    <% include templates/medium.html %>
 		<div class = "box-wrapper">
 			<form method="POST">
+				<li class = "dropdown">Available Functions:
+			      <ul class="submenu">
+			      	<li>placeTempChecker(temporary_board, column, player)<section>Returns a temporary board with the checker placed.</section></li>
+			      	<li>checkFull(board)<section>Returns true or false if full.</section></li>
+			      	<li>checkWinner(temporary_board,LastPlacedRow, LastPlacedColumn)<section>Returns who won or zero if tied.</section></li>
+			      </ul>
+			    </li>
 				<h4 class = "pretext"> module.exports = function(boardState,playerNumber) {</h4>
 				<textarea id= "code-input" type= "text" name = "code2"><%= typed%></textarea>
 				<h4 class = "pretext">}</h4>
