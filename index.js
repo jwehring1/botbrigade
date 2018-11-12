@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
 const PORT = process.env.PORT || 5000
-const {writeAI,addUniqueUser,login}= require('./dbHandler');
+const {writeAI,addUniqueUser,login,getRank,getCodes,addCode}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
@@ -27,12 +27,6 @@ express()
   .set('views', path.join(__dirname, 'application/views'))
   .set('view engine', 'ejs')
   .get('/', function(req,res){
-    if(is_logged_in){
-      console.log(req.session.user);
-    }
-    else{
-      console.log("no.");
-    }
     res.render('index', {account:req.session});
   })
   .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
@@ -65,7 +59,6 @@ express()
   })
   .post('/submit_beginner', function(req, res){
     //TODO: ROUNDROUBIN HERE
-    console.log("over here, ya clod!")
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
@@ -131,6 +124,10 @@ express()
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
  let test2 = addUniqueUser("A","B")
+ let test = addUniqueUser("bobby","sorry")
+ console.log(getCodes("A"))
+ let test3 = addCode("A","return 2;")
+ console.log(getCodes("A"))
 //  let test = writeAI("zemo","mission_report","December 16, 1991");
   let str = readTextFile('UserCode/minMaxStupid.js');
   
