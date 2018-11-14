@@ -1,4 +1,5 @@
 const theGreatLibrary = "archives.json"
+const leader = "leaderboard.json"
 var CryptoJS = require("crypto-js");
 
 function writeAI(userName,botName,code){
@@ -151,13 +152,50 @@ function addCode(userName,userCode)
     }
 }
 
+function setRank(userName,rank)
+{
+    let fs = require('fs');
+    let leaderData =  fs.readFileSync(leader, 'utf8');
+    let userTable = JSON.parse(leaderData);
+    if(userTable.indexOf(userName)==-1)
+        userTable.splice(rank,0,userName);
+    else
+    {
+        userTable.splice(userTable.indexOf(userName),1);
+        userTable.splice(rank,0,userName);
+    }
+    let json = JSON.stringify(userTable);
+    fs.writeFileSync(leader, json, 'utf8',userTable);
+    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    userTable = JSON.parse(data);
+    for(i=0; i<userTable.length;i++)
+    {
+        if(userTable[i].userName==userName)
+        {
+            userTable[i].rank=rank;
+            let json = JSON.stringify(userTable);
+            fs.writeFileSync(theGreatLibrary, json, 'utf8',userTable);
+        }
+    }
+}
+
+function getLeaderboard()
+{
+    let fs = require('fs');
+    let data = fs.readFileSync(leader, 'utf8');
+    let userTable = JSON.parse(data);
+    return userTable;
+}
+
   module.exports = {
     writeAI,
     addUniqueUser,
     login,
     getRank,
     getCodes,
-    addCode
+    addCode,
+    setRank,
+    getLeaderboard
 }
 
 

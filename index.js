@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
 const PORT = process.env.PORT || 5000
-const {writeAI,addUniqueUser,login,getRank,getCodes,addCode}= require('./dbHandler');
+const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank,getLeaderboard}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
@@ -20,7 +20,7 @@ express()
   .use(bodyParser.urlencoded({ extended: true}))
   .use(session({
     cookieName: 'session',
-    secret: 'random_string_goes_here',
+    secret: 'Cats Like Surfing On Mountains',
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
   }))
@@ -175,6 +175,12 @@ express()
  let test = addUniqueUser("bobby","sorry")
  console.log(getCodes("A"))
  let test3 = addCode("A","return 2;")
+ let test4 = setRank("F",0)
+ let test5 = setRank("E",0)
+ let test6 = setRank("D",0)
+ let test7 = setRank("C",0)
+ let test8 = setRank("B",0)
+ let test9 = setRank("A",6)
  console.log(getCodes("A"))
 //  let test = writeAI("zemo","mission_report","December 16, 1991");
   let str = readTextFile('UserCode/minMaxStupid.js');
