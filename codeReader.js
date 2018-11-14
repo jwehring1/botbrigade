@@ -294,7 +294,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
     }
     }
 
-    leaderCodes.forEach(defendingCode => {
+    leaderCodes.some(defendingCode => {
         let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug,true);
         let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug,true);
         tournamentObject.battlesAsP1.push(battleObject);
@@ -302,31 +302,24 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
 
         informationObject.orderedReport.push(battleObject.orderedReport);
         informationObject.orderedReport.push(battleObjectInverted.orderedReport);
-        if (battleObject.errors.length)
-            informationObject.userErrors.push(battleObject.errors);
-        if (battleObjectInverted.errors.length)
-            informationObject.userErrors.push(battleObjectInverted.errors);
-        switch (battleObject.winner) {
-            case 0:
-                tournamentObject.ties++;
-                break;
-            case 1:
-                tournamentObject.wins++;
-                break;
-            case 2:
-                tournamentObject.losses++;
-                break;
+
+        let p1Wins = battleObject.code1Wins;
+        let p2Wins = battleObject.code2Wins;
+        p1Wins += battleObjectInverted.code1Wins;
+        p2Wins += battleObjectInverted.code2Wins;
+
+        let p1Time = battleObject.p1TimeTaken;
+        let p2Time = battleObject.p2TimeTaken;
+        p1Time += battleObjectInverted.p1TimeTaken;
+        p2Time += battleObjectInverted.p2TimeTaken;
+
+        if (p2Wins > p1Wins){
+            console.log("Player lost majority of games.");
+            return true;
         }
-        switch (battleObjectInverted.winner) {
-            case 0:
-                tournamentObject.ties++;
-                break;
-            case 1:
-                tournamentObject.wins++;
-                break;
-            case 2:
-                tournamentObject.losses++;
-                break;
+        else if (p2Wins == p1Wins && p2Time < p1Time){
+            console.log("Player lost due to a tie, and taking more time");
+            return true;
         }
         
     });
