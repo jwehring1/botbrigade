@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
 const PORT = process.env.PORT || 5000
-const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank,getRank}= require('./dbHandler');
+const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank,getLeaderboard}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
