@@ -179,7 +179,7 @@ function setRank(userName,rank)
     }
 }
 
-function getRank()
+function getLeaderboard()
 {
     let fs = require('fs');
     let data = fs.readFileSync(leader, 'utf8');
@@ -194,7 +194,8 @@ function getRank()
     getRank,
     getCodes,
     addCode,
-    setRank
+    setRank,
+    getLeaderboard
 }
 
 

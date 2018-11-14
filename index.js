@@ -4,9 +4,8 @@ const path = require('path')
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
-let leaderboard = ['B','C','D'];
 const PORT = process.env.PORT || 5000
-const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank}= require('./dbHandler');
+const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank,getLeaderboard}= require('./dbHandler');
 
 const {AIBattle,randomAI,alwaysPlaceAt1,codeReader,roundRobin,readTextFile,printAI,outputString} = require('./codeReader.js');
 
@@ -21,7 +20,7 @@ express()
   .use(bodyParser.urlencoded({ extended: true}))
   .use(session({
     cookieName: 'session',
-    secret: 'random_string_goes_here',
+    secret: 'Cats Like Surfing On Mountains',
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
   }))
