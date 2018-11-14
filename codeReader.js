@@ -46,7 +46,18 @@ const vm = new NodeVM({
         orderedReport: [],
         p1TimeTaken: 0.0000,
         p2TimeTaken: 0.0000,
+        userConsole: [],
+        gameOver: false,
     };
+
+    vm.on('console.log', (consoleLog) => {
+        if (singleFightObject.gameOver){
+            return;
+        }
+        console.log(`VM stdout: ${consoleLog}`);
+        singleFightObject.userConsole.push(consoleLog);
+        singleFightObject.orderedReport.push( "User Console Log: " + consoleLog + "\n");
+      });
     for(let i = 0; i < games; i++) {
         //Initialize game State
         let gameBoard = new gameStates();
@@ -171,6 +182,7 @@ const vm = new NodeVM({
                 singleFightObject.gameStates.push(gameBoard.returnBoard());
                 winner = p2Turn();
                 if (winner != 0){
+                    singleFightObject.gameOver = true;
                     break;
                 }
         }
@@ -187,6 +199,7 @@ const vm = new NodeVM({
             p1Turn();
         }
         if (gameBoard.winner != 0){
+            singleFightObject.gameOver = true;
             break;
         }
         
@@ -206,6 +219,9 @@ const vm = new NodeVM({
         }
         else{
             winnerString = code2.name;
+        }
+        if (printDebug > 2){
+            singleFightObject.orderedReport.push(gameBoard.printGameBoard());
         }
         let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n";
         console.log(log);
@@ -232,6 +248,7 @@ const vm = new NodeVM({
         singleFightObject.winner = 0;
       }
 
+
       return singleFightObject;
     }
 }
@@ -246,11 +263,6 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
         orderedReport: [],
     }
 
-    vm.on('console.log', (data) => {
-        console.log(`VM stdout: ${data}`);
-        informationObject.userConsole.push(data);
-        //informationObject.orderedReport.push( "User Console Log: " + data);
-      });
     //Returns this object
     let tournamentObject ={
         wins: 0,
