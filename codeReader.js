@@ -249,7 +249,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
     vm.on('console.log', (data) => {
         console.log(`VM stdout: ${data}`);
         informationObject.userConsole.push(data);
-        informationObject.orderedReport.push( "User Console Log: " + data);
+        //informationObject.orderedReport.push( "User Console Log: " + data);
       });
     //Returns this object
     let tournamentObject ={
