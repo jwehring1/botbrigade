@@ -50,13 +50,15 @@ const vm = new NodeVM({
         gameOver: false,
     };
 
-    vm.on('console.log', (consoleLog) => {
+    vm.on('console.log', function(consoleLog) {
         if (singleFightObject.gameOver){
             return;
         }
+        else{
         console.log(`VM stdout: ${consoleLog}`);
         singleFightObject.userConsole.push(consoleLog);
         singleFightObject.orderedReport.push( "User Console Log: " + consoleLog + "\n");
+        }
       });
     for(let i = 0; i < games; i++) {
         //Initialize game State
@@ -173,6 +175,7 @@ const vm = new NodeVM({
                 singleFightObject.gameStates.push(gameBoard.returnBoard());
                 let winner = p1Turn();
                 if (winner != 0){
+                    singleFightObject.gameOver = true;
                     break;
                 }
 
@@ -205,6 +208,7 @@ const vm = new NodeVM({
         
     }
 
+    singleFightObject.gameOver = true;
 
     if (gameBoard.winner === 1){
         singleFightObject.code1Wins++;
