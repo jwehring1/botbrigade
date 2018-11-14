@@ -86,21 +86,28 @@ express()
         str2+=element + "\n";
       });
     });
-    res.redirect('/results');
+    res.redirect('/round_robin/results');
   })
   .post('/submit_ranked', function(req, res){
-    //TODO: ROUNDROUBIN HERE
     console.log("over here, ya clod!")
     str2 = "";
-    typed_code = req.body.code2;
-    let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5);
-    battleReport.orderedReport.forEach(element => {
-      element.forEach(element => {
-        str2+=element + "\n";
+    if(req.session && req.session.user){
+
+      typed_code = req.body.code2;
+      let challenger = new codeReader(typed_code,"PlayerCode");
+      let battleReport = roundRobin(challenger,1,5);
+      battleReport.orderedReport.forEach(element => {
+        element.forEach(element => {
+          str2+=element + "\n";
+        });
       });
-    });
-    res.redirect('/results');
+      addCode(req.session.user,str2);
+      str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
+    }
+    else{
+      str2 = "ERROR: Please log in to submit your code.\n"
+    }
+    res.redirect('/round_robin/results');
   })
   .post('/medium_input', function(req, res){
     str2 = "";
