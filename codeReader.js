@@ -7,6 +7,7 @@ const randomAI = 'return Math.floor(Math.random() * (7)) + 0;';
 const printAI = 'console.log(boardState)';
 const alwaysPlaceAt1 = 'return 1;';
 const {gameStates} = require('./gameStates.js');
+const {writeAI,addUniqueUser,login,getRank,getCodes,addCode,setRank,getLeaderboard}= require('./dbHandler');
 Object.prototype.isEmpty = function() {
     for(var key in this) {
         if(this.hasOwnProperty(key))
@@ -284,8 +285,13 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
     //Get Top 10 Slots
     //let smartyBoi = readTextFile('UserCode/minMaxSmart.js');
     //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
-    leaderCodes.push(new codeReader(randomAI,"Random"));
-    leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
+    //leaderCodes.push(new codeReader(randomAI,"Random"));
+    //leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
+    let leaderBoard = getLeaderboard();
+    for(let i =leaderBoard.length-1; i=>0; i--)
+    {
+        leaderCodes.push(new codeReader(getCodes(leaderBoard[i]),leaderBoard[i]));
+    }
     }
 
     leaderCodes.forEach(defendingCode => {
