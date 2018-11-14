@@ -34,7 +34,7 @@ express()
     let rank = -1;
     if(req.session && req.session.user){
 
-      rank = getRank(req.session.user);
+      rank = getRank(req.session.user) + 1;
     }
   res.render('leaderboards', {account:req.session, rankings_list: getLeaderboard(),your_rank:rank})
   })
@@ -70,17 +70,23 @@ express()
     res.redirect('/results');
   })
   .post('/submit_beginner', function(req, res){
-    //TODO: ROUNDROUBIN HERE
     str2 = "";
-    typed_code = req.body.code2;
-    let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5);
-    battleReport.orderedReport.forEach(element => {
-      element.forEach(element => {
-        str2+=element + "\n";
+    if(req.session && req.session.user){
+
+      typed_code = req.body.code2;
+      let challenger = new codeReader(typed_code,"PlayerCode");
+      let battleReport = roundRobin(challenger,1,5);
+      battleReport.orderedReport.forEach(element => {
+        element.forEach(element => {
+          str2+=element + "\n";
+        });
       });
-    });
-    res.redirect('/results');
+      addCode(req.session.user,str2);
+      str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
+    }
+    else{
+      str2 = "ERROR: Please log in to submit your code.\n"
+    }
   })
   .post('/ranked_compile', function(req, res){
     //TODO: COMPILE CODE
@@ -96,7 +102,6 @@ express()
     res.redirect('/round_robin/results');
   })
   .post('/submit_ranked', function(req, res){
-    console.log("over here, ya clod!")
     str2 = "";
     if(req.session && req.session.user){
 
@@ -129,6 +134,27 @@ express()
     });
     res.redirect('/medium_results');
   })
+  .post('/submit_medium', function(req, res){
+    str2 = "";
+    if(req.session && req.session.user){
+
+      typed_code = req.body.code2;
+      let challenger = new codeReader(typed_code,"PlayerCode");
+      let battleReport = roundRobin(challenger,1,5);
+      battleReport.orderedReport.forEach(element => {
+        element.forEach(element => {
+          str2+=element + "\n";
+        });
+      });
+      addCode(req.session.user,str2);
+      str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
+    }
+    else{
+      str2 = "ERROR: Please log in to submit your code.\n"
+    }
+    res.redirect('/medium_results');
+  })
+
 
   .post('/input_user', function(req, res){
     let username = req.body;
