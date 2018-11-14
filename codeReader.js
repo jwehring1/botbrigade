@@ -260,6 +260,7 @@ const vm = new NodeVM({
 
 
 function roundRobin(challengerCode,rounds,printDebug,compiling){
+
     let informationObject = {
         gameInfo: [],
         tournamentObj: {},
@@ -276,6 +277,9 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
         battlesAsP1: [],
         battlesAsP2: [],
     };
+
+    let leaderBoard = getLeaderboard();
+    let finalPosition = leaderBoard.length;
     let leaderCodes = [];
 
     if (compiling){
@@ -287,7 +291,6 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
     //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
     //leaderCodes.push(new codeReader(randomAI,"Random"));
     //leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
-     let leaderBoard = getLeaderboard();
      for(let ind =leaderBoard.length-1; ind>-1; ind--)
      {
          leaderCodes.push(new codeReader(getCodes(leaderBoard[ind]),leaderBoard[ind]));
@@ -321,9 +324,10 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
             console.log("Player lost due to a tie, and taking more time");
             return true;
         }
-        
+        finalPosition--;
     });
 
+    console.log("FINAL POSITION: " +finalPosition);
     return informationObject;
 }
 let placeTempChecker = "function PlaceChecker(tempBoard,col,player){if(tempBoard[0][col]!=0){gameRow = -1;return tempBoard;}for(var i = 0; i<6; i++){if(tempBoard[i][col]!=0){break;}}tempBoard[i-1][col] = player;gameRow = i-1;return tempBoard;} ";
