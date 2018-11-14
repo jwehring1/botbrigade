@@ -287,11 +287,11 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
     //leaderCodes.push(new codeReader(smartyBoi,"SmartMinMax"));
     //leaderCodes.push(new codeReader(randomAI,"Random"));
     //leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAtSlot1"));
-    let leaderBoard = getLeaderboard();
-    for(let i =leaderBoard.length-1; i=>0; i--)
-    {
-        leaderCodes.push(new codeReader(getCodes(leaderBoard[i]),leaderBoard[i]));
-    }
+     let leaderBoard = getLeaderboard();
+     for(let ind =leaderBoard.length-1; ind>-1; ind--)
+     {
+         leaderCodes.push(new codeReader(getCodes(leaderBoard[ind]),leaderBoard[ind]));
+     }
     }
 
     leaderCodes.some(defendingCode => {
