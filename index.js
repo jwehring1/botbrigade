@@ -30,7 +30,14 @@ express()
     res.render('index', {account:req.session});
   })
   .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
-  .get('/leaderboards', (req, res) => res.render('leaderboards', {account:req.session}))
+  .get('/leaderboards', function(req, res){
+    let rank = -1;
+    if(req.session && req.session.user){
+
+      rank = getRank(req.session.user);
+    }
+  res.render('leaderboards', {account:req.session, rankings_list: getLeaderboard(),your_rank:rank})
+  })
   .get('/arcade', (req, res) => res.render('arcade', {account:req.session}))
   .get('/sign_up', (req, res) => res.render('sign_up', {result: "", account:req.session}))
   .get('/log_in', (req, res) => res.render('log_in', {result:"", account:req.session}))

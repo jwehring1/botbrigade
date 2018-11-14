@@ -16,42 +16,18 @@
 
 		<section class="cf-leaderboards">
 			<h2>Rankings</h2>
-			<pre class = "rankings">1.) Daddy_Issues
-2.) Mommy_Issues
-3.) Issues_With_Tissues
-4
-5
-6
-7
-8
-9
-0
-1
-2
-3
-3
-4
-5
-6
-7
-8
-9
-0
-0
-0
-0
-0
-0
-0
-0
-hello, friend :)</pre>
+			<ol class = "rankings">
+				<% for (i = 0; i < rankings_list.length; i++){%>
+				<li>     <%=rankings_list[i]%></li>
+				<%}%>
+			</ol>
 		</section></a>
 
 		<% if(account && account.user){ %>
 		
 			<article class = "console_window">
 				<h3> Your Rank:</h3>
-				<p>124). <%= account.user%><p>
+				<p><%=your_rank%>).     <%= account.user%></p>
 			</article>
 		<% } %>
 
