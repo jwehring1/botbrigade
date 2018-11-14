@@ -326,8 +326,10 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
         }
         finalPosition--;
     });
+    if (compiling){
     setRank(userName,finalPosition);
     console.log("FINAL POSITION: " +finalPosition);
+    }
     return informationObject;
 }
 let placeTempChecker = "function PlaceChecker(tempBoard,col,player){if(tempBoard[0][col]!=0){gameRow = -1;return tempBoard;}for(var i = 0; i<6; i++){if(tempBoard[i][col]!=0){break;}}tempBoard[i-1][col] = player;gameRow = i-1;return tempBoard;} ";
