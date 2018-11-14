@@ -18,7 +18,7 @@ function compileCode(req,res){
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5,true,req.session.user);
+    let battleReport = roundRobin(challenger,1,5,req.session.user);
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
         str2+=element + "\n";
