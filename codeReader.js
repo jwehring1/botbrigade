@@ -259,7 +259,7 @@ const vm = new NodeVM({
 }
 
 
-function roundRobin(challengerCode,rounds,printDebug,compiling){
+function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
     let informationObject = {
         gameInfo: [],
@@ -326,7 +326,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling){
         }
         finalPosition--;
     });
-
+    setRank(userName,finalPosition);
     console.log("FINAL POSITION: " +finalPosition);
     return informationObject;
 }

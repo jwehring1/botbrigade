@@ -61,7 +61,7 @@ express()
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5,true);
+    let battleReport = roundRobin(challenger,1,5,true,req.session.user);
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
         str2+=element + "\n";
@@ -75,7 +75,7 @@ express()
 
       typed_code = req.body.code2;
       let challenger = new codeReader(typed_code,"PlayerCode");
-      let battleReport = roundRobin(challenger,1,5);
+      let battleReport = roundRobin(challenger,1,5,false,req.session.user);
       battleReport.orderedReport.forEach(element => {
         element.forEach(element => {
           str2+=element + "\n";
@@ -93,7 +93,7 @@ express()
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5);
+    let battleReport = roundRobin(challenger,1,5,false,req.session.user);
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
         str2+=element + "\n";
@@ -107,7 +107,7 @@ express()
 
       typed_code = req.body.code2;
       let challenger = new codeReader(typed_code,"PlayerCode");
-      let battleReport = roundRobin(challenger,1,5);
+      let battleReport = roundRobin(challenger,1,5,false,req.session.user);
       battleReport.orderedReport.forEach(element => {
         element.forEach(element => {
           str2+=element + "\n";
@@ -125,7 +125,7 @@ express()
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5,false);
+    let battleReport = roundRobin(challenger,1,5,false,req.session.user);
 
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
@@ -140,7 +140,7 @@ express()
 
       typed_code = req.body.code2;
       let challenger = new codeReader(typed_code,"PlayerCode");
-      let battleReport = roundRobin(challenger,1,5);
+      let battleReport = roundRobin(challenger,1,5,false,req.session.user);
       battleReport.orderedReport.forEach(element => {
         element.forEach(element => {
           str2+=element + "\n";
