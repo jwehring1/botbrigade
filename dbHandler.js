@@ -194,7 +194,8 @@ function getRank()
     getRank,
     getCodes,
     addCode,
-    setRank
+    setRank,
+    getRank
 }
 
 
