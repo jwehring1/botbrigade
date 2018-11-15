@@ -81,7 +81,7 @@ express()
           str2+=element + "\n";
         });
       });
-      addCode(req.session.user,str2);
+      addCode(req.session.user,req.body.code2);
       str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
     }
     else{

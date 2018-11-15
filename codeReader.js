@@ -295,6 +295,8 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
      {
          leaderCodes.push(new codeReader(getCodes(leaderBoard[ind]),leaderBoard[ind]));
      }
+     if(leaderBoard.length==0)
+        setRank(userName,0);
     }
 
     leaderCodes.some(defendingCode => {
