@@ -74,6 +74,7 @@ express()
     if(req.session && req.session.user){
 
       typed_code = req.body.code2;
+      addCode(req.session.user,typed_code);
       let challenger = new codeReader(typed_code,"PlayerCode");
       let battleReport = roundRobin(challenger,1,5,false,req.session.user);
       battleReport.orderedReport.forEach(element => {
@@ -81,7 +82,6 @@ express()
           str2+=element + "\n";
         });
       });
-      addCode(req.session.user,req.body.code2);
       str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
     }
     else{
@@ -113,7 +113,7 @@ express()
           str2+=element + "\n";
         });
       });
-      addCode(req.session.user,str2);
+      addCode(req.session.user,typed_code);
       str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
     }
     else{

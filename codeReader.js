@@ -328,7 +328,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
         }
         finalPosition--;
     });
-    if (compiling){
+    if (!compiling){
     setRank(userName,finalPosition);
     console.log("FINAL POSITION: " +finalPosition);
     }
