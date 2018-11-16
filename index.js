@@ -18,7 +18,7 @@ function compileCode(req,res){
     str2 = "";
     typed_code = req.body.code2;
     let challenger = new codeReader(typed_code,"PlayerCode");
-    let battleReport = roundRobin(challenger,1,5,req.session.user);
+    let battleReport = roundRobin(challenger,1,5,true);
     battleReport.orderedReport.forEach(element => {
       element.forEach(element => {
         str2+=element + "\n";
@@ -26,13 +26,19 @@ function compileCode(req,res){
     });
 }
 function submitCode(req,res){
-
     str2 = "";
     if(req.session && req.session.user){
-      compileCode(req,res);
-      str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
 
-      addCode(req.session.user,req.body.code2);
+      typed_code = req.body.code2;
+      addCode(req.session.user,typed_code);
+      let challenger = new codeReader(typed_code,"PlayerCode");
+      let battleReport = roundRobin(challenger,1,5,false,req.session.user);
+      battleReport.orderedReport.forEach(element => {
+        element.forEach(element => {
+          str2+=element + "\n";
+        });
+      });
+      str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
     }
     else{
       str2 = "ERROR: Please log in to submit your code.\n"
