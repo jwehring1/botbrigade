@@ -23,10 +23,15 @@
     </a>
     <h1>Bot Brigade</h1>
     <p class = "subtitle">Where artificial minds compete</p>
-    <a type="button" class="btn btn-lg btn-default" href="tutorial"> Getting Started with Our Tutorial</a>
-    <a type="button" class="btn btn-lg btn-primary" href="arcade"> Go to the Arcade</a>
-    <a type="button" class="btn btn-lg btn-primary" href="leaderboards"> Look at the AI Leaderboards</a>
-    <a type="button" class="btn btn-lg btn-primary" href="#"> Upload an AI Player</a>
+    <a type="button" class="btn btn-lg btn-default" href="tutorial"> Get Started with Our Tutorial</a>
+    <a type="button" class="btn btn-lg btn-primary" href="arcade"> Submit Code for Our Ranked Mode</a>
+    <a type="button" class="btn btn-lg btn-primary" href="leaderboards"> Look at the Leaderboards</a>
+
+    <% if(account && account.user){ %>
+      <%} else{ %>
+
+        <a type="button" class="btn btn-lg btn-primary" href="sign_up"> Create an Account</a>
+      <% } %>
   </div>
 </div>
 <% include templates/footer.ejs %>

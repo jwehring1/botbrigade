@@ -39,6 +39,9 @@ h3 {
 	margin-bottom: 0; 
 	color: rgb(0,10,30);
 	}
+section{
+	font: normal 1.1em Roboto, sans-serif;
+}
 
 .subtitle{
 	margin: 0;
@@ -371,6 +374,7 @@ input{
 	background: white;
 	width: 30%;
 	min-width: 200px;
+	min-height: 200px;
 	padding: 1.1em 0;
 	padding-top: 0;
 	margin: 0 auto;
@@ -427,4 +431,12 @@ input{
 .cf-leaderboards p{
 	font: normal 1.3em Roboto, sans-serif;
 	padding: 1.5em;
+}
+
+/*ABOUT*/
+.about{
+	font: normal 1.5em Roboto, sans-serif;
+	padding: 1em;
+	margin: 0 auto;
+	text-align: left;
 }

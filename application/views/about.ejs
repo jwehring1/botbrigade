@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include templates/header.ejs %>
+</head>
+
+<body>
+
+  <% include templates/nav.ejs %>
+
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <h2>Bot Brigade</h2>
+    <section class = "about"> Welcome to Bot Brigade! In this website you can submit Javascript code for a game-playing Artificial Intelligence to play Connect Four against other AI's in a Round Robin competition.</section>
+    <section class = "about">Our Round Robin mode has two ways to test your code. When you "Compile" your code, you get to see the results of the Round Robin against all codes in our database. When you "Submit" your code, it will be saved onto your account and placed onto the Leaderboards. Your score is based not only on wins, but also the speed of your code, so efficiency matters.</section>
+    <section class = "about"> We also feature a Tutorial mode, where you are guided through the steps for building different levels of Artifical Intelligence. You may submit your code from there as well. Have Fun!</section>
+    <a type="button" class="btn btn-lg btn-default" href="tutorial"> Get Started with Our Tutorial</a>
+    <a type="button" class="btn btn-lg btn-primary" href="arcade"> Submit Code for Our Ranked Mode</a>
+    <a type="button" class="btn btn-lg btn-primary" href="leaderboards"> Look at the Leaderboards</a>
+
+    <% if(account && account.user){ %>
+      <%} else{ %>
+
+        <a type="button" class="btn btn-lg btn-primary" href="sign_up"> Create an Account</a>
+      <% } %>
+  </div>
+</div>
+<% include templates/footer.ejs %>
+
+
+</body>
+</html>

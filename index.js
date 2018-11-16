@@ -61,6 +61,7 @@ express()
     res.render('index', {account:req.session});
   })
   .get('/tutorial', (req, res) => res.render('tutorial', {account:req.session}))
+  .get('/about', (req, res) => res.render('about', {account:req.session}))
   .get('/leaderboards', function(req, res){
     let rank = -1;
     if(req.session && req.session.user){
@@ -144,6 +145,7 @@ express()
   })
   .post('/logout', function(req,res){
     is_logged_in = false;
+    typed_code = "";
     req.session.destroy();
     res.redirect('/');
 
