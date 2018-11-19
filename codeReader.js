@@ -228,7 +228,7 @@ const vm = new NodeVM({
         if (printDebug > 2){
             singleFightObject.orderedReport.push(gameBoard.printGameBoard());
         }
-        let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n";
+        let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n\n\n\n";
         console.log(log);
         singleFightObject.gameText.push(log);
         singleFightObject.orderedReport.push(log);
@@ -340,8 +340,12 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
     //We apparently return 0, not 1 for the top score
     if (!compiling){
+        let finallog = "FINAL POSITION: " +finalPosition;
     setRank(userName,finalPosition);
-    console.log("FINAL POSITION: " +finalPosition);
+    if (finalPosition === 0){
+        finallog += "\nYOU ARE THE CHAMPION, MY FRIEND!!!!!\n\n\n"
+    }
+    console.log(finallog);
     }
     return informationObject;
 }
