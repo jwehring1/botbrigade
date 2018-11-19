@@ -336,7 +336,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
             return true;
         }
         else if (p2Wins === p1Wins && p1Time > p2Time){
-            let loggyboi = "Player lost due to a tie, and taking more time, GAME OVER";
+            let loggyboi = "Player won due to a tie, taking less time than the opponent.";
             console.log(loggyboi);
             informationObject.gameInfo.push(loggyboi);
         }
