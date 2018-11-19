@@ -111,15 +111,16 @@ function login(userName,decPass){
 function getRank(userName)
 {
     let fs = require('fs');
-    let data = fs.readFileSync(theGreatLibrary, 'utf8');
+    let data = fs.readFileSync(leader, 'utf8');
     let userTable = JSON.parse(data);
     for(i=0; i<userTable.length;i++)
     {
-        if(userTable[i].userName==userName)
+        if(userTable[i]==userName)
         {
-            return userTable[i].rank;
+            return i;
         }
     }
+    return -1;
 }
 
 function getCodes(userName)

@@ -164,13 +164,6 @@ express()
   })
   */
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
- let test2 = addUniqueUser("A","B")
- let test = addUniqueUser("bobby","sorry")
- console.log(getCodes("A"))
- let test3 = addCode("A","return 2;")
- let test4 = addCode("bobby","return 3;")
- console.log(getCodes("A"))
 //  let test = writeAI("zemo","mission_report","December 16, 1991");
   let str = readTextFile('UserCode/minMaxStupid.js');
   
