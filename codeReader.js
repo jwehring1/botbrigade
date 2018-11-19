@@ -129,12 +129,13 @@ const vm = new NodeVM({
             if(error == -1){
                 if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
-                      console.log("Tie Game!");
+                      console.log("Tie Game, all slots full!\n Winner defaulted to the challenger");
                       singleFightObject.gameText.push("Tie Game!");
                       singleFightObject.orderedReport.push(log);
                   }
-                    singleFightObject.ties++;
-                    return;
+                  singleFightObject.ties++;
+                  gameBoard.winner = 1;
+                return gameBoard.winner;
                 }
                 if (printDebug > 3){
                     if (code2.currentError.isEmpty()){
@@ -228,7 +229,7 @@ const vm = new NodeVM({
         if (printDebug > 2){
             singleFightObject.orderedReport.push(gameBoard.printGameBoard());
         }
-        let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n";
+        let log = "WINNER WINNER CHICKEN DINNER: " + winnerString + "!!!\n\n\n\n";
         console.log(log);
         singleFightObject.gameText.push(log);
         singleFightObject.orderedReport.push(log);
@@ -300,6 +301,11 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
     }
 
     leaderCodes.some(defendingCode => {
+        if (defendingCode.name === userName){
+            finalPosition--;
+            //If it is your own code
+            return false;
+        }
         let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug,true);
         let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug,true);
         tournamentObject.battlesAsP1.push(battleObject);
@@ -310,27 +316,43 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
         let p1Wins = battleObject.code1Wins;
         let p2Wins = battleObject.code2Wins;
-        p1Wins += battleObjectInverted.code1Wins;
-        p2Wins += battleObjectInverted.code2Wins;
+        p1Wins += battleObjectInverted.code2Wins;
+        p2Wins += battleObjectInverted.code1Wins;
 
         let p1Time = battleObject.p1TimeTaken;
         let p2Time = battleObject.p2TimeTaken;
-        p1Time += battleObjectInverted.p1TimeTaken;
-        p2Time += battleObjectInverted.p2TimeTaken;
+        p1Time += battleObjectInverted.p2TimeTaken;
+        p2Time += battleObjectInverted.p1TimeTaken;
 
         if (p2Wins > p1Wins){
-            console.log("Player lost majority of games.");
+            let loggyboi = "Player lost both games, GAME OVER";
+            console.log(loggyboi);
+            informationObject.gameInfo.push(loggyboi);
             return true;
         }
-        else if (p2Wins == p1Wins && p2Time < p1Time){
-            console.log("Player lost due to a tie, and taking more time");
+        else if (p2Wins === p1Wins && p2Time < p1Time){
+            let loggyboi = "Player lost due to a tie, and taking more time, GAME OVER";
+            console.log(loggyboi);
+            informationObject.gameInfo.push(loggyboi);
             return true;
+        }
+        else if (p2Wins === p1Wins && p1Time > p2Time){
+            let loggyboi = "Player won due to a tie, taking less time than the opponent.";
+            console.log(loggyboi);
+            informationObject.gameInfo.push(loggyboi);
         }
         finalPosition--;
     });
+
+    //We apparently return 0, not 1 for the top score
     if (!compiling){
+        let finallog = "FINAL POSITION: " +finalPosition;
     setRank(userName,finalPosition);
-    console.log("FINAL POSITION: " +finalPosition);
+    if (finalPosition === 0){
+        finallog += "\nYOU ARE THE CHAMPION, MY FRIEND!!!!!\n\n\n"
+    }
+    console.log(finallog);
+    informationObject.gameInfo.push(finallog);
     }
     return informationObject;
 }

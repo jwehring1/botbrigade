@@ -24,6 +24,9 @@ function compileCode(req,res){
         str2+=element + "\n";
       });
     });
+    battleReport.gameInfo.forEach(element => {
+      str2+="\n" + element;
+    });
 }
 function submitCode(req,res){
     str2 = "";
@@ -37,6 +40,9 @@ function submitCode(req,res){
         element.forEach(element => {
           str2+=element + "\n";
         });
+      });
+      battleReport.gameInfo.forEach(element => {
+        str2+="\n" + element;
       });
       str2 = "Code Successfully Submitted to Rankings! Checkout out the leaderboards for more info.\n" + str2;
     }
