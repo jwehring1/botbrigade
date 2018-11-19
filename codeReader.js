@@ -300,6 +300,10 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
     }
 
     leaderCodes.some(defendingCode => {
+        if (defendingCode.name === userName){
+            //If it is your own code
+            return false;
+        }
         let battleObject = AIBattle(challengerCode,defendingCode,rounds,printDebug,true);
         let battleObjectInverted = AIBattle(defendingCode,challengerCode,rounds,printDebug,true);
         tournamentObject.battlesAsP1.push(battleObject);
@@ -322,7 +326,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
             console.log("Player lost majority of games.");
             return true;
         }
-        else if (p2Wins == p1Wins && p2Time < p1Time){
+        else if (p2Wins === p1Wins && p2Time < p1Time){
             console.log("Player lost due to a tie, and taking more time");
             return true;
         }
