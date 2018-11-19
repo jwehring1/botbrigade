@@ -320,15 +320,19 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
         let p1Time = battleObject.p1TimeTaken;
         let p2Time = battleObject.p2TimeTaken;
-        p1Time += battleObjectInverted.p1TimeTaken;
-        p2Time += battleObjectInverted.p2TimeTaken;
+        p1Time += battleObjectInverted.p2TimeTaken;
+        p2Time += battleObjectInverted.p1TimeTaken;
 
         if (p2Wins > p1Wins){
-            console.log("Player lost majority of games.");
+            let loggyboi = "Player lost both games, GAME OVER";
+            console.log(loggyboi);
+            informationObject.orderedReport.push(loggyboi);
             return true;
         }
         else if (p2Wins === p1Wins && p2Time < p1Time){
-            console.log("Player lost due to a tie, and taking more time");
+            let loggyboi = "Player lost due to a tie, and taking more time, GAME OVER";
+            console.log(loggyboi);
+            informationObject.orderedReport.push(loggyboi);
             return true;
         }
         finalPosition--;
