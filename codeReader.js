@@ -301,6 +301,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
     leaderCodes.some(defendingCode => {
         if (defendingCode.name === userName){
+            finalPosition--;
             //If it is your own code
             return false;
         }
