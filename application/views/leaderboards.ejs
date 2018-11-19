@@ -27,7 +27,11 @@
 		
 			<article class = "console_window">
 				<h3> Your Rank:</h3>
-				<p><%=your_rank%>).     <%= account.user%></p>
+				<%if(your_rank == 0){%>
+
+				<p>You are not ranked yet. Please <i>submit</i> your code in the "Round Robin" mode in the "Compete" page.</p>
+				<%}else{ %>
+				<%}%>
 			</article>
 		<% } %>
 
