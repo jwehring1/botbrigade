@@ -335,6 +335,11 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
             informationObject.orderedReport.push(loggyboi);
             return true;
         }
+        else if (p2Wins === p1Wins && p1Time > p2Time){
+            let loggyboi = "Player lost due to a tie, and taking more time, GAME OVER";
+            console.log(loggyboi);
+            informationObject.orderedReport.push(loggyboi);
+        }
         finalPosition--;
     });
 
@@ -346,6 +351,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
         finallog += "\nYOU ARE THE CHAMPION, MY FRIEND!!!!!\n\n\n"
     }
     console.log(finallog);
+    informationObject.orderedReport.push(finallog);
     }
     return informationObject;
 }
