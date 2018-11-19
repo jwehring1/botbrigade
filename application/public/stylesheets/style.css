@@ -273,6 +273,12 @@ textarea{
 	text-decoration: none;
 
 }
+
+#img{
+	position: relative;
+	margin: 0 auto;
+}
+
 /*dropdown menu styles*/
 ul.submenu {
 	background: rgb(150,170,200);

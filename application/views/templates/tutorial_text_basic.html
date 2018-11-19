@@ -1,4 +1,4 @@
-<div class = "script_text">
+<div class = "script_text" id= "doodle">
 <script>
 var arr = ['Welcome to the basic level tutorial for Bot Brigade. \
  This tutorial will show you how to make an artificial intelligence capable of playing Connect 4 using a greedy-search algorithm and put it against other\'s.', // welcome page
@@ -62,13 +62,14 @@ function nextItem() {
 	if (i == 1) {	// beginning of minimax section (actual tutorial aside from welcome page)
 		document.getElementById("prev_button").disabled = true;
 		x.setAttribute("src", "http://mathworld.wolfram.com/images/gifs/connect4.gif");
-		x.setAttribute("width", "1002");
-		x.setAttribute("height", "256");
+		x.setAttribute("width", "100");
+		x.setAttribute("height", "100");
 		x.setAttribute("alt", "Diagram");
-		document.body.appendChild(x);
+		document.getElementById("doodle").appendChild(x);
 	}
 	if (i == arr.length - 1) { // final page; disable and gray next button
 		document.getElementById("next_button").disabled = true;
+
 	}
 	
 	// tutorial section checks (if image needs to be appended, etc.)
@@ -77,10 +78,10 @@ function nextItem() {
 		x.setAttribute("width", "1002");
 		x.setAttribute("height", "256");
 		x.setAttribute("alt", "Diagram");
-		document.body.appendChild(x);
+		document.getElementById("doodle").appendChild(x);
 	}
-	else if (document.getElementById("img") != null && (i != 1 || i !=3 )){
-		document.body.removeChild(x);
+	else if (document.getElementById("img") != null && i != 1 && i !=7 ){
+		document.getElementById("doodle").removeChild(x);
 	}
 	
     return arr[i]; 
@@ -94,22 +95,22 @@ function prevItem() {
 		document.getElementById("prev_button").disabled = true;
     }
 	if(i == 1) {
-		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
-		x.setAttribute("width", "1002");
-		x.setAttribute("height", "256");
+		x.setAttribute("src", "http://mathworld.wolfram.com/images/gifs/connect4.gif");
+		x.setAttribute("width", "100");
+		x.setAttribute("height", "100");
 		x.setAttribute("alt", "Diagram");
-		document.body.appendChild(x);
+		document.getElementById("doodle").appendChild(x);
 	}
 	
 	if (i == 7) {  
 		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
-		x.setAttribute("width", "1002");
-		x.setAttribute("height", "256");
+		x.setAttribute("width", "100");
+		x.setAttribute("height", "100");
 		x.setAttribute("alt", "Diagram");
-		document.body.appendChild(x);
+		document.getElementById("doodle").appendChild(x);
 	}
-	else if (document.getElementById("img") != null && (i != 3 || i != 1)){
-		document.body.removeChild(x);
+	else if (document.getElementById("img") != null && i != 7 && i != 1){
+		document.getElementById("doodle").removeChild(x);
 	}
 	
     return arr[i]; 
