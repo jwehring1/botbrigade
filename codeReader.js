@@ -129,12 +129,13 @@ const vm = new NodeVM({
             if(error == -1){
                 if  (gameBoard.areAllSlotsFilled()){
                   if (printDebug > 2){
-                      console.log("Tie Game!");
+                      console.log("Tie Game, all slots full!\n Winner defaulted to the challenger");
                       singleFightObject.gameText.push("Tie Game!");
                       singleFightObject.orderedReport.push(log);
                   }
-                    singleFightObject.ties++;
-                    return;
+                  singleFightObject.ties++;
+                  gameBoard.winner = 1;
+                return gameBoard.winner;
                 }
                 if (printDebug > 3){
                     if (code2.currentError.isEmpty()){
