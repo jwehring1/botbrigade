@@ -333,6 +333,8 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
         }
         finalPosition--;
     });
+
+    //We apparently return 0, not 1 for the top score
     if (!compiling){
     setRank(userName,finalPosition);
     console.log("FINAL POSITION: " +finalPosition);
