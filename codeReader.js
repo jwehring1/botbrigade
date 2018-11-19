@@ -315,8 +315,8 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
         let p1Wins = battleObject.code1Wins;
         let p2Wins = battleObject.code2Wins;
-        p1Wins += battleObjectInverted.code1Wins;
-        p2Wins += battleObjectInverted.code2Wins;
+        p1Wins += battleObjectInverted.code2Wins;
+        p2Wins += battleObjectInverted.code1Wins;
 
         let p1Time = battleObject.p1TimeTaken;
         let p2Time = battleObject.p2TimeTaken;
