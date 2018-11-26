@@ -285,6 +285,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
     if (compiling){
         leaderCodes.push(new codeReader(randomAI,"Random"));
+        leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAt1"));
     }
     else {
     //Get Top 10 Slots
