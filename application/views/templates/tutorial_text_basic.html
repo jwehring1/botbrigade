@@ -50,7 +50,7 @@ var unverifiedOrVerified = ['Congratulations! Your AI design was successful in b
 
 var i = 0;	// iterator through text array
 var j = 0; // iterator through tip array
-var x = document.createElement("IMG");
+var x = document.createElement("img");
 x.setAttribute("id", "img");
 
 function nextItem() {
@@ -61,9 +61,8 @@ function nextItem() {
 	// page layout checks
 	if (i == 1) {	// beginning of minimax section (actual tutorial aside from welcome page)
 		document.getElementById("prev_button").disabled = true;
-		x.setAttribute("src", "http://mathworld.wolfram.com/images/gifs/connect4.gif");
-		x.setAttribute("width", "100");
-		x.setAttribute("height", "100");
+		x.setAttribute("src", "/images/connect4.gif");
+		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
@@ -74,9 +73,8 @@ function nextItem() {
 	
 	// tutorial section checks (if image needs to be appended, etc.)
 	if (i == 7) { 
-		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
-		x.setAttribute("width", "1002");
-		x.setAttribute("height", "256");
+		x.setAttribute("src", "/images/greedyAlgorithmDiagram.gif");
+		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
@@ -95,17 +93,15 @@ function prevItem() {
 		document.getElementById("prev_button").disabled = true;
     }
 	if(i == 1) {
-		x.setAttribute("src", "http://mathworld.wolfram.com/images/gifs/connect4.gif");
-		x.setAttribute("width", "100");
-		x.setAttribute("height", "100");
+		x.setAttribute("src", "/images/connect4.gif");
+		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
 	
 	if (i == 7) {  
-		x.setAttribute("src", "https://ds055uzetaobb.cloudfront.net/image_optimizer/af483b83f26d427a7fad12e77c8ea983ce27fb5b.gif");
-		x.setAttribute("width", "100");
-		x.setAttribute("height", "100");
+		x.setAttribute("src", "/images/greedyAlgorithmDiagram.gif");
+		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}

@@ -158,7 +158,7 @@ a:hover{
 	background-color: white;
 	font-size: 1.5em;
 	margin: 0 auto;
-	height: 10em;
+	min-height: 10.5em;
 	width: 80%;
 	min-width: 600px;
 	font-family: "Roboto", sans-serif;
@@ -166,6 +166,9 @@ a:hover{
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 
+}
+#img{
+	left: 35%;
 }
 .script_buttons{
 	margin: 0 auto;
