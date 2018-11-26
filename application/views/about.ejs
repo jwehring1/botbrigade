@@ -12,9 +12,13 @@
 <div class="jumbotron text-center">
   <div class="container">
     <h2>Bot Brigade</h2>
-    <section class = "about"> Welcome to Bot Brigade! In this website you can submit Javascript code for a game-playing Artificial Intelligence to play Connect Four against other AI's in a Round Robin competition.</section>
-    <section class = "about">Our Round Robin mode has two ways to test your code. When you "Compile" your code, you get to see the results of the Round Robin against all codes in our database. When you "Submit" your code, it will be saved onto your account and placed onto the Leaderboards. Your score is based not only on wins, but also the speed of your code, so efficiency matters.</section>
-    <section class = "about"> We also feature a Tutorial mode, where you are guided through the steps for building different levels of Artifical Intelligence. You may submit your code from there as well. Have Fun!</section>
+    <section class = "about"> Welcome to Bot Brigade! In this website you can submit Javascript code for an Artificial Intelligence agent to play Connect Four against other AI's in a Round Robin competition.</section>
+    <section class = "about">Our Round Robin mode has two ways to test your code. When you "Compile" your code, you get to quickly test your code against both a random placing agent and a only place in a specific column agent. When you "Submit" your code, it will be saved onto your account and placed onto the Leaderboards. You fight from the bottom of the leaderboards to the top and placed where you are defeated. Your score is based not only on wins, but also the speed of your code, so efficiency matters.</section>
+    <section class = "about"> We also feature a Tutorial mode, where you are guided through the steps for building different levels of Artificial Intelligence. You may submit your code from there as well. Have Fun!</section>
+    <h2>How To Play</h2>
+    <section class = "about">When first staring off the user is given an empty 7x6 2D array and the player number you are (either a 1 or a 2). The usercode will compete as follows: first the Playercode will play as player 1 where it places first and then the user switches to player 2 to allow the other competitor to go first.</section>
+    <section class = "about">The function you write will be called every time it is your turn. It expects the user to return a number from 0-6 which stands for each one of the columns that you can place in. Helper functions are given to allow the user to easily code an AI that reads the board and makes the best decision.</section>
+    <section class = "about">If a checker is placed in a full column the user that placed that checker instantly loses. Other than that small rule, the game is played exactly the same as a regular connect four board. Instructions on how to play can be found at: <a href="https://www.wikihow.com/Play-Connect-4">https://www.wikihow.com/Play-Connect-4</a></section>
     <a type="button" class="btn btn-lg btn-default" href="tutorial"> Get Started with Our Tutorial</a>
     <a type="button" class="btn btn-lg btn-primary" href="arcade"> Submit Code for Our Ranked Mode</a>
     <a type="button" class="btn btn-lg btn-primary" href="leaderboards"> Look at the Leaderboards</a>
