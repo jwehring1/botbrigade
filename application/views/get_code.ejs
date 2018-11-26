@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ranked Submission</title>
+    <% include templates/nav.ejs %>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  	<% include templates/header.ejs %>
+  	<div class = "page-wrapper">
+	    <h2>Round Robin Ranked</h2>
+		<div class = "box-wrapper">
+			<form method="POST">
+				<li class = "dropdown">Available Functions:
+			      <ul class="submenu">
+			      	<li>placeTempChecker(temporary_board, column, player)<section>Returns a temporary board with the checker placed.</section></li>
+			      	<li>checkFull(board)<section>Returns true or false if full.</section></li>
+			      	<li>checkWinner(temporary_board,LastPlacedRow, LastPlacedColumn)<section>Returns who won or zero if tied.</section></li>
+			      </ul>
+			    </li>
+				<h4 class = "pretext"> module.exports = function(boardState,playerNumber) {</h4>
+				<textarea id= "code-input" type= "text" name = "code2"><%= typed%></textarea>
+				<h4 class = "pretext">}</h4>
+				<div class = "btn-wrapper">
+				    <input formaction = "/ranked_compile" class = "upload-btn" type="submit" value="Compile Code" />
+				    <input formaction = "/submit_ranked" class = "upload-btn-submit" type="submit" value="Submit Code" />
+				</div>
+
+			</form>
+			<form action="/round_robin/results" method = "GET">
+				<%if(output != ""){%>
+				<article class = "console_window">
+					<h3> Results/Debugger Window</h3>
+					<pre><%= output%></pre>
+				</article>
+				<%}%>
+			</form>
+		</div>
+
+	</div>
+<% include templates/footer.ejs %>
+  </body>
+</html>
