@@ -1,24 +1,23 @@
 <div class = "script_text" id= "doodle">
 <script>
-var arr = ['Welcome to the medium level tutorial for Bot Brigade. \
- This tutorial will show you how to make an artificial intelligence capable of playing Connect 4 using a minimax algorithm and put it against other\'s.', // welcome page
-'First, let\'s see how minimax works.', 	// minimax page beginning
-'Minimax is a decision-making algorithm that attempts to select the most optimal move within the rules of a game. \
- The implementation of this algorithm is through a tree with nodes. \
- Evaluation of how optimal a move is is based on evaluation “scores” that are assigned based on the current state of the game. \
- Two players, a maximizer and a minimizer, try to search ahead in the tree and evaluate the potential moves of opponents, \
- and ultimately get the highest and lowest scores, respectively. ',
- 'In this diagram, each node represents a game state, and each row represents a turn from either the maximizer or minimizer. \
- For the 1st predicted move from the minimizer player, in this example, the player selects the 3 and 4 nodes as potential moves to make, as \
- they are the minimum nodes from the previous available sets. Next, the maximizer picks 4 based on the maximum from the game states made by the minimizer\'s \
- potential moves, namely, the node with a game state value of 4.',	// minimax diagram
+var arr = ['Welcome to the advanced level tutorial for Bot Brigade. \
+ This tutorial will show you how to make an artificial intelligence capable of playing Connect 4 using an alpha-beta pruning algorithm and put it against other\'s.', // welcome page
+'First, let\'s see how alpha-beta pruning works.', 	// alpha-beta page beginning
+'Alpha-beta pruning is an improvement upon the minimax algorithm that aims to increase its efficiency. \
+ This is done through keeping 2 values, alpha and beta, that represent the best value the maximizer or minimizer can guarantee at that level or above, respectively. \
+ During a search, if beta is ever less than alpha, the move stops being evaluated and all subsequent subtrees are ignored\;\
+ this is because the move is already proven to be worse than a different move.',
+ 'In this diagram, the right child of E was ignored because beta was 5 (from B) and alpha was determined to be 6 from its left child. \
+  Because 5 is less than 6, the rest of the subtrees of E need not be evaluated. \
+  The minimizer is guaranteed 5 from the left subtree of B, so a value greater than 5 won\'t be picked by it and a value less than 6 will be ignored by the maximizer. \
+  Therefore, ignoring the other, irrelevant options will save computation time, leading to quicker and smarter decisions as the algorithm can searched deeper within the tree.', // alpha-beta diagram
  'In the context of a decision-making tree, a node entails a game state that represents a possible move after its parent node. \
  It is these nodes that will be evaluated to give/detract score from the maximizing and minimizing players. \
- Creating a node in JavaScript to represent Connect 4 game states is simple; here is an example code segment.', 	// minimax node
+ Creating a node in JavaScript to represent Connect 4 game states is simple; here is an example code segment.', 	// alpha-beta node
  'With this knowledge in mind, it is helpful to conceptually distinguish between nodes that represent your own moves and nodes that represent your \
  opponent\’s moves. Assuming that the user/caller of the website is the maximizer and any arbitrary opponent is the minimizer, we can represent \
  the user\’s decision nodes as max nodes and the opponent\’s as min nodes. The goal of these nodes are to maximize/minimize the subtree rooted at the node, respectively. \
- Here is an example modification of the last node code.', // minimax min and max nodes
+  Each node should also be assigned an alpha and beta variable, initialized at positive infinity and negative infinity, respectively. Here is an example modification of the last node code.', // alpha-beta min and max nodes
  'The game board is represented as a 6x7 2-dimensional array, each filled with an integer that represents the state of a slot. \
  0 indicates that the slot is empty, 1 indicates that the user’s AI has placed a chip in the slot, and 2 indicates an opposing AI\’s placement.',	// game state representation
  'Now that we know how the game states are represented, we can utilize them to grade them based on their contribution to the player\’s objective. \
@@ -30,32 +29,38 @@ var arr = ['Welcome to the medium level tutorial for Bot Brigade. \
  The first move, made by the maximizer, considers 3 different states, none of which win the game.\
  A very basic AI that doesn’t look ahead will randomly pick a move and end their turn; if it happens that this move causes the minimizer to be able to win the next turn or force the game into a draw at the end,\
  the AI will have missed an opportunity to pick a state that at least makes a win possible. Modify your AI to consider these possible future implications by at least 2 moves from the root node.',	// using metric for future game states
+ 'Ensure that at each node, beta and alpha are properly updated before checking if beta is less then alpha. If the condition is found to be true, return the most recent value of alpha or beta to the parent node and terminate.', // alpha-beta checking
  'Congratulations on developing your AI! Before you can put this AI against other players’, it will first be validated within your starting game state. ',	// AI validation; check AI and use validOrInvalid array for text
- 'In order to verify your AI is ready to compete with others’, it will play against a pre-made AI that utilizes greedy search methodology over minimax.\
- Greedy search, for Connect 4 playing purposes, is much weaker and assuming that the minimax AI is correctly designed, should lose more often than not to the minimax-based AI.\
+ 'In order to verify your AI is ready to compete with others’, it will play against a pre-made AI that utilizes greedy search methodology over alpha-beta pruning.\
+ Greedy search, for Connect 4 playing purposes, is much weaker and assuming that the alpha-beta pruning AI is correctly designed, should lose more often than not to the alpha-beta pruning-based AI.\
  Play the pre-made AI using your designed AI by clicking the greedy search option.'];	// array to hold tutorial pages' text
 									// arr[0] = welcome page
-									// arr[1] = minimax page beginning		
-									// arr[3] = minimax diagram
-									// arr[4] = minimax node
-									// arr[5] = minimax min and max nodes
+									// arr[1] = alpha-beta page beginning		
+									// arr[3] = alpha-beta diagram
+									// arr[4] = alpha-beta node
+									// arr[5] = alpha-beta min and max nodes
 									// arr[6] = game state representation				
 									// arr[7] = point-based metric (scoring moves made by AI)
 									// arr[8] = using metric to consider possible future game states (at depth = 2)	
+									// arr[9] = alpha-beta checking
 									// arr[9] = AI validation
 									// arr[10] = AI verification (play against premade AI)										
 									
 var tips = ['Tip: if a winning move is possible for the AI, make sure the score given for that game state counts more than scores for any other, non-winning state. ',	// point-based metric tip 1 (easy)
 'Something to think about: say you’re playing against someone in a game of Connect 4.\
  If you see a winning move, do you immediately take it, or let the opponent continue to play and potentially take away said winning move? \
- How can you apply this notion to your state scoring system? (Hint: look at the depth of the minimax tree)',	// point-based metric tip 2 (complex)
- 'Conceptually speaking, you want to look for the branch(s) of the minimax tree that offer a maximizer win before a minimizer win.\
+ How can you apply this notion to your state scoring system? (Hint: look at the depth of the game tree)',	// point-based metric tip 2 (complex)
+ 'Conceptually speaking, you want to look for the branch(s) of the game tree that offer a maximizer win before a minimizer win.\
  Looking ahead in the tree before deciding which branch to attempt to follow will allow for a more powerful and robust artificially intelligent agent that wins games at a much higher rate.',	// using metric for future game states tip
  'Is each element of the game properly represented to the AI?',	// AI validation tip 1
  'Does your AI take proper action based on scores?',	// AI validation tip 2
  'Is your AI correctly checking children nodes for each non-game-ending node?',	// AI validation tip 3
  'Does your AI seek the same type of score (max or min) as the opponent?',	// AI verification tip 1
- 'Does your AI check potential moves at least 2 steps ahead from the beginning state?' // AI verification tip 2
+ 'Does your AI check potential moves at least 2 steps ahead from the beginning state?', // AI verification tip 2
+ 'Does the child node "pass up" the value of alpha/beta to its parent node?', // alpha-beta tip 1
+ 'Does the parent node "pass down" the updated value of alpha/beta to its children nodes?', // alpha-beta tip 2
+ 'Is beta checked to be less then alpha at every stage? If so, is each value properly updated?', // alpha-beta tip 3
+ 'Does the node properly terminate searching when beta is less than alpha?' // alpha-beta tip 4
  ];
  
 var invalidOrValid = ['Your AI has been confirmed as valid; congratulations! Now, you will upload it to our website, where it will be verified and ultimately put against the AIs of other website users.\
@@ -65,9 +70,9 @@ var invalidOrValid = ['Your AI has been confirmed as valid; congratulations! Now
 
 var unverifiedOrVerified = ['Congratulations! Your AI design was successful in beating a greedy-search AI and is ready to compete with other players’ AI designs.\
  As is, your AI is more than likely similar to others at your same level. Modify and test different elements of your design and see what leads to better or worse results!\
- When you feel that you have feasibly done everything for minimax search or are simply ready to learn a more advanced concept, you can move on to the next tutorial to learn and implement alpha-beta pruning.',	// verified; note, this assumes alpha-beta pruning is the advanced tutorial
+ When you feel that you have feasibly done everything for alpha-beta pruning, you can use what you have learned and try to make even better AI algorithms!',	// verified
  'Your AI was unable to defeat the greedy-search based AI. Check that all steps of the tutorial are properly followed and implemented in your code.'
-];	// for AI verification step; assumes premade testing AI is greed-search based
+];	// for AI verification step; assumes premade testing AI is greedy-search based
 
 var i = 0;	// iterator through text array
 var j = 0; // iterator through tip array
@@ -78,40 +83,42 @@ function nextItem() {
     document.getElementById("prev_button").disabled = false;	// enable previous button
 	
     i = i + 1; 
-
+	
 	// page layout checks
+	if (i == 1) {	// beginning of alpha-beta section (actual tutorial aside from welcome page)
+		document.getElementById("prev_button").disabled = true;
+	}
 	if (i == arr.length - 1) { // final page; disable and gray next button
 		document.getElementById("next_button").disabled = true;
 	}
-	if(i == 1) {
-		document.getElementById("prev_button").disabled = true;
-	}
-	if (i == 3) { 
-		x.setAttribute("src", "/images/minimax.png");
+	
+	// tutorial section checks (if image needs to be appended, etc.)
+	if (i == 3) {  // alpha-beta diagram 1
+		x.setAttribute("src", "/images/alphabeta.jpg");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 4) { 
 		x.setAttribute("src", "/images/nodeExampleCode.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 5) { 
 		x.setAttribute("src", "/images/minMaxNodesExampleCode.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 6) { 
 		x.setAttribute("src", "/images/exampleGameBoard.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
-	else if (document.getElementById("img") != null && (i != 0 && i != 3 && i != 4 && i != 6 && i != 5)){
-		document.getElementById("doodle").removeChild(x);
+	else if (document.getElementById("img") != null && i != 3 && i != 4 && i != 5 && i != 6){
+		document.body.removeChild(x);
 	}
 	
     return arr[i]; 
@@ -124,32 +131,33 @@ function prevItem() {
     if (i === 0 || i == 1) { 	// welcome page or first page of tutorial; disable previous button, welcome page is only viewed once
 		document.getElementById("prev_button").disabled = true;
     }
-	if (i == 3) { 
-		x.setAttribute("src", "/images/minimax.png");
+	
+	if (i == 3) {  // alpha-beta diagram 1
+		x.setAttribute("src", "/images/alphabeta.jpg");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 4) { 
 		x.setAttribute("src", "/images/nodeExampleCode.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 5) { 
 		x.setAttribute("src", "/images/minMaxNodesExampleCode.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
 	else if (i == 6) { 
 		x.setAttribute("src", "/images/exampleGameBoard.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
-		document.getElementById("doodle").appendChild(x);
+		document.body.appendChild(x);
 	}
-	else if (document.getElementById("img") != null && (i != 0 && i != 3 && i != 4 && i != 6 && i != 5)){
-		document.getElementById("doodle").removeChild(x);
+	else if (document.getElementById("img") != null && i != 3 && i != 4 && i != 5 && i != 6){
+		document.body.removeChild(x);
 	}
 	
     return arr[i]; 
@@ -161,7 +169,7 @@ window.addEventListener('load', function () {	// listen for button clicks amd lo
 	x.setAttribute("width", "30%");
 	
 	x.setAttribute("alt", "Diagram");
-	document.getElementById("doodle").appendChild(x);
+	document.body.appendChild(x);
     document.getElementById('prev_button').addEventListener(
         'click', 
         function (e) { 

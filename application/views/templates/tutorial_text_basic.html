@@ -9,8 +9,8 @@ var arr = ['Welcome to the basic level tutorial for Bot Brigade. \
  however, what the greedy algorithm doesn’t consider is that the next moment, i.e. the other player’s turn, the queen is able to be taken by an opponent piece, which places the opponent much closer to a win than does taking a pawn.\
  Greedy algorithms are still useful as a starting point; therefore, we will initialize the base of your AI with a greedy algorithm.', 
  'In the context of a decision-making tree, a node entails a game state that represents a possible move after its parent node. \
- It is these nodes that will be evaluated to give/detract score from the maximizing and minimizing players. (clicking text opens optional advice) \
- Creating a node in JavaScript to represent Connect 4 game states is simple.', 	// greedy node
+ It is these nodes that will be evaluated to give/detract score from the maximizing and minimizing players. \
+ Creating a node in JavaScript to represent Connect 4 game states is simple; here is an example code segment.', 	// greedy node
  'The game board is represented as a 6x7 2-dimensional array, each filled with an integer that represents the state of a slot. \
  0 indicates that the slot is empty, 1 indicates that the user’s AI has placed a chip in the slot, and 2 indicates an opposing AI\’s placement.',	// game state representation
  'Now that we know how the game states are represented, we can utilize them to grade them based on their contribution to the player\’s objective. \
@@ -50,35 +50,42 @@ var unverifiedOrVerified = ['Congratulations! Your AI design was successful in b
 
 var i = 0;	// iterator through text array
 var j = 0; // iterator through tip array
-var x = document.createElement("img");
+var x = document.createElement("IMG");
 x.setAttribute("id", "img");
+
 
 function nextItem() {
     document.getElementById("prev_button").disabled = false;	// enable previous button
 	
     i = i + 1; 
-	
+
 	// page layout checks
-	if (i == 1) {	// beginning of minimax section (actual tutorial aside from welcome page)
+	if (i == arr.length - 1) { // final page; disable and gray next button
+		document.getElementById("next_button").disabled = true;
+	}
+	if(i == 1) {
 		document.getElementById("prev_button").disabled = true;
-		x.setAttribute("src", "/images/connect4.gif");
+	}
+	if (i == 3) { 
+		x.setAttribute("src", "/images/nodeExampleCode.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
-	if (i == arr.length - 1) { // final page; disable and gray next button
-		document.getElementById("next_button").disabled = true;
-
+	else if (i == 4) { 
+		x.setAttribute("src", "/images/exampleGameBoard.PNG");
+		x.setAttribute("width", "30%");
+		x.setAttribute("alt", "Diagram");
+		document.getElementById("doodle").appendChild(x);
 	}
-	
 	// tutorial section checks (if image needs to be appended, etc.)
-	if (i == 7) { 
+	else if (i == 7) { 
 		x.setAttribute("src", "/images/greedyAlgorithmDiagram.gif");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
-	else if (document.getElementById("img") != null && i != 1 && i !=7 ){
+	else if (document.getElementById("img") != null && (i != 0 && i != 3 && i != 4 && i != 7)){
 		document.getElementById("doodle").removeChild(x);
 	}
 	
@@ -92,20 +99,26 @@ function prevItem() {
     if (i === 0 || i == 1) { 	// welcome page or first page of tutorial; disable previous button, welcome page is only viewed once
 		document.getElementById("prev_button").disabled = true;
     }
-	if(i == 1) {
-		x.setAttribute("src", "/images/connect4.gif");
+	if (i == 3) { 
+		x.setAttribute("src", "/images/nodeExampleCode.PNG");
+		x.setAttribute("width", "30%");
+		x.setAttribute("alt", "Diagram");
+		document.getElementById("doodle").appendChild(x);
+	}
+	else if (i == 4) { 
+		x.setAttribute("src", "/images/exampleGameBoard.PNG");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
 	
-	if (i == 7) {  
+	else if (i == 7) {  
 		x.setAttribute("src", "/images/greedyAlgorithmDiagram.gif");
 		x.setAttribute("width", "30%");
 		x.setAttribute("alt", "Diagram");
 		document.getElementById("doodle").appendChild(x);
 	}
-	else if (document.getElementById("img") != null && i != 7 && i != 1){
+	else if (document.getElementById("img") != null && (i != 0 && i != 3 && i != 4 && i != 7)){
 		document.getElementById("doodle").removeChild(x);
 	}
 	
@@ -114,7 +127,11 @@ function prevItem() {
 
 window.addEventListener('load', function () {	// listen for button clicks amd load initial page
     document.getElementById('output').textContent = arr[0]; // display welcome
-	
+	document.getElementById("prev_button").disabled = true;
+	x.setAttribute("src", "/images/connect4.gif");
+	x.setAttribute("width", "30%");
+	x.setAttribute("alt", "Diagram");
+	document.getElementById("doodle").appendChild(x);
     document.getElementById('prev_button').addEventListener(
         'click', 
         function (e) { 
