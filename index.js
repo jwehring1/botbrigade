@@ -83,7 +83,7 @@ express()
   .get('/round_robin', (req, res) => res.render('round_robin', {output:"", typed: typed_code, account:req.session}))
   .get('/get_code', (req, res) => res.render('get_code', {output:"", typed: getCodes(req.session.user), account:req.session}))
   .get('/medium_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
-  .get('/advanced_tutorial', (req, res) => res.render('medium_tutorial', {output:"", typed: typed_code, account:req.session}))
+  .get('/advanced_tutorial', (req, res) => res.render('advanced_tutorial', {output:"", typed: typed_code, account:req.session}))
   .get('/log_in/fail', (req, res) => res.render('log_in', {result:log_fail_str,account: req.session}))
   .get('/sign_up/fail', (req, res) => res.render('sign_up', {result:log_fail_str,account: req.session}))
   .get('/results', function(req, res, next){
@@ -91,6 +91,9 @@ express()
   })
   .get('/medium_results', function(req, res, next){
     res.render('medium_results', {output: str2, typed: typed_code, account: req.session});
+  })
+  .get('/advanced_results', function(req, res, next){
+    res.render('advanced_results', {output: str2, typed: typed_code, account: req.session});
   })
   .get('/round_robin/results', function(req, res, next){
     res.render('round_robin', {output: str2, typed: typed_code, account: req.session});
@@ -120,6 +123,14 @@ express()
   .post('/submit_medium', function(req, res){
     submitCode(req,res);
     res.redirect('/medium_results');
+  })
+  .post('/advanced_input', function(req, res){
+    compileCode(req,res);
+    res.redirect('/advanced_results');
+  })
+  .post('/submit_advancecd', function(req, res){
+    submitCode(req,res);
+    res.redirect('/advanced_results');
   })
 
 
