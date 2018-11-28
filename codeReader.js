@@ -108,7 +108,7 @@ const vm = new NodeVM({
                 console.log(log);
                 singleFightObject.gameText.push(log);
                 singleFightObject.orderedReport.push(log);
-                singleFightObject.orderedReport.push(code1.currentError.message);
+                singleFightObject.orderedReport.push("UNCAUGHT PLAYER ERROR: " + code1.currentError.message);
                 singleFightObject.errors.push(code1.currentError);
                 }
               }
@@ -149,7 +149,7 @@ const vm = new NodeVM({
                     console.log(log);
                     singleFightObject.gameText.push(log);
                     singleFightObject.orderedReport.push(log);
-                    singleFightObject.orderedReport.push(code2.currentError.message);
+                    singleFightObject.orderedReport.push("UNCAUGHT PLAYER ERROR: "+ code2.currentError.message);
                     singleFightObject.errors.push(code2.currentError);
                     }
                 }
