@@ -97,7 +97,7 @@ const vm = new NodeVM({
                   return;
               }
               if (printDebug > 3){
-                if (code1.currentError.isEmpty()){
+                if (code1.currentError.message.isEmpty()){
                     let log = "P1 attempted to place at slot " + p1Selection + ", but this is already full";
                     console.log(log);
                     singleFightObject.gameText.push(log);
