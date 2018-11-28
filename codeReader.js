@@ -108,7 +108,7 @@ const vm = new NodeVM({
                 console.log(log);
                 singleFightObject.gameText.push(log);
                 singleFightObject.orderedReport.push(log);
-                singleFightObject.orderedReport.push(code1.currentError);
+                singleFightObject.orderedReport.push(code1.currentError.message);
                 singleFightObject.errors.push(code1.currentError);
                 }
               }
