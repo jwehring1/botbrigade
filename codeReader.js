@@ -349,7 +349,7 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
 
     //We apparently return 0, not 1 for the top score
     if (!compiling){
-        let finallog = "FINAL POSITION: " +finalPosition;
+        let finallog = "FINAL POSITION: " +(finalPosition+1);
     setRank(userName,finalPosition);
     if (finalPosition === 0){
         finallog += "\nYOU ARE THE CHAMPION, MY FRIEND!!!!!\n\n\n"
