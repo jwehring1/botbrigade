@@ -97,7 +97,7 @@ const vm = new NodeVM({
                   return;
               }
               if (printDebug > 3){
-                if (code1.currentError.message.isEmpty()){
+                if (code1.currentError!= null &code1.currentError.message.isEmpty()){
                     let log = "P1 attempted to place at slot " + p1Selection + ", but this is already full";
                     console.log(log);
                     singleFightObject.gameText.push(log);
@@ -138,7 +138,7 @@ const vm = new NodeVM({
                 return gameBoard.winner;
                 }
                 if (printDebug > 3){
-                    if (code2.currentError.message.isEmpty()){
+                    if (code2.currentError!= null & code2.currentError.message.isEmpty()){
                         let log = "P2 attempted to place at slot " + p2Selection + " ,but this is already full";
                         console.log(log);
                         singleFightObject.gameText.push(log);
