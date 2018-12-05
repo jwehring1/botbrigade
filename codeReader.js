@@ -286,6 +286,8 @@ function roundRobin(challengerCode,rounds,printDebug,compiling,userName){
     if (compiling){
         leaderCodes.push(new codeReader(randomAI,"Random"));
         leaderCodes.push(new codeReader(alwaysPlaceAt1,"AlwaysPlaceAt1"));
+        let smartyBoi = readTextFile('UserCode/minMaxStupid.js');
+        leaderCodes.push(new codeReader(smartyBoi,"Better than Greedy Worse than MiniMax"));
     }
     else {
     //Get Top 10 Slots
